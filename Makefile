@@ -3,20 +3,25 @@
 .PHONY: clear help
 ESPACE_HELP=10
 
-run:  ## compile et lance le fichier compilé
+JFLAGS =
+JC = javac
+JVM= java
+
+all: ## Compile et lance le projet
 	make compile
-	java BrassiGestion
+	make run
 
-#threadInit: ThreadInit.java##compile ThreadX
-#	javac ThreadInit.java
+run:  ## Lance le projet
+	$(JVM) BrassiGestion
 
-interface: Interface.java##compile ThreadX
-		javac Interface.java
-
-compile: interface BrassiGestion.java  ## Compile le projet
-
-	javac BrassiGestion.java
-
+compile : ## Compile tout le projet
+	$(JC) BrassiGestion.java
+	$(JC) BusinessUnit.java
+	$(JC) Client.java
+	$(JC) Interface.java
+	$(JC) Locality.java
+	$(JC) Order.java
+	$(JC) OrderLine.java
 
 clear: ## Supprime les fichiers temporaires non indispensables
 

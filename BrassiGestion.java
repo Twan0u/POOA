@@ -16,9 +16,12 @@ public class BrassiGestion {
 
       //test de création de client
       Client bob = new Client(12, "Bob", "0032498194975", 30, "Suceuse de TVA");
-      System.out.println(bob.toString());
+      Locality local = new Locality(1, "Poing dans le cul", "7911");
+      BusinessUnit bubu = new BusinessUnit(3, bob, local, "Rue de ta mère", "12");
+      System.out.println(bubu.toString());
 
-      
+
+
       //initialisation();//Lance un thread qui initialise l'application
       //System.exit(0);
       //JOptionPane.showMessageDialog (null, "Message","INFO", JOptionPane.PLAIN_MESSAGE);
