@@ -16,6 +16,20 @@ public class Client {
 
 
 /*Methode constructeur pour les objets Client*/
+  public Client(int number, String name, String phoneNumber){
+    setNumber(number);
+    setName(name);
+    setPhoneNumber(phoneNumber);
+    setDiscount(0);
+    setVATNumber(null);
+  }
+  public Client(int number, String name, String phoneNumber, double discount){
+    setNumber(number);
+    setName(name);
+    setPhoneNumber(phoneNumber);
+    setDiscount(discount);
+    setVATNumber(null);
+  }
   public Client(int number, String name, String phoneNumber, double discount, String VATNumber){
     setNumber(number);
     setName(name);
@@ -23,50 +37,52 @@ public class Client {
     setDiscount(discount);
     setVATNumber(VATNumber);
   }
-  public Client(int number, String name, String phoneNumber, double discount){
-    client(number,name,phoneNumber,discount,null);
-  }
-  public Client(int number, String name, String phoneNumber){
-    client(number,name,phoneNumber,0,null);
-  }
+
+
 
   /* GETTEURS */
-  public getNumber(){
+  public int getNumber(){
     return this.number;
   }
-  public getName(){
+  public String getName(){
     return this.name;
   }
-  public getPhoneNumber(){
+  public String getPhoneNumber(){
     return this.phoneNumber;
   }
-  public getDiscount(){
+  public double getDiscount(){
     return this.discount;
   }
-  public getVATNumber(){
+  public String getVATNumber(){
     return this.VATNumber;
   }
 
 
   /* SETTEURS */
-  private setNumber(int num){
+  private void setNumber(int num){
     // Verification et incrémentation ????
   }
-  public setName(String name){
+  public void setName(String name){
     //verification ( taille maximum )
     this.name = name;
   }
-  public setPhoneNumber(String phone){
+  public void setPhoneNumber(String phone){
     // Verification
     this.phoneNumber = phone;
   }
-  public setDiscount(double discount){
+  public void setDiscount(double discount){
     // VERIFIER
     this.discount = discount;
   }
-  public setVATNumber(String vatNum){
+  public void setVATNumber(String vatNum){
     //VERIFIER
     this.VATNumber = vatNum;
+  }
+
+  /* Utils */
+
+  public String toString(){
+    return getNumber() + " - " + getName() + " - " + getPhoneNumber() + " - " + getDiscount() + "% - " + getVATNumber();
   }
 
 }
