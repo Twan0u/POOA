@@ -10,6 +10,9 @@ run:  ## compile et lance le fichier compilé
 threadInit: ThreadInit.java##compile ThreadX
 	javac ThreadInit.java
 
+interface: Interface.java##compile ThreadX
+		javac Interface.java
+
 compile: threadInit BrassiGestion.java  ## Compile le projet
 
 	javac BrassiGestion.java

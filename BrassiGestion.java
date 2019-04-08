@@ -1,6 +1,14 @@
 import javax.swing.*;
 import java.io.*;
 
+/*
+Programme de Gestion d'une brasserie
+écrit par Antoine Lambert et Nathan Surquin
+dans le cadre du cours de Programation avancée Orientée Objets
+
+
+*/
+
 public class BrassiGestion {
 
     public static void main(String[] args) {
@@ -15,7 +23,7 @@ public class BrassiGestion {
         }catch(InterruptedException err){
           System.out.println(err);
         }
-      System.exit(0);
+      //System.exit(0);
     }
 
 }
