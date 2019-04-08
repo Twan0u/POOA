@@ -7,13 +7,13 @@ run:  ## compile et lance le fichier compilé
 	make compile
 	java BrassiGestion
 
-threadInit: ThreadInit.java##compile ThreadX
-	javac ThreadInit.java
+#threadInit: ThreadInit.java##compile ThreadX
+#	javac ThreadInit.java
 
 interface: Interface.java##compile ThreadX
 		javac Interface.java
 
-compile: threadInit BrassiGestion.java  ## Compile le projet
+compile: interface BrassiGestion.java  ## Compile le projet
 
 	javac BrassiGestion.java
 

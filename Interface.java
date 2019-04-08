@@ -1,3 +1,9 @@
+/*
+Programme de Gestion d'une brasserie
+écrit par Antoine Lambert et Nathan Surquin
+dans le cadre du cours de Programation avancée Orientée Objets
+*/
+
 import javax.swing.*;
 
 public class Interface extends JFrame{
@@ -5,11 +11,18 @@ public class Interface extends JFrame{
 
   JButton b;
 
+  /* TO TEST ONLY*/
   public static void main(String[] args){
-    new Interface("1");
+    new Interface("1","2");
   }
-  public Interface(String bouton){
-    super("Chargement");
+  //*/
+
+  /*
+  * Cette fonction sert à créer une interface de base
+  *
+  */
+  public Interface(String titre, String bouton){
+    super(titre);
     setSize(400,300);
     setResizable(true);
 
