@@ -6,7 +6,7 @@ dans le cadre du cours de Programation avancée Orientée Objets
 
 public class Client {
   /*Variables d'instances*/
-  static int counterNumber; // A VERIFIER
+  private static int counterNumber; // A VERIFIER
   private int number;
   private String name;
   private String phoneNumber;
@@ -61,6 +61,7 @@ public class Client {
   /* SETTEURS */
   private void setNumber(int num){
     // Verification et incrémentation ????
+    this.number = num;
   }
   public void setName(String name){
     //verification ( taille maximum )
