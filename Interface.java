@@ -15,12 +15,8 @@ public class Interface extends JFrame{
   public static void main(String[] args){
     new Interface("1","2");
   }
-  //*/
 
-  /*
-  * Cette fonction sert à créer une interface de base
-  *
-  */
+  /* Creation d'une interface basique */
   public Interface(String titre, String bouton){
     super(titre);
     setSize(400,300);

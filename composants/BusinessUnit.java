@@ -1,3 +1,4 @@
+package composants;
 /*
 Programme de Gestion d'une brasserie
 écrit par Antoine Lambert et Nathan Surquin
@@ -45,19 +46,19 @@ public class BusinessUnit{
     this.idBusinessUnit = id;
   }
   private void setClient(Client client){
-    //VERIFIER
+    // différent de null
     this.client = client;
   }
   private void setLocality(Locality locality){
-    //VERIFIER
+    // différent de null
     this.locality = locality;
   }
   private void setStreetName(String streetName){
-    //VERIFIER
+    // maximum en nombres de caractères
     this.streetName = streetName;
   }
   private void setStreetNumber(String streetNumber){
-    //VERIFIER
+    // maximum en nombres de caractères
     this.streetNumber = streetNumber;
   }
 

@@ -7,21 +7,25 @@ JFLAGS =
 JC = javac
 JVM= java
 
-all: ## Compile et lance le projet
+BrassiGestion: ## Compile et lance le projet
 	make compile
 	make run
 
 run:  ## Lance le projet
 	$(JVM) BrassiGestion
 
-compile : ## Compile tout le projet
+compile: BrassiGestion.java composants
 	$(JC) BrassiGestion.java
-	$(JC) BusinessUnit.java
-	$(JC) Client.java
-	$(JC) Interface.java
-	$(JC) Locality.java
-	$(JC) Order.java
-	$(JC) OrderLine.java
+
+composants: exceptions## Compile tout le projet
+	$(JC) composants/Client.java
+	$(JC) composants/Locality.java
+	$(JC) composants/BusinessUnit.java
+	$(JC) composants/Order.java
+	$(JC) composants/OrderLine.java
+
+exceptions: ## compile les exceptions
+	$(JC) composants/exceptions/LocalityException.java
 
 clear: ## Supprime les fichiers temporaires non indispensables
 

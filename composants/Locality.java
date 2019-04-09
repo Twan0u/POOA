@@ -1,8 +1,10 @@
+package composants;
 /*
 Programme de Gestion d'une brasserie
 écrit par Antoine Lambert et Nathan Surquin
 dans le cadre du cours de Programation avancée Orientée Objets
 */
+import composants.exceptions.LocalityException;
 
 public class Locality {
   /*Variables d'instances*/
@@ -13,12 +15,12 @@ public class Locality {
 
 
   /*Methode constructeur pour les objets Client*/
-  public Locality(int id, String name, String postCode){
+  public Locality(int id, String name, String postCode)throws LocalityException{
     setIdLocality(id);
     setName(name);
     setPostCode(postCode);
   }
-  public Locality(String name, String postCode){
+  public Locality(String name, String postCode)throws LocalityException{
     // id automatique
     setName(name);
     setPostCode(postCode);
@@ -38,13 +40,18 @@ public class Locality {
 
   /* SETTEURS */
   private void setIdLocality(int num){
-    //verification bla bla bla
+    //Verification ??
     this.idLocality = num;
   }
-  public void setName(String name){
-    //VERIFIER
+
+  public void setName(String name)throws LocalityException{
+    //max caractères
+    if (name.length() == 0 || name.length() > 64 || name == null){
+      throw new LocalityException("Nom de Localité Invalide");
+    }
     this.name= name;
   }
+
   public void setPostCode(String postCode){
     //verification
     this.postCode = postCode;
