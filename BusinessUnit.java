@@ -64,6 +64,6 @@ public class BusinessUnit{
 
   /* Utils */
   public String toString(){
-    return getIdBusinessUnit() + " - " + client.toString() + " - " + locality.toString() + " - " + getStreetName() + " - " + getStreetNumber();
+    return "====================\n" + "Client:\t\t" + client.getName() + " - " + client.getPhoneNumber() + "\nSitué à :\t" + locality.getName() + " " + locality.getPostCode()  + " \n\t\t" + this.getStreetNumber() + " " + this.getStreetName() + "\n====================" ;
   }
 }
