@@ -17,26 +17,18 @@ public class Client {
 
 
 /*Methode constructeur pour les objets Client*/
-  public Client(int number, String name, String phoneNumber){
-    setNumber(number);
-    setName(name);
-    setPhoneNumber(phoneNumber);
-    setDiscount(0);
-    setVATNumber(null);
-  }
-  public Client(int number, String name, String phoneNumber, double discount){
-    setNumber(number);
-    setName(name);
-    setPhoneNumber(phoneNumber);
-    setDiscount(discount);
-    setVATNumber(null);
-  }
   public Client(int number, String name, String phoneNumber, double discount, String VATNumber){
     setNumber(number);
     setName(name);
     setPhoneNumber(phoneNumber);
     setDiscount(discount);
     setVATNumber(VATNumber);
+  }
+  public Client(int number, String name, String phoneNumber, double discount){
+    this(number, name, phoneNumber, discount, null);
+  }
+  public Client(int number, String name, String phoneNumber){
+    this(number, name, phoneNumber, 0, null);
   }
 
 
