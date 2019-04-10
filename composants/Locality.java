@@ -40,7 +40,7 @@ public class Locality {
 
   /* SETTEURS */
   private void setIdLocality(int num){
-    //Verification ??
+    //verification ??
     this.idLocality = num;
   }
 
@@ -53,7 +53,11 @@ public class Locality {
   }
 
   public void setPostCode(String postCode){
-    //verification
+    try {
+      int temp = Integer.parseInt(postCode);
+    }catch (NumberFormatException err){
+      throw new LocalityException("Code Postal de Localité Invalide");
+    }
     this.postCode = postCode;
   }
 

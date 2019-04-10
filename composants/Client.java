@@ -15,7 +15,6 @@ public class Client {
   private String VATNumber; // Facultatif
 
 
-
 /*Methode constructeur pour les objets Client*/
   public Client(int number, String name, String phoneNumber, double discount, String VATNumber){
     setNumber(number);
@@ -30,8 +29,6 @@ public class Client {
   public Client(int number, String name, String phoneNumber){
     this(number, name, phoneNumber, 0, null);
   }
-
-
 
   /* GETTEURS */
   public int getNumber(){

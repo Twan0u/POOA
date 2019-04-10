@@ -18,7 +18,6 @@ public class BrassiGestion {
 
       //test de création de client
 
-
       try{
         Client bob = new Client (12, "Bob", "0032498194975", 30, "Suceuse de TVA");
         Locality local = new Locality (1, "Localité de Mes Fesses", "7911");
