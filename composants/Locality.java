@@ -52,7 +52,7 @@ public class Locality {
     this.name= name;
   }
 
-  public void setPostCode(String postCode){
+  public void setPostCode(String postCode)throws LocalityException{
     try {
       int temp = Integer.parseInt(postCode);
     }catch (NumberFormatException err){
