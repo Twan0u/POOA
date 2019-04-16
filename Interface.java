@@ -10,9 +10,10 @@ import composants.BusinessUnit;
 public class Interface extends JFrame{
   JPanel pannel = new JPanel();
 
-  JButton b;
-  JLabel l = new JLabel("yo bru");
+  JLabel l;
+  JLabel l2;
   JComboBox cb;
+  JComboBox bubusiness;
 
   /* TO TEST ONLY*/
   public static void main(String[] args){
@@ -20,21 +21,25 @@ public class Interface extends JFrame{
   }
 
   /* Creation d'une interface basique */
-  public Interface(String titre, String bouton, BusinessUnit[] tabs, int nbbu){
-    super(titre);
+  public Interface(){
+    super("Outil de Création de Commandes");
     setSize(400,300);
     setResizable(true);
 
-    String [] businesss = new String[nbbu]; //tabs. EACH TO STRING;
-    for(int i = 0; i<nbbu; i++){
-      businesss[i] = tabs[i].getStreetName();
-    }
+    l= new JLabel("Client : ");
+    cb = new JComboBox(BrassiGestion.getClients());
 
-    b = new JButton(bouton);
-    cb = new JComboBox(businesss);
-    pannel.add(b);
+    l2= new JLabel("\n Business : ");
+
+    bubusiness = new JComboBox(BrassiGestion.getBusinessOfClient(0));
+
+
+
     pannel.add(l);
     pannel.add(cb);
+
+    pannel.add(l2);
+    pannel.add(bubusiness);
 
 
     add(pannel);

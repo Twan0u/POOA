@@ -14,18 +14,16 @@ import java.io.*;
 
 public class BrassiGestion {
 
+    private static Client [] clients;
+    private static int NUM_CLIENTS = 5; // trouver une solution
+
     public static void main(String[] args) {
 
-      // test de création d'interface
-      //new Interface("Titre","Boutton"); // Gui
+      loadData();
+      new Interface(); // Gui
 
-      //test de création de client
+    /*  try{
 
-      try{
-        Client bob = new Client (12, "Bob", "0032498194975", 30, "TVA_062232095251");
-        Locality local = new Locality (1, "Localité du petit bois", "7911");
-        BusinessUnit bubu = new BusinessUnit (3, bob, local, "Rue de la faim", "12");
-        BusinessUnit blyat = new BusinessUnit (16, bob, local, "Rue des potiers", "3");
         Order order1 = new Order(1, bubu, bob, false, "10-12-19", "Paid", 365);
         Order order2 = new Order(2, bubu, bob, true, "12-04-19", "Paid", 365);
         Beer trappe = new Beer("Trappe triple",2.80,100);
@@ -45,9 +43,6 @@ public class BrassiGestion {
         System.out.println(order1.toString());
         System.out.println(order2.toString());
         new Interface("Titre","bouton",bob.getBusiness(),bob.getBusinessCount());
-        //System.out.println(orderline1.toString());
-        //System.out.println(orderline2.toString());
-        //System.out.println(bubu.toString());
       }
       catch(BeerException beerException){
         JOptionPane.showMessageDialog (null, beerException.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
@@ -58,18 +53,16 @@ public class BrassiGestion {
       catch(BusinessUnitException e){
         JOptionPane.showMessageDialog (null, e.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
       }
-      catch(ClientException e){
-        JOptionPane.showMessageDialog (null, e.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
-      }
+
       catch(LocalityException localityException){
         JOptionPane.showMessageDialog (null, localityException.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
-      }
-      //initialisation();//Lance un thread qui initialise l'application
-      //System.exit(0);
-      //JOptionPane.showMessageDialog (null, "Message","INFO", JOptionPane.PLAIN_MESSAGE);
+      }*/
+
+
+
     }
 
-    /*public static void initialisation(){
+  /*  public static void initialisation(){
       ThreadInit threadInit = new ThreadInit();
       threadInit.start();
       try{
@@ -79,5 +72,56 @@ public class BrassiGestion {
         System.out.println(err);
       }
     }*/
+
+
+    public static String[] getClients(){
+
+      String [] out = new String[NUM_CLIENTS];
+      for(int i = 0; i<NUM_CLIENTS; i++){
+        out[i] = clients[i].getName() + "-" + clients[i].getNumber();
+      }
+      return out;
+    }
+
+    public static void loadData(){
+      clients = new Client[NUM_CLIENTS];
+      try{
+
+            // LOAD ALL CLIENTS
+
+            clients[0] = new Client (1, "Antoine", "0032498194975", 80, "TVA_062232095251");
+            clients[1] = new Client (2, "Benjamin", "0032498191234", 50, "TVA_062232095223");
+            clients[2] = new Client (3, "Corentin", "0032498195678", 10, "TVA_062232095654");
+            clients[3] = new Client (4, "Emilie", "0032498198910", 25, "TVA_0622320956789");
+            clients[4] = new Client (5, "BOB", "0032498191112", 66, "TVA_062232095765");
+            System.out.println("ok");
+            //Load The Localities
+
+            Locality local = new Locality (1, "Localité du petit bois", "7911");
+            Locality local2 = new Locality (2, "Localité du saucisson", "7900");
+
+            //Load the Businessunits
+
+            BusinessUnit bubu = new BusinessUnit (1, clients[0], local, "Rue de la faim", "12");
+            BusinessUnit blyat = new BusinessUnit (2, clients[0], local2, "Rue des potiers", "3");
+
+      }catch(Exception e){
+        JOptionPane.showMessageDialog (null, e.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
+      }
+    }
+
+    public static String[] getBusinessOfClient(int num){
+      BusinessUnit [] tab = clients[num].getBusiness();
+
+      String [] out = new String[2]; // pas d'autres idées pour le moment
+
+      for(int i = 0; i<2; i++){
+        out[i] = tab[i].getStreetName();
+      }
+      return out;
+    }
+
+    //System.exit(0);
+    //JOptionPane.showMessageDialog (null, "Message","INFO", JOptionPane.PLAIN_MESSAGE);
 
 }
