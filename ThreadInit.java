@@ -16,7 +16,7 @@ public class ThreadInit extends Thread{
         System.out.println("Initialisation de l'application");
         // Chargement des données depuis un fichier de config
         // Lance l'interface graphique
-        new Interface("Bouton");
+        new Interface("Titre","Boutton");
         // Ajouter une vérification de la connexion avec la base de donnée
         System.out.println("Fin initialisation de l'applicaiton");
       }

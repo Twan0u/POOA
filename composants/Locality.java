@@ -6,7 +6,12 @@ dans le cadre du cours de Programation avancée Orientée Objets
 */
 import composants.exceptions.LocalityException;
 
+// Methode de gestion des ids
+
+
 public class Locality {
+  private static int MAX_LONG_NOM = 64;
+
   /*Variables d'instances*/
   private static int counterid; // A VERIFIER
   private int idLocality;
@@ -43,15 +48,13 @@ public class Locality {
     //verification ??
     this.idLocality = num;
   }
-
   public void setName(String name)throws LocalityException{
     //max caractères
-    if (name.length() == 0 || name.length() > 64 || name == null){
+    if (name.length() <= 0 || name.length() > MAX_LONG_NOM || name == null){
       throw new LocalityException("Nom de Localité Invalide");
     }
-    this.name= name;
+    this.name = name;
   }
-
   public void setPostCode(String postCode)throws LocalityException{
     try {
       int temp = Integer.parseInt(postCode);
@@ -65,7 +68,4 @@ public class Locality {
   public String toString(){
     return getIdLocality() + " - " + getName() + " - " + getPostCode();
   }
-
-
-
 }
