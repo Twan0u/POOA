@@ -7,7 +7,10 @@ JFLAGS =
 JC = javac
 JVM= java
 
-BrassiGestion: ## Compile et lance le projet
+interface: 
+	$(JC) Interface.java
+
+brassiGestion: ## Compile et lance le projet
 	make compile
 	make run
 

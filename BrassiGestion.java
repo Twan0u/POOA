@@ -15,7 +15,7 @@ import java.io.*;
 public class BrassiGestion {
 
     private static Client [] clients;
-    private static int NUM_CLIENTS = 5; // trouver une solution
+    private static int MAX_Clients = 5;
 
     public static void main(String[] args) {
 
@@ -75,16 +75,15 @@ public class BrassiGestion {
 
 
     public static String[] getClients(){
-
-      String [] out = new String[NUM_CLIENTS];
-      for(int i = 0; i<NUM_CLIENTS; i++){
+      String [] out = new String[clients.length];
+      for(int i = 0; i<out.length; i++){
         out[i] = clients[i].getName() + "-" + clients[i].getNumber();
       }
       return out;
     }
 
     public static void loadData(){
-      clients = new Client[NUM_CLIENTS];
+      clients = new Client[MAX_Clients];
       try{
 
             // LOAD ALL CLIENTS
@@ -94,7 +93,6 @@ public class BrassiGestion {
             clients[2] = new Client (3, "Corentin", "0032498195678", 10, "TVA_062232095654");
             clients[3] = new Client (4, "Emilie", "0032498198910", 25, "TVA_0622320956789");
             clients[4] = new Client (5, "BOB", "0032498191112", 66, "TVA_062232095765");
-            System.out.println("ok");
             //Load The Localities
 
             Locality local = new Locality (1, "Localité du petit bois", "7911");
@@ -104,6 +102,8 @@ public class BrassiGestion {
 
             BusinessUnit bubu = new BusinessUnit (1, clients[0], local, "Rue de la faim", "12");
             BusinessUnit blyat = new BusinessUnit (2, clients[0], local2, "Rue des potiers", "3");
+            BusinessUnit bubui = new BusinessUnit (1, clients[1], local, "Rue des marchands", "22");
+            BusinessUnit blyati = new BusinessUnit (2, clients[1], local2, "Rue Raymond le gros", "16");
 
       }catch(Exception e){
         JOptionPane.showMessageDialog (null, e.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
@@ -111,8 +111,9 @@ public class BrassiGestion {
     }
 
     public static String[] getBusinessOfClient(int num){
+      System.out.println("null TAB");
       BusinessUnit [] tab = clients[num].getBusiness();
-
+      if (tab == null){return null;}
       String [] out = new String[2]; // pas d'autres idées pour le moment
 
       for(int i = 0; i<2; i++){

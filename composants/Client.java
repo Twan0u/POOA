@@ -26,7 +26,7 @@ public class Client {
   private double discount;
   private String VATNumber; // Facultatif
 
-  private BusinessUnit [] businessUnits;// ???????
+  private BusinessUnit [] businessUnits;// remplacer par des arrays
   private int nbBusinessUnits;
 
 
@@ -71,6 +71,7 @@ public class Client {
     return this.VATNumber;
   }
   public BusinessUnit[] getBusiness(){
+    if (nbBusinessUnits == 0){ return null;} 
     return this.businessUnits;
   }
   public int getBusinessCount(){
