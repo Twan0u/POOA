@@ -16,6 +16,11 @@ public class Interface extends JFrame{
   JComboBox cb;
   JComboBox bubusiness;
 
+  JLabel labelClient;
+  JLabel labelLivraison;
+
+  int clientIndex = -1;
+
   /* TO TEST ONLY*/
   public static void main(String[] args){
     //new Interface("1","2");
@@ -28,9 +33,13 @@ public class Interface extends JFrame{
     setResizable(true);
 
     l= new JLabel("Client : ");
-    cb = new JComboBox(BrassiGestion.getClients());
 
-    l2= new JLabel("\n Business : ");
+    cb = new JComboBox(BrassiGestion.getClients());
+    System.out.println(cb.getSelectedIndex());
+    l2= new JLabel("Business : ");
+
+    labelClient = new JLabel("");
+    labelLivraison = new JLabel("");
 
     bubusiness = new JComboBox();
     bubusiness.addItem("Aucun Client Selectionné");
@@ -49,6 +58,7 @@ public class Interface extends JFrame{
     String data[][] = new String[rawData.length+1][4];
     double total = 0;
     for(int i=0;i<rawData.length;i++){
+
       String beer = (String) rawData[i][0];
       int quantity = (int) rawData[i][1];
       double price = (double) rawData[i][2];
@@ -58,15 +68,14 @@ public class Interface extends JFrame{
       data[i][2]= Double.toString(price);
       data[i][3]= Double.toString(price*quantity);
       total += price * quantity;
+
     }
     data[rawData.length][0] = "---";
     data[rawData.length][1] = "---";
     data[rawData.length][2] = "---";
     data[rawData.length][3] = Double.toString(total);
 
-
     String column[]={"Bière","Quantité","Prix Unit","Total"};
-
 
     JTable table=new JTable(data,column);
     table.setBounds(5,10,100,200);
@@ -78,6 +87,8 @@ public class Interface extends JFrame{
 
     cb.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
+          clientIndex = cb.getSelectedIndex();
+          labelClient.setText("Client : " + BrassiGestion.getInfoClient(cb.getSelectedIndex())+"\n");
           bubusiness.removeAllItems();
           bubusiness.addItem("Pas A livrer");
           String [] business = BrassiGestion.getBusinessOfClient(cb.getSelectedIndex());

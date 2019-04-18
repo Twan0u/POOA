@@ -22,6 +22,7 @@ public class BrassiGestion {
       loadData();
       new Interface(); // Gui
 
+    }
     /*  try{
 
         Order order1 = new Order(1, bubu, bob, false, "10-12-19", "Paid", 365);
@@ -33,33 +34,7 @@ public class BrassiGestion {
         Beer beer3 = new Beer("Bûche double",2.50,16);
         Beer beer4 = new Beer("Bûche triple",3.10,11);
         Beer beer5 = new Beer("Triple Karmeliet",1.00,10);
-        OrderLine orderline1 = new OrderLine(bucheBlonde,order1,10);
-        OrderLine orderline2 = new OrderLine(trappe,order2,12);
         OrderLine orderline3 = new OrderLine(beer1,order1,3);
-        OrderLine orderline4 = new OrderLine(beer2,order1,12);
-        OrderLine orderline5 = new OrderLine(beer3,order1,45);
-        OrderLine orderline6 = new OrderLine(beer4,order1,42);
-        OrderLine orderline7 = new OrderLine(beer5,order1,700);
-        System.out.println(order1.toString());
-        System.out.println(order2.toString());
-        new Interface("Titre","bouton",bob.getBusiness(),bob.getBusinessCount());
-      }
-      catch(BeerException beerException){
-        JOptionPane.showMessageDialog (null, beerException.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
-      }
-      catch(OrderException OrderException){
-        JOptionPane.showMessageDialog (null, OrderException.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
-      }
-      catch(BusinessUnitException e){
-        JOptionPane.showMessageDialog (null, e.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
-      }
-
-      catch(LocalityException localityException){
-        JOptionPane.showMessageDialog (null, localityException.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
-      }*/
-
-
-
     }
 
   /*  public static void initialisation(){
@@ -78,6 +53,20 @@ public class BrassiGestion {
       String [] out = new String[clients.length];
       for(int i = 0; i<out.length; i++){
         out[i] = clients[i].getName() + "-" + clients[i].getNumber();
+      }
+      return out;
+    }
+
+    public static String getInfoClient(int index){
+      return clients[index].toString();
+    }
+
+    public static String[] getBusinessOfClient(int num){
+      BusinessUnit [] tab = clients[num].getBusiness();
+      if (tab == null){return null;}
+      String [] out = new String[2]; // pas d'autres  idées pour le moment
+      for(int i = 0; i<2; i++){
+        out[i] = tab[i].getStreetName();
       }
       return out;
     }
@@ -110,17 +99,6 @@ public class BrassiGestion {
       }
     }
 
-    public static String[] getBusinessOfClient(int num){
-      System.out.println("null TAB");
-      BusinessUnit [] tab = clients[num].getBusiness();
-      if (tab == null){return null;}
-      String [] out = new String[2]; // pas d'autres idées pour le moment
-
-      for(int i = 0; i<2; i++){
-        out[i] = tab[i].getStreetName();
-      }
-      return out;
-    }
 
     //System.exit(0);
     //JOptionPane.showMessageDialog (null, "Message","INFO", JOptionPane.PLAIN_MESSAGE);
