@@ -1,3 +1,4 @@
+package brassigestion;
 /*
 Programme de Gestion d'une brasserie
 écrit par Antoine Lambert et Nathan Surquin

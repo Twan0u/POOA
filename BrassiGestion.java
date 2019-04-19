@@ -1,8 +1,3 @@
-/*
-Programme de Gestion d'une brasserie
-écrit par Antoine Lambert et Nathan Surquin
-dans le cadre du cours de Programation avancée Orientée Objets
-*/
 import composants.*;
 import composants.exceptions.*;
 

@@ -6,18 +6,18 @@ ESPACE_HELP=10
 JFLAGS =
 JC = javac
 JVM= java
+DOC = javadoc
 
-interface: 
+Interface.class: Interface.java
 	$(JC) Interface.java
 
-brassiGestion: ## Compile et lance le projet
-	make compile
-	make run
+javadoc: Interface.java BrassiGestion.java ##Génère la javadoc
+	javadoc Interface.java BrassiGestion.java composants composants.exceptions
 
-run:  ## Lance le projet
+run: Brassigestion.class ## Lance le projet
 	$(JVM) BrassiGestion
 
-compile: BrassiGestion.java composants
+Brassigestion.class: BrassiGestion.java Interface.class composants
 	$(JC) BrassiGestion.java
 
 composants: exceptions## Compile tout le projet

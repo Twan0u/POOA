@@ -1,12 +1,6 @@
-/*
-Programme de Gestion d'une brasserie
-écrit par Antoine Lambert et Nathan Surquin
-dans le cadre du cours de Programation avancée Orientée Objets
-*/
 
 import javax.swing.*;
 import java.awt.event.*;
-
 
 public class Interface extends JFrame{
   JPanel pannel = new JPanel();
@@ -65,15 +59,15 @@ public class Interface extends JFrame{
 
       data[i][0]= beer;
       data[i][1]= Integer.toString(quantity);
-      data[i][2]= Double.toString(price);
-      data[i][3]= Double.toString(price*quantity);
+      data[i][2]= Double.toString(price) + "€";
+      data[i][3]= Double.toString(price*quantity) + "€";
       total += price * quantity;
 
     }
     data[rawData.length][0] = "---";
     data[rawData.length][1] = "---";
     data[rawData.length][2] = "---";
-    data[rawData.length][3] = Double.toString(total);
+    data[rawData.length][3] = Double.toString(total) + "€";
 
     String column[]={"Bière","Quantité","Prix Unit","Total"};
 

@@ -1,4 +1,3 @@
-
 package composants;
 /*
 Programme de Gestion d'une brasserie
@@ -18,7 +17,7 @@ import composants.exceptions.OrderException;
 // Verification TimeLimit
 
 public class Order{
-  
+
   private static int MAX_ITEMS_PER_ORDER = 100;
 
   /*Variables d'instances*/
