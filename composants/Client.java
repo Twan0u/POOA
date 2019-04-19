@@ -193,12 +193,21 @@ public class Client {
 
   /**____SETTEURS____*/
 
-
+  /** modifie le numéro d'identification d'un client
+  * @param num
+  *           numéro d'identification
+  * @since 1.0
+  */
   private void setNumber(int num){
     this.number = num;
   }
 
-  
+  /** Modifie le nom du client
+  * @param name
+  *           nom du client
+  * @throws ClientException envoyée en cas de nom null ou trop court/long (MAX_LONG_NOM)
+  * @since 1.1
+  */
   public void setName(String name)throws ClientException{
     if (name == null){
       throw new ClientException("Il n'y a aucun Nom Spécifié pour ce client");
@@ -209,6 +218,13 @@ public class Client {
     }
     this.name = name;
   }
+
+  /** Modifie le numéro de telephonne du client
+  * @param phone
+  *           numéro de telephonne
+  * @throws ClientException envoyée en cas de numero null ou trop court/long (MAX_LONG_NUM_TEL)
+  * @since 1.1
+  */
   public void setPhoneNumber(String phone)throws ClientException{
     if (phone == null){
       throw new ClientException("Il n'y a aucun Numéro de téléphone Spécifié pour ce client");
@@ -219,6 +235,13 @@ public class Client {
     }
     this.phoneNumber = phone;
   }
+
+  /** Modifie la ristourne associée au client
+  * @param discount
+  *           ristourne du client exprimée en %
+  * @throws ClientException envoyée en cas de reduction inférieure à 0 ou suppérieure a 100
+  * @since 1.1
+  */
   public void setDiscount(double discount)throws ClientException{
     if (discount < 0){
       throw new ClientException("La remise est incorrecte pour ce client");
@@ -227,6 +250,13 @@ public class Client {
     }
     this.discount = discount;
   }
+
+  /** Modifie le numéro de TVA du client
+  * @param vatNum
+  *           numéro de TVA
+  * @throws ClientException envoyée en cas de numéro de Tva null ou avec un nom trop court/long (MAX_LONG_VAT)
+  * @since 1.1
+  */
   public void setVATNumber(String vatNum)throws ClientException{
     if (vatNum == null){
       this.VATNumber = null;
@@ -239,8 +269,19 @@ public class Client {
     this.VATNumber = vatNum;
   }
 
-  /* Utils */
+  /*____TO STRING____*/
 
+  /** génère une chaine de caractère décrivant l'objet BusinessUnit
+  *  sous la forme "NUMERO - NOM - TELEPHONNE - DISCOUNT% - NUM_TVA"
+  * @see Client
+  * @see Client#getNumber
+  * @see Client#getName
+  * @see Client#getPhoneNumber
+  * @see Client#getDiscount
+  * @see Client#VATNumber
+  * @return chaine de caractère décrivant le Client
+  * @since 1.2
+  */
   public String toString(){
     return getNumber() + " - " + getName() + " - " + getPhoneNumber() + " - " + getDiscount() + "% - " + getVATNumber();
   }
