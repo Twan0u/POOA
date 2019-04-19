@@ -107,7 +107,11 @@ public class Locality {
   /** Modifie le nom de la localite
   * @param name
   *           nom de la localite
+<<<<<<< HEAD
   * @throws LocalityException envoyée en cas de localite null, trop petite ou trop grande (MAX_LONG_NOM)
+=======
+  * @throws LocaliteException envoyée en cas de localite null, trop petite ou trop grande (MAX_LONG_NOM)
+>>>>>>> 6f3abd066633e9b99d75e30dd1a52104a7c1a9e3
   * @since 1.0
   */
   public void setName(String name)throws LocalityException{
@@ -121,7 +125,11 @@ public class Locality {
   /** Modifie le code postal de la localite
   * @param postCode
   *           code postal de la localite
+<<<<<<< HEAD
   * @throws LocalityException envoyé si le code postal n'est pas un nombre entier
+=======
+  * @throws LocaliteException envoyé si le code postal n'est pas un nombre entier
+>>>>>>> 6f3abd066633e9b99d75e30dd1a52104a7c1a9e3
   * @since 1.0
   */
   public void setPostCode(String postCode)throws LocalityException{
