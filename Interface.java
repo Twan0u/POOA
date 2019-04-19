@@ -27,11 +27,8 @@ public class Interface extends JFrame{
     setResizable(true);
 
     l= new JLabel("Client : ");
-
     cb = new JComboBox(BrassiGestion.getClients());
-    System.out.println(cb.getSelectedIndex());
     l2= new JLabel("Business : ");
-
     labelClient = new JLabel("");
     labelLivraison = new JLabel("");
 

@@ -1,4 +1,4 @@
-.SILENT:
+.SILENT: all
 .DEFAULT_GOAL=help
 .PHONY: clear help
 ESPACE_HELP=10
@@ -8,36 +8,48 @@ JC = javac
 JVM= java
 DOC = javadoc
 
-Interface.class: Interface.java
-	$(JC) Interface.java
-
 javadoc: Interface.java BrassiGestion.java ##Génère la javadoc
-	javadoc Interface.java BrassiGestion.java composants composants.exceptions
+	$(DOC) Interface.java BrassiGestion.java composants composants.exceptions
 
-run: Brassigestion.class ## Lance le projet
+run: ## Lance le projet
 	$(JVM) BrassiGestion
 
-Brassigestion.class: BrassiGestion.java Interface.class composants
-	$(JC) BrassiGestion.java
+all: exceptions composants## Compile tout le projet
+	$(JC) Interface.java
+	$(JC)	BrassiGestion.java
 
-composants: exceptions## Compile tout le projet
+composants: exceptions## Compile les composants
+
 	$(JC) composants/Client.java
 	$(JC) composants/Locality.java
 	$(JC) composants/BusinessUnit.java
 	$(JC) composants/Order.java
 	$(JC) composants/OrderLine.java
 
-exceptions: ## compile les exceptions
-	$(JC) composants/exceptions/LocalityException.java
-	$(JC) composants/exceptions/BeerException.java
-	$(JC) composants/exceptions/BusinessUnitException.java
-	$(JC) composants/exceptions/ClientException.java
-	$(JC) composants/exceptions/OrderException.java
-	$(JC) composants/exceptions/OrderLineException.java
+exceptions: ## Compile les exceptions
+	$(JC) composants/exceptions/Client.java
+	$(JC) composants/exceptions/Locality.java
+	$(JC) composants/exceptions/BusinessUnit.java
+	$(JC) composants/exceptions/Order.java
+	$(JC) composants/exceptions/OrderLine.java
+
 
 clear: ## Supprime les fichiers temporaires non indispensables
 
-	rm -f *.class
+	rm -rf *.class
+	rm -rf *.js
+	rm -rf *.html
+	rm -rf *.css
+
+	rm -rf */*.class
+	rm -rf */*.js
+	rm -rf */*.html
+	rm -rf */*.css
+
+	rm -rf */*/*.class
+	rm -rf */*/*.js
+	rm -rf */*/*.html
+	rm -rf */*/*.css
 
 help: ## Affiche l'aide
 

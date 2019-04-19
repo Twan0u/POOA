@@ -19,7 +19,6 @@ public class BrassiGestion {
 
     }
     /*  try{
-
         Order order1 = new Order(1, bubu, bob, false, "10-12-19", "Paid", 365);
         Order order2 = new Order(2, bubu, bob, true, "12-04-19", "Paid", 365);
         Beer trappe = new Beer("Trappe triple",2.80,100);
