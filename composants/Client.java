@@ -4,7 +4,7 @@ Programme de Gestion d'une brasserie
 écrit par Antoine Lambert et Nathan Surquin
 dans le cadre du cours de Programation avancée Orientée Objets
 */
-
+import java.util.*;
 import composants.exceptions.ClientException;
 
 // identification id client, a attribuer
@@ -12,8 +12,6 @@ import composants.exceptions.ClientException;
 
 public class Client {
 
-  private static int counterNumber; // A VERIFIER
-  private static int MAX_BUSINESSUNITS = 20;
   private static int MAX_LONG_NOM = 64;
   private static int MAX_LONG_NUM_TEL = 18;
   private static int MAX_LONG_VAT = 32;
@@ -26,9 +24,7 @@ public class Client {
   private double discount;
   private String VATNumber; // Facultatif
 
-  private BusinessUnit [] businessUnits;// remplacer par des arrays
-  private int nbBusinessUnits;
-
+  private ArrayList<BusinessUnit> businessUnits = new ArrayList<>();
 
 /*Methode constructeur pour les objets Client*/
   public Client(int number, String name, String phoneNumber, double discount, String VATNumber)throws ClientException{
@@ -37,8 +33,6 @@ public class Client {
     setPhoneNumber(phoneNumber);
     setDiscount(discount);
     setVATNumber(VATNumber);
-    businessUnits = new BusinessUnit[MAX_BUSINESSUNITS];
-    nbBusinessUnits = 0;
   }
   public Client(int number, String name, String phoneNumber, double discount)throws ClientException{
     this(number, name, phoneNumber, discount, null);
@@ -48,9 +42,8 @@ public class Client {
   }
 
 
-  void addBusinessUnit(BusinessUnit business){ // ajouter le cas ou le tableau serait trop petit
-    this.businessUnits[this.nbBusinessUnits] = business;
-    this.nbBusinessUnits++;
+  void addBusinessUnit(BusinessUnit business){
+    this.businessUnits.add(business);
   }
 
 
@@ -71,14 +64,16 @@ public class Client {
     return this.VATNumber;
   }
   public BusinessUnit[] getBusiness(){
-    if (nbBusinessUnits == 0){ return null;} 
-    return this.businessUnits;
+    if (this.businessUnits.size() == 0){ return null;}
+    BusinessUnit [] out= new BusinessUnit[this.businessUnits.size()];
+    for (int i=0;i<this.businessUnits.size();i++){
+      out[i]=this.businessUnits.get(i);
+    }
+    return out;
   }
   public int getBusinessCount(){
-    return this.nbBusinessUnits;
+    return this.businessUnits.size();
   }
-
-
 
   /* SETTEURS */
   private void setNumber(int num){
