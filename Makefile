@@ -27,11 +27,11 @@ composants: exceptions## Compile les composants
 	$(JC) composants/OrderLine.java
 
 exceptions: ## Compile les exceptions
-	$(JC) composants/exceptions/Client.java
-	$(JC) composants/exceptions/Locality.java
-	$(JC) composants/exceptions/BusinessUnit.java
-	$(JC) composants/exceptions/Order.java
-	$(JC) composants/exceptions/OrderLine.java
+	$(JC) composants/exceptions/ClientException.java
+	$(JC) composants/exceptions/LocalityException.java
+	$(JC) composants/exceptions/BusinessUnitException.java
+	$(JC) composants/exceptions/OrderException.java
+	$(JC) composants/exceptions/OrderLineException.java
 
 
 clear: ## Supprime les fichiers temporaires non indispensables
