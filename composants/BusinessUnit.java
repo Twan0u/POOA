@@ -183,7 +183,6 @@ public class BusinessUnit{
     this.streetNumber = streetNumber;
   }
 
-
   /*____TO STRING____*/
 
   /** génère une chaine de caractère décrivant l'objet BusinessUnit
