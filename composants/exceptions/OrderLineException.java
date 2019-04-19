@@ -2,7 +2,7 @@ package composants.exceptions;
 
 
 /**
- * <b> Cette classe est une exception liée a la classe <i>Locality</i> </b>
+ * <b> Cette classe est une exception liée a la classe <i>OrderLine</i> </b>
  *
  * @author Antoine Lambert
  * @version 1.0
