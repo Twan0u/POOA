@@ -1,41 +1,77 @@
 package composants;
-/*
-Programme de Gestion d'une brasserie
-écrit par Antoine Lambert et Nathan Surquin
-dans le cadre du cours de Programation avancée Orientée Objets
-*/
-
 import composants.exceptions.OrderException;
+import java.util.*;
+/**
+* <b>classe de l'objet Order</b>
+*
+* @author Antoine Lambert et Nathan Surquin
+* @version 1.3
+*
+* L'objet se compose de:
+* <ul>
+*   <li>un numéro d'identification</li>
+*   <li>une adresse de livraison associée</li>
+*   <li>un client qui effectue la commande</li>
+*   <li>une identification de commande prioritaire</li>
+*   <li>une date de commande </li>
+*   <li>un état de cette commande</li>
+*   <li>une limite (facultative) pour la livraison</li>
+* </ul>
 
-// Doit on obligatoirement avoir un BusinessUnit ??
-
-// erreur commande vide
-// le client n'existe pas
-// VERIFICATIONS SUR LA DATE
-// Gestion des IDS
-// VERification State
-// Verification TimeLimit
-
+* <b>A implementer</b>
+* <ul>
+*   <li>Implementation des IDs</li>
+*   <li>Verification des numéros d'identification</li>
+*   <li>erreur de commande vide</li>
+*   <li>le client null</li>
+*   <li>verification sur la validité de la date</li>
+*   <li>verification du state</li>
+*   <li>verification du time limit</li>
+* </ul>
+*
+*/
 public class Order{
+  /*____VARIABLES____*/
 
-  private static int MAX_ITEMS_PER_ORDER = 100;
-
-  /*Variables d'instances*/
+  /**numero d'identification de la commande*/
   private int number;
-  private BusinessUnit businessUnitId; //facultatif
+  /**adresse (facultative) de livraison*/
+  private BusinessUnit businessUnitId;
+  /**Client lié à cette commande*/
   private Client client;
+  /**Commande prioritaire*/
   private boolean hasPriority;
+  /**Date à laquelle la commande à été passée*/
   private String orderDate;
+  /**Etat de la commande (limité à qq choix)*/
   private String state;
-  private int timeLimit; // (facultatif) temps maximum pour faire une commande
+  /**limite de jours pour effectuer la commande (facultatif)*/
+  private int timeLimit;
+  /**Liste des éléments commandés*/
+  private ArrayList<OrderLine> orderList = new ArrayList<>();
 
-  /*Variables Liés au programme JAVA*/
+  /*____Constructeurs____*/
 
-  private OrderLine [] items;// ???????
-  private int nbItems;
-
-
-/*Methode constructeur pour les objets Client*/
+  /** Methode constructeur pour les objets Order
+  * @param number
+  *             Numero d'identification.
+  * @param businessUnitId
+  *             adresse de livraison de la commande (null si pas à livrer)
+  * @param client
+  *             Client ayant effectué la commande
+  * @param hasPriority
+  *             la commande est elle prioritaire
+  * @param orderDate
+  *             date à laquelle la commande a été effectuée
+  * @param state
+  *             état de la commande
+  * @param timeLimit
+  *             temps (en jours) pour préparer la commande
+  * @see BusinessUnit
+  * @see Client
+  * @throws OrderException erreur envoyée en cas de données erronnées
+  * @since 1.0
+  */
   public Order(int number, BusinessUnit businessUnitId, Client client, boolean hasPriority, String orderDate, String state, int timeLimit)throws OrderException{
     setNumber(number);
     setBusinessUnitId(businessUnitId);
@@ -44,29 +80,65 @@ public class Order{
     setOrderDate(orderDate);
     setState(state);
     setTimeLimit(timeLimit);
-    items = new OrderLine[MAX_ITEMS_PER_ORDER];
-    nbItems = 0;
   }
 
+  /** Methode constructeur pour les objets Order
+  * @param number
+  *             Numero d'identification.
+  * @param client
+  *             Client ayant effectué la commande
+  * @param hasPriority
+  *             la commande est elle prioritaire
+  * @param orderDate
+  *             date à laquelle la commande a été effectuée
+  * @param state
+  *             état de la commande
+  * @param timeLimit
+  *             temps (en jours) pour préparer la commande
+  * @see Client
+  * @throws OrderException erreur envoyée en cas de données erronnées
+  * @since 1.0
+  */
   public Order(int number, Client client, boolean hasPriority, String orderDate, String state, int timeLimit)throws OrderException{
     this(number, null, client, hasPriority, orderDate, state, timeLimit);
   }
 
+  /** Methode constructeur pour les objets Order
+  * @param number
+  *             Numero d'identification.
+  * @param businessUnitId
+  *             adresse de livraison de la commande (null si pas à livrer)
+  * @param client
+  *             Client ayant effectué la commande
+  * @param hasPriority
+  *             la commande est elle prioritaire
+  * @param orderDate
+  *             date à laquelle la commande a été effectuée
+  * @param state
+  *             état de la commande
+  * @see BusinessUnit
+  * @see Client
+  * @throws OrderException erreur envoyée en cas de données erronnées
+  * @since 1.0
+  */
   public Order(int number, BusinessUnit businessUnitId, Client client, boolean hasPriority, String orderDate, String state)throws OrderException{
     this(number, businessUnitId, client, hasPriority, orderDate, state, -1);
   }
 
-  public Order(int number, Client client, boolean hasPriority, String orderDate, String state)throws OrderException{
-    this(number, null, client, hasPriority, orderDate, state, -1);
-  }
+  /*____METHODES____*/
 
+  /** Ajoute une ligne de commande à la commande
+  * @param item
+  *         ligne de commande
+  * @see OrderLine
+  * @since 1.3
+  */
   void additem(OrderLine item){ // ajouter le cas ou le tableau serait trop petit
-    this.items[this.nbItems] = item;
-    this.nbItems++;
+    this.orderList.add(item);
   }
 
+  /*____GETTEURS____*/
 
-  /* GETTEURS */
   public int getNumber(){
     return this.number;
   }
@@ -90,7 +162,7 @@ public class Order{
   }
 
   /* SETTEURS */
-  public void setNumber(int number){//?? on doit set nous meme la primary key
+  public void setNumber(int number){
     this.number = number;
   }
   public void setBusinessUnitId(BusinessUnit businessUnit){ // Si le BusinessUnit n'existe pas, alors on ne doit pas livrer
@@ -123,8 +195,8 @@ public class Order{
     output += this.getBusinessUnitId().toString() + spacer;
     output += "Priority :" + this.getHasPriority() + spacer;
     output += "ORDER :\n";
-    for(int i = 0; i<this.nbItems;i++){
-      output += "\t* " + this.items[i].toString() + "\n";
+    for(int i = 0; i<this.orderList.size();i++){
+      output += "\t* " + this.orderList.get(i).toString() + "\n";
     }
     output += borders;
     return output;

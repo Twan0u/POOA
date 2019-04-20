@@ -111,7 +111,6 @@ public class Client {
   * @param business
   *             business a ajouter.
   * @see BusinessUnit
-  * @throws ClientException erreur envoyée en cas de données erronnées
   * @since 1.3
   */
   void addBusinessUnit(BusinessUnit business){
