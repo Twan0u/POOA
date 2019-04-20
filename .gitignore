@@ -1,3 +1,4 @@
 *.class
 *.html
-*/*.html
+*.js
+*.css
