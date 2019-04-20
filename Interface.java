@@ -1,4 +1,3 @@
-
 import javax.swing.*;
 import java.awt.event.*;
 
@@ -15,9 +14,9 @@ public class Interface extends JFrame{
 
   int clientIndex = -1;
 
-  /* TO TEST ONLY*/
   public static void main(String[] args){
-    //new Interface("1","2");
+    BrassiGestion.loadData();
+    new Interface();
   }
 
   /* Creation d'une interface basique */

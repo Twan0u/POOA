@@ -12,7 +12,7 @@ javadoc: Interface.java BrassiGestion.java ##Génère la javadoc
 	$(DOC) Interface.java BrassiGestion.java composants composants.exceptions
 
 run: ## Lance le projet
-	$(JVM) BrassiGestion
+	$(JVM) Interface
 
 all: exceptions composants## Compile tout le projet
 	$(JC) Interface.java

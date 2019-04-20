@@ -4,20 +4,11 @@ import composants.exceptions.*;
 import javax.swing.*;
 import java.io.*;
 
-
-// ajouter une discount par order line
-
 public class BrassiGestion {
 
     private static Client [] clients;
     private static int MAX_Clients = 5;
 
-    public static void main(String[] args) {
-
-      loadData();
-      new Interface(); // Gui
-
-    }
     /*  try{
         Order order1 = new Order(1, bubu, bob, false, "10-12-19", "Paid", 365);
         Order order2 = new Order(2, bubu, bob, true, "12-04-19", "Paid", 365);
@@ -46,7 +37,7 @@ public class BrassiGestion {
     public static String[] getClients(){
       String [] out = new String[clients.length];
       for(int i = 0; i<out.length; i++){
-        out[i] = clients[i].getName() + "-" + clients[i].getNumber();
+        out[i] = clients[i].getName() + "-" + clients[i].getId();
       }
       return out;
     }

@@ -39,7 +39,7 @@ public class Client {
   /**Taille maximum du numéro de TVA*/
   private static int MAX_LONG_VAT = 32;
   /**Numéro d'identification client*/
-  private int number;
+  private int id;
   /**Nom du client*/
   private String name;
   /**Numéro de téléphonne du client*/
@@ -54,7 +54,7 @@ public class Client {
   /*____Constructeurs____*/
 
   /** Methode constructeur pour les objets Client
-  * @param number
+  * @param id
   *             Numero d'identification.
   * @param name
   *             Nom du client.
@@ -67,8 +67,8 @@ public class Client {
   * @throws ClientException erreur envoyée en cas de données erronnées
   * @since 1.0
   */
-  public Client(int number, String name, String phoneNumber, double discount, String VATNumber)throws ClientException{
-    setNumber(number);
+  public Client(int id, String name, String phoneNumber, double discount, String VATNumber)throws ClientException{
+    setId(id);
     setName(name);
     setPhoneNumber(phoneNumber);
     setDiscount(discount);
@@ -76,7 +76,7 @@ public class Client {
   }
 
   /** Methode constructeur pour les objets Client
-  * @param number
+  * @param id
   *             Numero d'identification.
   * @param name
   *             Nom du client.
@@ -87,12 +87,12 @@ public class Client {
   * @throws ClientException erreur envoyée en cas de données erronnées
   * @since 1.1
   */
-  public Client(int number, String name, String phoneNumber, double discount)throws ClientException{
-    this(number, name, phoneNumber, discount, null);
+  public Client(int id, String name, String phoneNumber, double discount)throws ClientException{
+    this(id, name, phoneNumber, discount, null);
   }
 
   /** Methode constructeur pour les objets Client
-  * @param number
+  * @param id
   *             Numero d'identification.
   * @param name
   *             Nom du client.
@@ -101,8 +101,8 @@ public class Client {
   * @throws ClientException erreur envoyée en cas de données erronnées
   * @since 1.1
   */
-  public Client(int number, String name, String phoneNumber)throws ClientException{
-    this(number, name, phoneNumber, 0, null);
+  public Client(int id, String name, String phoneNumber)throws ClientException{
+    this(id, name, phoneNumber, 0, null);
   }
 
   /*____METHODES____*/
@@ -119,12 +119,12 @@ public class Client {
 
   /*____GETTEURS____*/
 
-  /** Getteur pour la variable number
+  /** Getteur pour la variable id
   * @return numéro d'identification du client
   * @since 1.0
   */
-  public int getNumber(){
-    return this.number;
+  public int getId(){
+    return this.id;
   }
 
   /** Getteur pour la variable name
@@ -193,12 +193,12 @@ public class Client {
   /**____SETTEURS____*/
 
   /** modifie le numéro d'identification d'un client
-  * @param num
+  * @param id
   *           numéro d'identification
   * @since 1.0
   */
-  private void setNumber(int num){
-    this.number = num;
+  private void setId(int id){
+    this.id = id;
   }
 
   /** Modifie le nom du client
@@ -270,10 +270,10 @@ public class Client {
 
   /*____TO STRING____*/
 
-  /** génère une chaine de caractère décrivant l'objet BusinessUnit
+  /** génère une chaine de caractère décrivant le Client
   *  sous la forme "NUMERO - NOM - TELEPHONNE - DISCOUNT% - NUM_TVA"
   * @see Client
-  * @see Client#getNumber
+  * @see Client#getId
   * @see Client#getName
   * @see Client#getPhoneNumber
   * @see Client#getDiscount
@@ -282,7 +282,7 @@ public class Client {
   * @since 1.2
   */
   public String toString(){
-    return getNumber() + " - " + getName() + " - " + getPhoneNumber() + " - " + getDiscount() + "% - " + getVATNumber();
+    return getId() + " - " + getName() + " - " + getPhoneNumber() + " - " + getDiscount() + "% - " + getVATNumber();
   }
 
 }
