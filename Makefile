@@ -8,30 +8,43 @@ JC = javac
 JVM= java
 DOC = javadoc
 
-javadoc: Interface.java BrassiGestion.java ##Génère la javadoc
-	$(DOC) Interface.java BrassiGestion.java composants composants.exceptions
-
 run: ## Lance le projet
-	$(JVM) Interface
+	$(JVM) BrassiGestion
 
-all: exceptions composants## Compile tout le projet
-	$(JC) Interface.java
-	$(JC)	BrassiGestion.java
+all: BrassiGestion.java interface javadoc
+	$(JC) BrassiGestion.java
+
+interface: controller gui/Interface.java
+	$(JC) gui/Interface.java
+
+controller: business controller/Controller.java controller/InterfaceController.java
+	$(JC) controller/InterfaceController.java
+	$(JC) controller/Controller.java
+
+business: dataccess business/Business.java business/BusinessInterface.java
+	$(JC) business/BusinessInterface.java
+	$(JC) business/Business.java
+
+dataccess: composants dataccess/Data.java dataccess/DataMock.java dataccess/InterfaceData.java
+	$(JC) dataccess/InterfaceData.java
+	$(JC) dataccess/DataMock.java
 
 composants: exceptions## Compile les composants
-
 	$(JC) composants/Client.java
 	$(JC) composants/Locality.java
 	$(JC) composants/BusinessUnit.java
 	$(JC) composants/Order.java
 	$(JC) composants/OrderLine.java
 
-exceptions: ## Compile les exceptions
+exceptions: composants/exceptions/ClientException.java composants/exceptions/LocalityException.java composants/exceptions/BusinessUnitException.java composants/exceptions/OrderException.java composants/exceptions/OrderLineException.java ## Compile les exceptions
 	$(JC) composants/exceptions/ClientException.java
 	$(JC) composants/exceptions/LocalityException.java
 	$(JC) composants/exceptions/BusinessUnitException.java
 	$(JC) composants/exceptions/OrderException.java
 	$(JC) composants/exceptions/OrderLineException.java
+
+javadoc: ##Génère la javadoc
+	$(DOC) business controller dataccess composants gui BrassiGestion.java
 
 
 clear: ## Supprime les fichiers temporaires non indispensables

@@ -1,64 +1,60 @@
+package gui;
+
+import controller.*;
+import composants.*;
+import composants.exceptions.*;
 import javax.swing.*;
 import java.awt.event.*;
 
 public class Interface extends JFrame{
+
+  private Controller controller = new Controller();
   JPanel pannel = new JPanel();
 
-  JLabel l;
-  JLabel l2;
-  JComboBox cb;
-  JComboBox bubusiness;
-
-  JLabel labelClient;
-  JLabel labelLivraison;
-
+  JLabel labelClient = new JLabel("Client : ");
+  JComboBox comboBoxClient;
+  JLabel labelBusiness = new JLabel("Business : ");
+  JComboBox comboBoxBusiness = new JComboBox();
+  JLabel labelClientInfo = new JLabel("");
+  JLabel labelBusinessInfo = new JLabel("");
   int clientIndex = -1;
 
   public static void main(String[] args){
-    BrassiGestion.loadData();
     new Interface();
   }
 
-  /* Creation d'une interface basique */
   public Interface(){
     super("Outil de Création de Commandes");
     setSize(600,450);
-    setResizable(true);
+    setResizable(false);
 
-    l= new JLabel("Client : ");
-    cb = new JComboBox(BrassiGestion.getClients());
-    l2= new JLabel("Business : ");
-    labelClient = new JLabel("");
-    labelLivraison = new JLabel("");
+    try{
+      comboBoxClient = new JComboBox(controller.getClients());
+    }catch(ClientException e){
+      JOptionPane.showMessageDialog (null, "Il y a eu une erreur dans le chargement des Clients" + e.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
+    }
 
-    bubusiness = new JComboBox();
-    bubusiness.addItem("Aucun Client Selectionné");
-
-    pannel.add(l);
-    pannel.add(cb);
-
-    pannel.add(l2);
-    pannel.add(bubusiness);
+    comboBoxBusiness.addItem("Aucun Client Selectionné");
 
     pannel.add(labelClient);
-    pannel.add(labelLivraison);
-
+    pannel.add(comboBoxClient);
+    pannel.add(labelBusiness);
+    pannel.add(comboBoxBusiness);
+    pannel.add(labelClientInfo);
+    pannel.add(labelBusinessInfo);
 
     Object rawData[][]={{"Bûche Blonde",2,1.5},{"Bûche Ambrée",10,3.0},{"Triple Karmeliet",15,1.0}};
     String data[][] = new String[rawData.length+1][4];
     double total = 0;
     for(int i=0;i<rawData.length;i++){
-
       String beer = (String) rawData[i][0];
       int quantity = (int) rawData[i][1];
       double price = (double) rawData[i][2];
-
       data[i][0]= beer;
       data[i][1]= Integer.toString(quantity);
       data[i][2]= Double.toString(price) + "€";
       data[i][3]= Double.toString(price*quantity) + "€";
       total += price * quantity;
-
     }
     data[rawData.length][0] = "---";
     data[rawData.length][1] = "---";
@@ -75,18 +71,21 @@ public class Interface extends JFrame{
     add(pannel);
     setVisible(true);
 
-    cb.addActionListener(new ActionListener() {
+    comboBoxClient.addActionListener(new ActionListener() {
         public void actionPerformed(ActionEvent e) {
-          clientIndex = cb.getSelectedIndex();
-          labelClient.setText("Client : " + BrassiGestion.getInfoClient(cb.getSelectedIndex())+"\n");
-          bubusiness.removeAllItems();
-          bubusiness.addItem("Pas A livrer");
-          String [] business = BrassiGestion.getBusinessOfClient(cb.getSelectedIndex());
+          clientIndex = comboBoxClient.getSelectedIndex();
+          labelClientInfo.setText("Client : " + controller.getInfoClient(comboBoxClient.getSelectedIndex())+"\n");
+          comboBoxBusiness.removeAllItems();
+          comboBoxBusiness.addItem("Pas A livrer");
+          try{
+          String [] business = controller.getBusinessOf(comboBoxClient.getSelectedIndex());
           if (business != null){
             for(int i=0;i<business.length;i++){
-              bubusiness.addItem(business[i]);
+              comboBoxBusiness.addItem(business[i]);
             }
           }
+          }catch (Exception zz){}
+
         }
     });
 
