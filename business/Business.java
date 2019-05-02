@@ -11,7 +11,7 @@ import composants.exceptions.*;
 *
 */
 public class Business implements BusinessInterface {
-    private static DataMock dataLayer = new DataMock();
+    private static InterfaceData dataLayer = new DataMock();
 
     /** Recupération de tous les clients
     * @return un tableau contenant chaque client
