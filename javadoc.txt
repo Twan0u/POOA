@@ -1,0 +1,14 @@
+/**
+ * Zero est la classe représentant un membre du Site du Zéro.
+ *
+ * @author Antoine Lambert
+ * @version 1.0
+ */
+ /** Description
+ * @param message description de l'erreur rencontrée par le programme
+ * @return ce que le programme retrourne 
+ * @see Object
+ * @throws nomexception txt 
+ * @since 1.0
+ * @deprecated Depuis Java 1.4, remplacé par getListeAmis()
+ */

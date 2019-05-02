@@ -8,10 +8,10 @@ JC = javac
 JVM= java
 DOC = javadoc
 
-run: ## Lance le projet
+run:## Lance le projet
 	$(JVM) BrassiGestion
 
-all: BrassiGestion.java interface javadoc
+all: BrassiGestion.java interface javadoc## Compile tout le projet et la javadoc
 	$(JC) BrassiGestion.java
 
 interface: controller gui/Interface.java
@@ -29,14 +29,14 @@ dataccess: composants dataccess/Data.java dataccess/DataMock.java dataccess/Inte
 	$(JC) dataccess/InterfaceData.java
 	$(JC) dataccess/DataMock.java
 
-composants: exceptions## Compile les composants
+composants: exceptions
 	$(JC) composants/Client.java
 	$(JC) composants/Locality.java
 	$(JC) composants/BusinessUnit.java
 	$(JC) composants/Order.java
 	$(JC) composants/OrderLine.java
 
-exceptions: composants/exceptions/ClientException.java composants/exceptions/LocalityException.java composants/exceptions/BusinessUnitException.java composants/exceptions/OrderException.java composants/exceptions/OrderLineException.java ## Compile les exceptions
+exceptions: composants/exceptions/ClientException.java composants/exceptions/LocalityException.java composants/exceptions/BusinessUnitException.java composants/exceptions/OrderException.java composants/exceptions/OrderLineException.java
 	$(JC) composants/exceptions/ClientException.java
 	$(JC) composants/exceptions/LocalityException.java
 	$(JC) composants/exceptions/BusinessUnitException.java
