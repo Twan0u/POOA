@@ -7,9 +7,44 @@ import composants.exceptions.*;
 import java.io.*;
 import java.util.*;
 
+/**
+* <b>classe de la couche Business</b>
+*
+* @author Antoine Lambert et Nathan Surquin
+* @version 1.1
+*
+*/
 public interface BusinessInterface {
+
+  /** Recupération de tous les clients
+  * @return un tableau contenant chaque client
+  * @throws ClientException erreur renvoyée si il y a eu une erreur dans la création d'un objet client
+  * @since 1.1
+  */
   Client[] getAllClients()throws ClientException;
+
+  /** Recupération d'une courte description d'un client sur base de son index
+  * @param index
+  *             index dans le tableau des clients du client à afficher
+  * @return une courte description du client
+  * @since 1.0
+  */
   Client getInfoClient(int index);
+
+  /** Récupération de toutes les bières de la base de donnée
+  * @return un tableau des différentes bières que vends l'entreprise
+  * @throws BeerException en cas d'erreur dans la création d'une des bières
+  * @since 1.0
+  */
   Beer[] getAllBeers()throws BeerException;
-  BusinessUnit[] getBusinessOf(int num)throws BusinessUnitException,LocalityException;
+
+  /** récupère tous les BusinessUnit d'un client sur base de son index dans le tableau
+  * @param index
+  *             index du client
+  * @return une liste de business
+  * @throws BusinessUnitException en cas de création d'un BusinessUnit incorrect
+  * @throws LocalityException en cas de création d'une Locality incorrecte
+  * @since 1.0
+  */
+  BusinessUnit[] getBusinessOf(int index)throws BusinessUnitException,LocalityException;
 }

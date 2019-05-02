@@ -4,32 +4,15 @@ import composants.*;
 import composants.exceptions.*;
 
 /**
-* <b>classe de l'objet bière</b>
+* <b>classe du controller de l'interface</b>
 *
 * @author Antoine Lambert et Nathan Surquin
 * @version 1.1
 *
-* L'objet se compose de:
-* <ul>
-* <li>un nom</li>
-* <li>un prix de stock</li>
-* <li>une quantité en stock</li>
-* <li>une quantité minimale d'alerte</li>
-* </ul>
-*
-* <b>Important</b>
-* La taille maximum du nom d'une bière est fixée avec la variable MAX_LONG_NOM
-*
-* <b> A implementer</b>
-* <ul>
-*<li>Verification que la biere n'existe pas deja</li>
-*</ul>
-*
 */
-
 public class Controller implements InterfaceController {
 
-    private Business businesslayer = new Business(); // cette variable est utilisée dans le cadre d'interactions avec la couchebusiness
+    private static Business businesslayer = new Business(); // cette variable est utilisée dans le cadre d'interactions avec la couchebusiness
 
     /** Recupération de tous les clients
     * @return un tableau contenant chaque client sous la forme d'un string

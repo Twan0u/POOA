@@ -1,0 +1,40 @@
+CREATE table beer
+(Name varchar(32),
+StockPrice number(6,3),
+QtInStock number(6),
+LowTreshold number(6));
+
+CREATE orderline
+//beername
+//ordernumber
+(Quantity number(6),
+Price number(6,3));
+
+CREATE order
+(Number number(10),
+//facultatif businessid
+//Client
+HasPriority , //boolean
+OrderDate date,
+State varchar(6),
+TimeLimit number(4)//facultatif
+);
+
+CREATE locality
+(idLocality number(10),
+PostalCode number(5),
+Name varchar(32));
+
+CREATE businessunit
+(idBusiness number(10),
+//Client
+//Locality
+StreetName varchar(32),
+StreetNumber Varchar(5));
+
+CREATE client
+(Number number(10),
+PhoneNumber varchar(13),
+Name varchar(32),
+VATNumber varchar(30),//facultatif
+Discount number(3));
