@@ -1,51 +1,51 @@
 CREATE TABLE IF NOT EXISTS Client
 	( idNumber INT PRIMARY KEY AUTO_INCREMENT
-	, phoneNumber VARCHAR(20) NOT NULL
-	, clientName VARCHAR(50) NOT NULL
-	, vatNumber INT
-	, discount FLOAT NOT NULL
+	, phoneNumber VARCHAR(18) NOT NULL
+	, clientName VARCHAR(64) NOT NULL
+	, vatNumber VARCHAR(32)
+	, discount DOUBLE NOT NULL
 	)ENGINE = InnoDB;
     
 CREATE TABLE IF NOT EXISTS Locality
 	( idLocality INT PRIMARY KEY
-	, postalCode VARCHAR(15) NOT NULL
 	, localityName VARCHAR(50) NOT NULL
+	, postalCode VARCHAR(15) NOT NULL
 	)ENGINE = InnoDB;
 	
 CREATE TABLE IF NOT EXISTS BusinessUnit
 	( idBusinessUnit INT PRIMARY KEY
 	, clientNumber INT NOT NULL
 	, locality INT NOT NULL
-	, streetName VARCHAR(30) NOT NULL
-	, streetNumber INT NOT NULL
+	, streetName VARCHAR(40) NOT NULL
+	, streetNumber VARCHAR(5) NOT NULL
 	
 	, CONSTRAINT clientNumber_fk FOREIGN KEY (clientNumber) REFERENCES Client(idNumber)
 	, CONSTRAINT locality_fk FOREIGN KEY (locality) REFERENCES Locality(idLocality)
 	)ENGINE = InnoDB;
     
-	
+    
 CREATE TABLE IF NOT EXISTS ClientOrder
 	( idNumber INT PRIMARY KEY
 	, businessUnit INT
 	, clientNumber INT NOT NULL
 	, hasPriority TINYINT NOT NULL
 	, orderDate DATE NOT NULL
-	, state VARCHAR(50) NOT NULL
-	, timeLimit DATE
+	, state INT NOT NULL
+	, timeLimit INT
 	
 	, CONSTRAINT businessUnit_fk FOREIGN KEY (businessUnit) REFERENCES BusinessUnit(idBusinessUnit)
 	, CONSTRAINT clientNbr_fk FOREIGN KEY (clientNumber) REFERENCES Client(idNumber)
 	)ENGINE = InnoDB;
     
 CREATE TABLE IF NOT EXISTS Beer
-	( idName VARCHAR(30) PRIMARY KEY
-	, stockPrice INT NOT NULL
+	( idName VARCHAR(64) PRIMARY KEY
+	, stockPrice DOUBLE NOT NULL
 	, qtInStock INT NOT NULL
 	, lowTreshold INT NOT NULL
 	)ENGINE = InnoDB;
 	
 CREATE TABLE IF NOT EXISTS OrderLine
-	( beerName VARCHAR(30)
+	( beerName VARCHAR(64)
 	, orderNumber INT
 	, quantity INT NOT NULL
 	, price FLOAT NOT NULL
@@ -70,17 +70,16 @@ INSERT INTO Beer(idName, stockPrice, qtInStock, lowTreshold)
 	VALUES ('jupiler', 1.89, 115, 6);
 
 
-
 INSERT INTO Client(idNumber, phoneNumber, clientName, vatNumber, discount)
-	VALUES (165, '+32497/05.65.89', 'jean', 145668569, 0);
+	VALUES (165, '+32497/05.65.89', 'jean', 'BE145668569', 0);
 INSERT INTO Client(idNumber, phoneNumber, clientName, vatNumber, discount)
-	VALUES (145, '+32497/15.45.89', 'marc', 468465542, 8);
+	VALUES (145, '+32497/15.45.89', 'marc', 'BE468465542', 8);
 INSERT INTO Client(idNumber, phoneNumber, clientName, vatNumber, discount)
-	VALUES (198, '+32496/25.44.65', 'jacqueline', 455672494, 6.4);
+	VALUES (198, '+32496/25.44.65', 'jacqueline', 'BE455672494', 6.4);
 INSERT INTO Client(idNumber, phoneNumber, clientName, vatNumber, discount)
 	VALUES (25, '+32497/76.54.12', 'stephanie', NULL, 0);
 INSERT INTO Client(idNumber, phoneNumber, clientName, vatNumber, discount)
-	VALUES (73, '+32498/99.87.34', 'michel', 456872465, 5);
+	VALUES (73, '+32498/99.87.34', 'michel', 'BE456872465', 5);
 	
 
 INSERT INTO Locality(idLocality, postalCode, localityName)
@@ -92,23 +91,23 @@ INSERT INTO Locality(idLocality, postalCode, localityName)
 	
 	
 INSERT INTO BusinessUnit(idBusinessUnit, clientNumber, locality, streetName, streetNumber)
-	VALUES (1, 165, 1, 'Rue Haute', 45);
+	VALUES (1, 165, 1, 'Rue Haute', '45');
 INSERT INTO BusinessUnit(idBusinessUnit, clientNumber, locality, streetName, streetNumber)
-	VALUES (2, 145, 5, 'Hirondelles', 70);
+	VALUES (2, 145, 5, 'Hirondelles', '70');
 INSERT INTO BusinessUnit(idBusinessUnit, clientNumber, locality, streetName, streetNumber)
-	VALUES (3, 198, 8, 'Saint jean', 22);
+	VALUES (3, 198, 8, 'Saint jean', '22');
 	
 
 INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
-	VALUES (1, null, 165, 0, '2019-01-13', 'en préparation', null);
+	VALUES (1, null, 165, 0, '2019-01-13', 1, null);
 INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
-	VALUES (2, 1, 145, 1, '2018-12-29', 'livrée', '2019-01-25');
+	VALUES (2, 1, 145, 1, '2018-12-29', 2, 15);
 INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
-	VALUES (3, 2, 198, 0, '2018-05-14', 'dans le camion', null);
+	VALUES (3, 2, 198, 0, '2018-05-14', 3, null);
 INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
-	VALUES (4, 3, 25, 0, '2019-02-24', 'validée', '2019-07-05');
+	VALUES (4, 3, 25, 0, '2019-02-24', 4, 30);
 INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
-	VALUES (5, 2, 73, 1, '2019-05-17', 'validée', '2019-06-14');
+	VALUES (5, 2, 73, 1, '2019-05-17', 2, 23);
 
 
 INSERT INTO OrderLine (beerName, orderNumber, quantity, price)
@@ -133,21 +132,3 @@ INSERT INTO OrderLine (beerName, orderNumber, quantity, price)
 	VALUES ('duvel', 5, 16, 2.8);
 INSERT INTO OrderLine (beerName, orderNumber, quantity, price)
 	VALUES ('jupiler', 5, 18, 1.7);
-
-
-
-
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
