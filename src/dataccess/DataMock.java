@@ -10,6 +10,7 @@ public class DataMock implements InterfaceData{
 
   private static Client [] clients= new Client[5];
   private static Beer [] beers = new Beer[4];
+  private int load = 0;
 
   public Client[] getAllClients()throws ClientException{
           clients[0]=new Client (1, "Antoine", "0032498194975", 80, "TVA_062232095251");
@@ -24,13 +25,20 @@ public class DataMock implements InterfaceData{
     return clients[index];
   }
 
+  private void loadbusiness()throws BusinessUnitException,LocalityException{
+    if (load == 0){
+      Locality local = new Locality (1, "Localité du petit bois", "7911");
+      Locality local2 = new Locality (2, "Localité du saucisson", "7900");
+      BusinessUnit bubu = new BusinessUnit (1, clients[0], local, "Rue de la faim", "12");
+      BusinessUnit blyat = new BusinessUnit (2, clients[0], local2, "Rue des potiers", "3");
+      BusinessUnit bubui = new BusinessUnit (1, clients[1], local, "Rue des marchands", "22");
+      BusinessUnit blyati = new BusinessUnit (2, clients[1], local2, "Rue Raymond le gros", "16");
+      load = 1;
+    }
+  }
+
   public BusinessUnit[] getBusinessOf(int index)throws BusinessUnitException,LocalityException{
-    Locality local = new Locality (1, "Localité du petit bois", "7911");
-    Locality local2 = new Locality (2, "Localité du saucisson", "7900");
-    BusinessUnit bubu = new BusinessUnit (1, clients[0], local, "Rue de la faim", "12");
-    BusinessUnit blyat = new BusinessUnit (2, clients[0], local2, "Rue des potiers", "3");
-    BusinessUnit bubui = new BusinessUnit (1, clients[1], local, "Rue des marchands", "22");
-    BusinessUnit blyati = new BusinessUnit (2, clients[1], local2, "Rue Raymond le gros", "16");
+    loadbusiness();
     return clients[index].getBusiness();
   }
 

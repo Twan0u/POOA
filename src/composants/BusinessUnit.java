@@ -18,20 +18,14 @@ import composants.exceptions.BusinessUnitException;
 *
 * <b>Important</b>
 * La taille maximum du nom d'une rue est fixée avec la variable MAX_STREETNAME
-* La taille maximum du numero d'une rue est fixée avec la variable MAX_LONG_STREET
-*
-* <b> A implementer</b>
-* <ul>
-*   <li>Implementation des IDs</li>
-*   <li>Verification des numéros d'identification</li>
-* </ul>
+* La taille maximum du numero d'une rue est fixée avec la variable MAX_LONG_STREETNUM
 *
 */
 public class BusinessUnit{
   /*____VARIABLES____*/
 
   /**Taille maximum de la longueur d'un numéro de batiment (string car possibilité de lettres ex: 23B)*/
-  private static int MAX_LONG_STREET = 5;
+  private static int MAX_LONG_STREETNUM = 5;
   /**Taille maximum de la longueur d'un nom de rue*/
   private static int MAX_STREETNAME = 40;
   /**numéro d'identification d'un bâtiment*/
@@ -171,13 +165,13 @@ public class BusinessUnit{
   /** Modifie le numéro dans la rue liée à ce business.
   * @param streetNumber
   *           numéro dans la rue
-  * @throws BusinessUnitException envoyée en cas de numéro null ou trop long(MAX_LONG_STREET)
+  * @throws BusinessUnitException envoyée en cas de numéro null ou trop long(MAX_LONG_STREETNUM)
   * @since 1.0
   */
   private void setStreetNumber(String streetNumber)throws BusinessUnitException{
     if(locality == null){
       throw new BusinessUnitException("Le numero est invalide");
-    }else if(streetNumber.length() > MAX_LONG_STREET){
+    }else if(streetNumber.length() > MAX_LONG_STREETNUM){
       throw new BusinessUnitException("Le numero est trop long");
     }
     this.streetNumber = streetNumber;

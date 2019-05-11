@@ -45,19 +45,29 @@ public class OrderLine{
 
   /* SETTEURS */
   public void setBeerName(Beer beerName){
+    if (beerName == null){
+      throw new OrderLineException("Il n'y a aucune bière dans cette ligne de commande");
+    }
     this.beerName = beerName;
   }
   public void setOrder(Order order){
+    if (order == null){
+      throw new OrderLineException("Pas d'Order rentrée en paramète");
+    }
+
     this.order = order;
     order.additem(this);
   }
   public void setQuantity(int quantity){
+    if (quantity < 0){
+      throw new OrderLineException("Quantité invalide");
+    }
+
     this.quantity = quantity;
   }
   public void setPrice(double price){
     this.price = price;
   }
-
 
   public String toString(){
     return this.beerName.getName() + " - " + this.getQuantity() + " a " + this.getPrice();

@@ -1,7 +1,7 @@
-import gui.Interface;
+import gui.OrderGui;
 
 public class Main {
     public static void main(String[] args) {
-        Interface.main(args);
+      new  OrderGui();
     }
 }

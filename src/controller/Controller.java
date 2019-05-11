@@ -55,14 +55,15 @@ public class Controller implements InterfaceController {
     /** récupère tous les BusinessUnit d'un client sur base de son index dans le tableau
     * @param index
     *             index du client
-    * @return une liste de business
+    * @return une liste de business si il y en a et null sinon
     * @throws BusinessUnitException en cas de création d'un BusinessUnit incorrect
     * @throws LocalityException en cas de création d'une Locality incorrecte
     * @since 1.0
     */
     public String[] getBusinessOf(int index)throws BusinessUnitException,LocalityException{
       BusinessUnit [] list = businesslayer.getBusinessOf(index);
-      if (list == null){return null;}
+      if (list == null){
+        return null;}
       String [] out = new String[list.length];
       for(int i = 0; i<list.length; i++){
         out[i] = list[i].getStreetName();
