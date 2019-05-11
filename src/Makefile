@@ -9,13 +9,16 @@ JVM= java
 DOC = javadoc
 
 run:## Lance le projet
-	$(JVM) BrassiGestion
+	$(JVM) Main
 
-all: BrassiGestion.java interface javadoc## Compile tout le projet et la javadoc
-	$(JC) BrassiGestion.java
+all: Main.java interface javadoc## Compile tout le projet et la javadoc
+	$(JC) Main.java
 
-interface: controller gui/Interface.java
-	$(JC) gui/Interface.java
+compile: Main.java interface## Compile tout le projet
+	$(JC) Main.java
+
+interface: controller gui/OrderGui.java
+	$(JC) gui/OrderGui.java
 
 controller: business controller/Controller.java controller/InterfaceController.java
 	$(JC) controller/InterfaceController.java
@@ -44,7 +47,7 @@ exceptions: composants/exceptions/ClientException.java composants/exceptions/Loc
 	$(JC) composants/exceptions/OrderLineException.java
 
 javadoc: ##Génère la javadoc
-	$(DOC) business controller dataccess composants gui BrassiGestion.java
+	$(DOC) business controller dataccess composants gui
 
 
 clear: ## Supprime les fichiers temporaires non indispensables
