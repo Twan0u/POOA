@@ -19,7 +19,11 @@ public class Business implements BusinessInterface {
     * @since 1.1
     */
     public Client[] getAllClients()throws ClientException{
-      return dataLayer.getAllClients();
+      Client [] out = new Client[dataLayer.getAllClients().size()];
+      for(int i = 0; i<out.length;i++){
+        out[i] = dataLayer.getAllClients().get(i);
+      }
+      return out;
     }
 
     /** Recupération d'une courte description d'un client sur base de son index
@@ -38,7 +42,11 @@ public class Business implements BusinessInterface {
     * @since 1.0
     */
     public Beer[] getAllBeers()throws BeerException{
-      return dataLayer.getAllBeers();
+      Beer [] out = new Beer[dataLayer.getAllBeers().size()];
+      for(int i = 0; i<out.length;i++){
+        out[i] = dataLayer.getAllBeers().get(i);
+      }
+      return out;
     }
 
     /** récupère tous les BusinessUnit d'un client sur base de son index dans le tableau
