@@ -110,6 +110,7 @@ public class OrderGui extends JFrame{
       }catch(UserInputErrorException error){
           JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
       }
+      new  OrderGui();
     }
   }
 

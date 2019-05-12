@@ -8,7 +8,7 @@ JC = javac
 JVM= java
 DOC = javadoc
 
-run:## Lance le projet
+run: compile## Lance le projet
 	$(JVM) Main
 
 all: gui/OrderGui.class Main.class javadoc## Compile tout le projet et la javadoc

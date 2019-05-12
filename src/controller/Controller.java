@@ -89,7 +89,7 @@ public class Controller implements InterfaceController {
 
     /** Recupération d'une courte description d'un client sur base de son index
     * @param index
-    *             index dans le tableau des clients du client à affiche//TODO notify Veuillez selectionner un clientr
+    *             index dans le tableau des clients du client à affiche
     * @return une courte description du client
     * @since 1.0
     */
@@ -97,7 +97,7 @@ public class Controller implements InterfaceController {
       return businesslayer.getInfoClient(index).toString();
     }
 
-    /** Récupération de toutes les bières de la base de donnée//TODO notify Veuillez selectionner un client
+    /** Récupération de toutes les bières de la base de donnée
     * @return un tableau des différentes bières que vends l'entreprise
     * @since 1.0
     */
@@ -125,26 +125,21 @@ public class Controller implements InterfaceController {
     * @since 1.2
     */
     public void addBeer(int index, int quantity)throws UserInputErrorException{
-      // TODO verification de qauntité
-      // TODO verification de l'index de beers
       if (beers == null){
-        //TODO
-      }
-      else{
-        try{// TODO
-          Beer newBeer = beers[index];
-          System.out.println(quantity);
-          OrderLine nouveau = new OrderLine(newBeer,newOrder,quantity);
-      }catch(OrderLineException e){
-        throw new UserInputErrorException(e.getMessage());
-      }
+        throw new UserInputErrorException("Il y a eu un problème dans chargement de la bière");
+      }else if(beers.length < index || index < 0){
+        throw new UserInputErrorException("L'index de la bière sélectionnée est invalide");
+      }else{
+        try{
+          new OrderLine(beers[index],newOrder,quantity);
+        }catch(OrderLineException e){
+          throw new UserInputErrorException(e.getMessage());
+        }
       }
     }
 
     /**
-
     * TODO
-
     */
     public String[][] getOrderLines(){
       int numItems = newOrder.getOrderLinesSize();
@@ -152,16 +147,13 @@ public class Controller implements InterfaceController {
       double total = 0;
       for(int i=0;i<numItems;i++){
         OrderLine current = newOrder.getOrderLine(i);
-
+        Double price = current.getPrice();
+        int quantity = current.getQuantity();
         data[i][0]= current.getBeer().getName();
-        data[i][1]= Double.toString(current.getQuantity());
-        data[i][2]= Double.toString(current.getPrice());
-        data[i][3]= Double.toString(current.getQuantity()*current.getPrice()) + "€";
-
-        /*data[i][1]= Integer.toString(quantity);
+        data[i][1]= Integer.toString(quantity);
         data[i][2]= Double.toString(price) + "€";
-        data[i][3]= Double.toString(price*quantity) + "€";*/
-        //total += price * quantity;
+        data[i][3]= Double.toString(price*quantity) + "€";
+        total += price * quantity;
       }
       data[numItems][0] = "---";
       data[numItems][1] = "---";
