@@ -55,7 +55,7 @@ public class OrderLine{
   }
   public void setOrder(Order order)throws OrderLineException{
     if (order == null){
-      throw new OrderLineException("Pas d'Order rentrée en paramète");
+      throw new OrderLineException("Pas d'Order rentrée en paramètre");
     }
     this.order = order;
     try{
