@@ -1,12 +1,13 @@
-package composants.exceptions;
+package exceptions;
+
 
 /**
- * <b> Cette classe est une exception liée a la classe <i>Locality</i> </b>
+ * <b> Cette classe est une exception liée a la classe <i>OrderLine</i> </b>
  *
  * @author Antoine Lambert
  * @version 1.0
  */
-public class LocalityException extends Exception{
+public class OrderLineException extends Exception{
 
   /**
   * Message lié à la création de l'exception
@@ -17,7 +18,7 @@ public class LocalityException extends Exception{
   * @param message description de l'erreur rencontrée par le programme
   * @since 1.0
   */
-  public LocalityException(String message){
+  public OrderLineException(String message){
     this.message = message;
   }
 

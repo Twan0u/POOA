@@ -1,13 +1,13 @@
-package composants.exceptions;
+package exceptions;
 
 
 /**
- * <b> Cette classe est une exception liée a la classe <i>OrderLine</i> </b>
+ * <b> Cette classe est une exception liée a la classe <i>Order</i> </b>
  *
  * @author Antoine Lambert
  * @version 1.0
  */
-public class OrderLineException extends Exception{
+public class OrderException extends Exception{
 
   /**
   * Message lié à la création de l'exception
@@ -18,7 +18,7 @@ public class OrderLineException extends Exception{
   * @param message description de l'erreur rencontrée par le programme
   * @since 1.0
   */
-  public OrderLineException(String message){
+  public OrderException(String message){
     this.message = message;
   }
 

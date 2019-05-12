@@ -1,12 +1,12 @@
-package composants.exceptions;
+package exceptions;
 
 /**
- * <b> Cette classe est une exception liée a la classe <i>Client</i> </b>
+ * <b> Cette classe est une exception liée a la classe <i>BusinessUnit</i> </b>
  *
  * @author Antoine Lambert
  * @version 1.0
  */
-public class ClientException extends Exception{
+public class BusinessUnitException extends Exception{
 
   /**
   * Message lié à la création de l'exception
@@ -17,7 +17,7 @@ public class ClientException extends Exception{
   * @param message description de l'erreur rencontrée par le programme
   * @since 1.0
   */
-  public ClientException(String message){
+  public BusinessUnitException(String message){
     this.message = message;
   }
 

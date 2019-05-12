@@ -1,5 +1,5 @@
 package composants;
-import composants.exceptions.BeerException;
+import exceptions.BeerException;
 
 /**
 * <b>classe de l'objet bière</b>
@@ -17,11 +17,6 @@ import composants.exceptions.BeerException;
 *
 * <b>Important</b>
 * La taille maximum du nom d'une bière est fixée avec la variable MAX_LONG_NOM
-*
-* <b> A implementer</b>
-* <ul>
-*<li>Verification que la biere n'existe pas deja</li>
-*</ul>
 *
 */
 

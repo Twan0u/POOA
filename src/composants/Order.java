@@ -1,11 +1,12 @@
 package composants;
-import composants.exceptions.OrderException;
+import exceptions.OrderException;
+import exceptions.OrderLineException;
 import java.util.*;
 /**
 * <b>classe de l'objet Order</b>
 *
 * @author Antoine Lambert et Nathan Surquin
-* @version 1.3
+* @version 1.5
 *
 * L'objet se compose de:
 * <ul>
@@ -34,19 +35,19 @@ public class Order{
   /*____VARIABLES____*/
 
   /**numero d'identification de la commande*/
-  private int id;
+  private int id = 0;
   /**adresse (facultative) de livraison*/
-  private BusinessUnit businessUnitId;
+  private BusinessUnit businessUnitId = null;
   /**Client lié à cette commande*/
-  private Client client;
+  private Client client = null;
   /**Commande prioritaire*/
-  private boolean hasPriority;
+  private boolean hasPriority = false;
   /**Date à laquelle la commande à été passée*/
-  private String orderDate;
+  private String orderDate = null;
   /**Etat de la commande (limité à qq choix)*/
-  private String state;
+  private String state = null;
   /**limite de jours pour effectuer la commande (facultatif)*/
-  private int timeLimit;
+  private int timeLimit = -1;
   /**Liste des éléments commandés*/
   private ArrayList<OrderLine> orderList = new ArrayList<>();
 
@@ -124,6 +125,15 @@ public class Order{
   public Order(int id, BusinessUnit businessUnitId, Client client, boolean hasPriority, String orderDate, String state)throws OrderException{
     this(id, businessUnitId, client, hasPriority, orderDate, state, -1);
   }
+  /** Methode constructeur pour les objets Order
+  * @since 1.4
+  */
+  public Order(){
+    this.setState("New");
+    this.setHasPriority(false);
+    this.setBusinessUnitId(null);
+    this.setOrderDate(null);
+  }
 
   /*____METHODES____*/
 
@@ -131,9 +141,21 @@ public class Order{
   * @param item
   *         ligne de commande
   * @see OrderLine
-  * @since 1.3
+  * @since 1.5
   */
-  void additem(OrderLine item){ // ajouter le cas ou le tableau serait trop petit
+  public void additem(OrderLine item) throws OrderException, OrderLineException{
+    if (item == null){
+      throw new OrderException("Ajout d'une ligne vide à la commande");
+    }
+      for(int i=0; i<orderList.size();i++){
+        OrderLine current = orderList.get(i);
+        if (item.getBeer().getName().compareTo(current.getBeer().getName()) == 0){
+          int totalQuantity =current.getQuantity()+item.getQuantity();
+          current.setQuantity(totalQuantity);
+          orderList.set(i,current);
+          return;
+        };
+      }
     this.orderList.add(item);
   }
 
@@ -193,6 +215,16 @@ public class Order{
   */
   public int getTimeLimit(){
     return this.timeLimit;
+  }
+
+  //TODO
+  public int getOrderLinesSize(){
+    return this.orderList.size();
+  }
+
+  //TODO
+  public OrderLine getOrderLine(int i){
+    return this.orderList.get(i);
   }
 
   /*____SETTEURS____*/
@@ -279,7 +311,11 @@ public class Order{
     String spacer = "\n\t=========================\n"; // Délimiteur entre 2 parties d'une commande
     String output;
     output = borders + "\t\tCommande n°" + this.getId() + spacer;
-    output += this.getBusinessUnitId().toString() + spacer;
+    if (getBusinessUnitId() != null){
+      output += this.getBusinessUnitId().toString() + spacer;
+    }else{
+      output += "Pas d'adresse de livraison\n";
+    }
     output += "Priority :" + this.getHasPriority() + spacer;
     output += "ORDER :\n";
     for(int i = 0; i<this.orderList.size();i++){

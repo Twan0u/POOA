@@ -2,7 +2,7 @@ package business;
 
 import dataccess.*;
 import composants.*;
-import composants.exceptions.*;
+import exceptions.*;
 
 import java.io.*;
 import java.util.*;

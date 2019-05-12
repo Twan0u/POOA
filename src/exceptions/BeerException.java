@@ -1,4 +1,4 @@
-package composants.exceptions;
+package exceptions;
 
 /**
  * <b> Cette classe est une exception liée a la classe <i>Beer</i> </b>

@@ -1,6 +1,6 @@
 package composants;
 import java.util.*;
-import composants.exceptions.ClientException;
+import exceptions.ClientException;
 
 /**
 * <b>classe de l'objet Client</b>
@@ -21,12 +21,6 @@ import composants.exceptions.ClientException;
 * La taille maximum du nom  est fixée avec la variable MAX_LONG_NOM
 * La taille maximum du numero de telephonne est fixée avec la variable MAX_LONG_NUM_TEL
 * La taille maximum du numero de TVA est fixée avec la variable MAX_LONG_NUM_VAT
-*
-* <b> A implementer</b>
-* <ul>
-*   <li>Implementation des IDs</li>
-*   <li>Verification des numéros d'identification</li>
-* </ul>
 *
 */
 public class Client {
@@ -260,8 +254,9 @@ public class Client {
     if (vatNum == null){
       this.VATNumber = null;
       return;
-    }else if (vatNum.length() <= 0){
-      throw new ClientException("VA");
+    }else if (vatNum.length() == 0){
+      this.VATNumber = null;
+      return;
     }else if (vatNum.length() > MAX_LONG_VAT){
       throw new ClientException("Le Numéro de TVA du client est trop long");
     }

@@ -1,5 +1,5 @@
 package composants;
-import composants.exceptions.LocalityException;
+import exceptions.LocalityException;
 /**
 * <b>classe de l'objet Locality</b>
 *
@@ -27,7 +27,7 @@ public class Locality {
   /*____VARIABLES____*/
 
   /**Longueur maximum du nom d'une localite*/
-  private static int MAX_LONG_NOM = 64;
+  private static int MAX_LONG_NOM = 50;
   /**numero d'identification*/
   private int idLocality;
   /**nom de la localite*/
@@ -49,19 +49,6 @@ public class Locality {
   */
   public Locality(int id, String name, String postCode)throws LocalityException{
     setIdLocality(id);
-    setName(name);
-    setPostCode(postCode);
-  }
-
-  /** Methode constructeur pour les objets Locality avec identification automatique
-  * @param name
-  *             Nom de Localité
-  * @param postCode
-  *             Code Postal
-  * @throws LocalityException erreur envoyée en cas de données erronnées
-  * @since 1.0
-  */
-  public Locality(String name, String postCode)throws LocalityException{
     setName(name);
     setPostCode(postCode);
   }
@@ -125,11 +112,11 @@ public class Locality {
   * @since 1.0
   */
   public void setPostCode(String postCode)throws LocalityException{
-    try {
+    /*try {
       int temp = Integer.parseInt(postCode);
     }catch (NumberFormatException err){
       throw new LocalityException("Code Postal de Localité Invalide");
-    }
+    }*/
     this.postCode = postCode;
   }
 

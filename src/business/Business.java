@@ -1,7 +1,7 @@
 package business;
 import dataccess.*;
 import composants.*;
-import composants.exceptions.*;
+import exceptions.*;
 
 /**
 * <b>classe de la couche Business</b>

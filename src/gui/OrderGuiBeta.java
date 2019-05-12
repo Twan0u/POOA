@@ -1,38 +1,41 @@
-package gui;
+/*package gui;
 
 import controller.*;
-import composants.*;
 import composants.exceptions.*;
+
 import javax.swing.*;
 import java.awt.event.*;
 
-public class Interface extends JFrame{
+public class OrderJava extends JFrame{
 
-  private Controller controller = new Controller();
-  JPanel pannel = new JPanel();
+  private InterfaceController controller = new Controller();
+  private JPanel pannel;
+  private JLabel labelClient, labelBusiness;
+  private JComboBox comboBoxClient, comboBoxBusiness;
 
-  JLabel labelClient = new JLabel("Client : ");
-  JComboBox comboBoxClient;
-  JLabel labelBusiness = new JLabel("Business : ");
-  JComboBox comboBoxBusiness = new JComboBox();
+
   JLabel labelClientInfo = new JLabel("");
   JLabel labelBusinessInfo = new JLabel("");
+  BrassiGestion.java
   int clientIndex = -1;
-
-  public static void main(String[] args){
-    new Interface();
-  }
 
   public Interface(){
     super("Outil de Création de Commandes");
     setSize(600,450);
     setResizable(false);
+    pannel = new JPanel();
 
+    labelClient = new JLabel("Client : ");
     try{
       comboBoxClient = new JComboBox(controller.getClients());
     }catch(ClientException e){
       JOptionPane.showMessageDialog (null, "Il y a eu une erreur dans le chargement des Clients" + e.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
     }
+
+    labelBusiness = new JLabel("Business : ");
+    comboBoxBusiness = new JComboBox();
+
+
 
     comboBoxBusiness.addItem("Aucun Client Selectionné");
 
@@ -90,4 +93,4 @@ public class Interface extends JFrame{
     });
 
   }
-}
+}*/
