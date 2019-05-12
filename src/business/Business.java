@@ -11,7 +11,8 @@ import exceptions.*;
 *
 */
 public class Business implements BusinessInterface {
-    private static InterfaceData dataLayer = new DataMock();
+    private static InterfaceData dataLayer = new DataMock() {
+    };
 
     /** Recupération de tous les clients
     * @return un tableau contenant chaque client
@@ -50,14 +51,14 @@ public class Business implements BusinessInterface {
     }
 
     /** récupère tous les BusinessUnit d'un client sur base de son index dans le tableau
-    * @param index
+    * @param id
     *             index du client
     * @return une liste de business
     * @throws BusinessUnitException en cas de création d'un BusinessUnit incorrect
     * @throws LocalityException en cas de création d'une Locality incorrecte
     * @since 1.0
     */
-    public BusinessUnit[] getBusinessOf(int index)throws BusinessUnitException,LocalityException{
-      return dataLayer.getBusinessOf(index);
+    public BusinessUnit[] getBusinessOf(int id)throws BusinessUnitException,LocalityException{
+      return dataLayer.getBusinessOf(id);
     }
 }
