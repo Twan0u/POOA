@@ -72,6 +72,8 @@ public class OrderGui extends JFrame{
 
     ButtonListener listenerAddBeer = new ButtonListener();
     addBeerButton.addActionListener(listenerAddBeer);
+
+    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
   /** Actualise le combobox contenant les adresses de livraison
