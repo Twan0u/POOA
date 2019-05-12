@@ -7,8 +7,8 @@ import java.io.*;
 import java.util.*;
 
 public interface InterfaceData {
-  Client[] getAllClients()throws ClientException;
+  ArrayList<Client> getAllClients()throws ClientException;
   Client getClient(int index);
-  Beer[] getAllBeers()throws BeerException;
-  BusinessUnit[] getBusinessOf(int index)throws BusinessUnitException,LocalityException;
+  ArrayList<Beer> getAllBeers()throws BeerException;
+  BusinessUnit[] getBusinessOf(int id)throws BusinessUnitException,LocalityException;
 }
