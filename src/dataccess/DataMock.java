@@ -9,11 +9,11 @@ import java.util.*;
 public class DataMock implements InterfaceData{
 
   private static ArrayList<Client> clients = new ArrayList<>();
-  private static ArrayList<Beers> beers = new ArrayList<>();
+  private static ArrayList<Beer> beers = new ArrayList<>();
   private int load = 0;
 
   public ArrayList<Client> getAllClients()throws ClientException{
-
+          clients.clear();
           clients.add(new Client (1, "Antoine", "0032498194975", 80, "TVA_062232095251"));
           clients.add(new Client (2, "Benjamin", "0032498191234", 50, "TVA_062232095223"));
           clients.add(new Client (3, "Corentin", "0032498195678", 10, "TVA_062232095654"));
@@ -38,12 +38,13 @@ public class DataMock implements InterfaceData{
     }
   }
 
-  public ArrayList<BusinessUnit> getBusinessOf(int index)throws BusinessUnitException,LocalityException{
+  public BusinessUnit[] getBusinessOf(int id)throws BusinessUnitException,LocalityException{
     loadbusiness();
-    return clients.get(index).getBusiness();
+    return clients.get(id).getBusiness();
   }
 
-  public Beer[] getAllBeers()throws BeerException{
+  public ArrayList<Beer> getAllBeers()throws BeerException{
+    beers.clear();
     beers.add(new Beer("Bûche Blonde",2.20,10));
     beers.add(new Beer("Blonde ambrée",1.50,2));
     beers.add(new Beer("Bûche double",2.50,16));
