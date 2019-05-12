@@ -47,8 +47,7 @@ public class Controller implements InterfaceController {
       }
     }
 
-    /** Recupération de touimport java.io.*;
-import java.util.*;s les clients
+    /** Recupération de tous les clients
     * @return un tableau contenant chaque client sous la forme d'un string
     * @since 1.1
     */
@@ -122,9 +121,10 @@ import java.util.*;s les clients
     *         index de la bière dans la table des bières disponnibles
     * @param quantity
     *         quantité de bière à commander
-    * @since 1.0
+    * @throws UserInputErrorException quand les valeurs d'entrées sont erronnées ou que la création des objets n'a pas pu aboutir
+    * @since 1.2
     */
-    public void addBeer(int index, int quantity){
+    public void addBeer(int index, int quantity)throws UserInputErrorException{
       // TODO verification de qauntité
       // TODO verification de l'index de beers
       if (beers == null){
@@ -135,7 +135,9 @@ import java.util.*;s les clients
           Beer newBeer = beers[index];
           System.out.println(quantity);
           OrderLine nouveau = new OrderLine(newBeer,newOrder,quantity);
-      }catch(OrderLineException e){System.out.println(e.getMessage());}
+      }catch(OrderLineException e){
+        throw new UserInputErrorException(e.getMessage());
+      }
       }
     }
 
@@ -195,9 +197,5 @@ import java.util.*;s les clients
             return out;
           }
         }
-      }
-
-      public Order getOrder(){
-        return this.newOrder;
       }
 }

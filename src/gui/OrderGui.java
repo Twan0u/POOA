@@ -5,8 +5,6 @@ import exceptions.*;
 
 import javax.swing.*;
 import java.awt.event.*;
-//JOptionPane.showMessageDialog (null, "Il y a eu une erreur dans le chargement des Clients" + e.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
-
 
 public class OrderGui extends JFrame{
 
@@ -68,8 +66,10 @@ public class OrderGui extends JFrame{
 
     ClientComboBoxListener listenerClient = new ClientComboBoxListener();
     comboBoxClient.addItemListener(listenerClient);
+
     BusinessComboBoxListener listenerBusiness = new BusinessComboBoxListener();
     comboBoxBusiness.addItemListener(listenerBusiness);
+
     ButtonListener listenerAddBeer = new ButtonListener();
     addBeerButton.addActionListener(listenerAddBeer);
   }
@@ -105,7 +105,11 @@ public class OrderGui extends JFrame{
     public void actionPerformed( ActionEvent event) {
       int indexBeer = comboBoxBeer.getSelectedIndex();
       int quantity = (int) spinnerQuantity.getValue();
-      controller.addBeer(indexBeer,quantity);
+      try{
+        controller.addBeer(indexBeer,quantity);
+      }catch(UserInputErrorException error){
+          JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
+      }
     }
   }
 

@@ -49,9 +49,10 @@ public interface InterfaceController {
   *         index de la bière dans la table des bières disponnibles
   * @param quantity
   *         quantité de bière à commander
-  * @since 1.0
+  * @throws UserInputErrorException quand les valeurs d'entrées sont erronnées ou que la création des objets n'a pas pu aboutir
+  * @since 1.2
   */
-  public void addBeer(int index, int quantity);
+  public void addBeer(int index, int quantity)throws UserInputErrorException;
 
   /** récupère tous les BusinessUnit d'un client sur base de son index dans le tableau
   * @param index
@@ -63,12 +64,7 @@ public interface InterfaceController {
 
 
   /**
-
   * TODO
-
   */
   public String[][] getOrderLines();
-
-//TODO supprimmer
-  public Order getOrder();
 }
