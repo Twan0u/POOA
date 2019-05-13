@@ -23,7 +23,7 @@ public class DBAccess implements InterfaceData {
         return ClientDBAccess.getAllClients();
     }
 
-    public Client getClient(int id, ArrayList<Client> clients) throws ClientException{
+    public Client getClient(int id){
         return ClientDBAccess.getClient(id, clients);
     }
 

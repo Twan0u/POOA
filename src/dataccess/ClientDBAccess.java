@@ -40,12 +40,13 @@ public class ClientDBAccess {
         return clients;
     }
 
-    public static Client getClient(int id, ArrayList<Client> clients) throws ClientException{
+    public static Client getClient(int id, ArrayList<Client> clients) {//throws ClientException{
         for(Client client : clients) {
             if(client.getId() == id) {
                 return client;
             }
         }
-        throw new ClientException("No client matching the given id was found");
+        //throw new ClientException("No client matching the given id was found");
+        return(null);
     }
 }

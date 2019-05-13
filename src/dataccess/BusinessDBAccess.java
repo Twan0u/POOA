@@ -43,7 +43,7 @@ public class BusinessDBAccess {
                         locality = l;
                 }
 
-                business = new BusinessUnit(idBusinessUnit, client, locality, streetName, streetNumber);
+                business = new BusinessUnit(idBusinessUnit, client, locality, streetName, streetNumber);  // le constructeur BusinnessUnit appelle la methode client.SetBusinessUnit
             }
         }
         catch(Exception e){
@@ -52,8 +52,12 @@ public class BusinessDBAccess {
     }
 
     public static ArrayList<BusinessUnit> getBusinessOf(int id, ArrayList<Client> clients) {
-
-        return(null);
+        ArrayList<BusinessUnit> businesses;
+        for(Client client : clients) {
+            if(client.getId() == id)
+                return client.getBusiness();
+        }
+        return(null); // TODO : throw une erreur car client pas trouvé
     }
 }
 
