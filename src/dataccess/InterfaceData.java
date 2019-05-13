@@ -12,4 +12,5 @@ public interface InterfaceData {
   Client getClient(int id);
   ArrayList<Beer> getAllBeers()throws BeerException;
   ArrayList<BusinessUnit> getBusinessOf(int id)throws BusinessUnitException,LocalityException;
+  void saveOrder(Order order);
 }

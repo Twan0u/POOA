@@ -9,7 +9,7 @@ import exceptions.*;
 
 public class BusinessDBAccess {
 
-    public static void linkBusinessesToClients(ArrayList<Client> clients, ArrayList<Locality> localities){  // appeller la methode businessunit setclient sur tous les businessunit en mettant tous les clients
+    public static void linkBusinessesToClients(ArrayList<Client> clients, ArrayList<Locality> localities){
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Business> businesses = new ArrayList<>();
         BusinessUnit business;
