@@ -3,6 +3,8 @@ import dataccess.*;
 import composants.*;
 import exceptions.*;
 
+import java.util.ArrayList;
+
 /**
 * <b>classe de la couche Business</b>
 *
@@ -58,7 +60,7 @@ public class Business implements BusinessInterface {
     * @throws LocalityException en cas de création d'une Locality incorrecte
     * @since 1.0
     */
-    public BusinessUnit[] getBusinessOf(int id)throws BusinessUnitException,LocalityException{
+    public ArrayList<BusinessUnit> getBusinessOf(int id)throws BusinessUnitException,LocalityException{
       return dataLayer.getBusinessOf(id);
     }
 }
