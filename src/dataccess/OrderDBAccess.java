@@ -1,7 +1,6 @@
 package dataccess;
 
-import composants.BusinessUnit;
-import composants.Order;
+import composants.*;
 
 import java.util.*;
 import java.sql.*;
@@ -37,10 +36,84 @@ public class OrderDBAccess {
 
             statement.executeUpdate();
         } catch (Exception e) {
-            System.out.println("ici");
             System.out.println(e.getMessage());
-            System.exit(0);
+
         }
-        System.out.println("WidePeepoHappy");
+    }
+
+    public static ArrayList<Order> getAllOrders(ArrayList<Client> clients, ArrayList<BusinessUnit> businesses){
+        Connection connection = SingletonConnection.getInstance();
+        ArrayList<Order> orders = new ArrayList<>();
+        Order order;
+        int idNumber;
+        int businessUnitId;
+        int clientNumber;
+        boolean hasPriority;
+        String orderDate;
+        String state;
+        int timeLimit;
+        Client client;
+        BusinessUnit business = null;  // contiendra la référence vers le bon business dans l'arraylist
+        String sql = "select * from ClientOrder";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            ResultSet data = statement.executeQuery();
+
+            while(data.next()) {
+                idNumber = data.getInt("idNumber");
+                hasPriority = data.getInt("hasPriority") == 1;
+                orderDate = data.getString("orderDate");
+                state = data.getString("state");
+                int i;
+
+                businessUnitId = data.getInt("businessUnit");
+                if(!data.wasNull()) {
+                    i = 0;
+                    business = businesses.get(i);
+                    int tailleArrayBusiness = businesses.size();
+                    while(i < tailleArrayBusiness && business.getIdBusinessUnit() != businessUnitId) {
+                        i++;
+                        business = businesses.get(i);
+                    }
+                    client = business.getClient();
+                }
+                else {
+                        clientNumber = data.getInt("clientNumber");
+                        i = 0;
+                        client = clients.get(i);
+                        int tailleArrayClients = clients.size();
+                        while(i < tailleArrayClients && client.getId() != clientNumber) {
+                            i++;
+                            client = clients.get(i);
+                    }
+                }
+                order = new Order(idNumber, business, client, hasPriority, orderDate, state);
+
+                timeLimit = data.getInt("timeLimit");
+                if(!data.wasNull()){
+                    order.setTimeLimit(timeLimit);
+                }
+                orders.add(order);
+                System.out.println(order);
+            }
+        }
+
+        catch(Exception e) {
+            System.out.println(e.getMessage());
+        }
+        return orders;
+    }
+
+    public static Order getOrderWithState(String state, ArrayList<Order> orders) {
+        Order order;
+
+        return null;
+    }
+
+    public static Order getOrderWithDate(String date, ArrayList<Order> orders) {
+        Order order;
+
+        return null;
     }
 }

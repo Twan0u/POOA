@@ -2,6 +2,7 @@ package dataccess;
 
 import java.util.*;
 
+import business.Business;
 import composants.*;
 import exceptions.*;
 
@@ -9,16 +10,23 @@ public class DBAccess implements InterfaceData {
     private ArrayList<Client> clients;
     private ArrayList<Beer> beers;
     private ArrayList<Locality> localities;
+    private ArrayList<BusinessUnit> businesses;
+    private ArrayList<Order> orders;
 
     public DBAccess()/*throws ClientException, BeerException, LocalityException, BusinessUnitException */ {
-        clients = getAllClients();
-        beers = getAllBeers();
+        loadDB();
+    }
+
+    public void loadDB() {
+        clients = ClientDBAccess.getAllClients();
+        beers = BeerDBAccess.getAllBeers();
         localities = LocalityDBAccess.getAllLocalities();
-        BusinessDBAccess.linkBusinessesToClients(clients, localities);
+        businesses = BusinessDBAccess.getAllBusinesses(clients, localities);
+        orders = OrderDBAccess.getAllOrders(clients, businesses);
     }
 
     public ArrayList<Client> getAllClients()/*throws ClientException*/ {
-        return ClientDBAccess.getAllClients();
+        return clients;
     }
 
     public Client getClient(int id){
@@ -26,7 +34,7 @@ public class DBAccess implements InterfaceData {
     }
 
     public ArrayList<Beer> getAllBeers()/*throws BeerException*/ {
-        return BeerDBAccess.getAllBeers();
+        return beers;
     }
 
     public ArrayList<BusinessUnit> getBusinessOf(int id) /*throws BusinessUnitException, LocalityException */{
