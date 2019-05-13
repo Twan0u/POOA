@@ -60,7 +60,11 @@ public class Business implements BusinessInterface {
     * @throws LocalityException en cas de création d'une Locality incorrecte
     * @since 1.0
     */
-    public ArrayList<BusinessUnit> getBusinessOf(int id)throws BusinessUnitException,LocalityException{
-      return dataLayer.getBusinessOf(id);
+    public BusinessUnit[] getBusinessOf(int id)throws BusinessUnitException,LocalityException{
+      BusinessUnit [] out = new BusinessUnit[dataLayer.getBusinessOf(id).size()];
+      for(int i = 0; i<out.length;i++){
+        out[i] = dataLayer.getBusinessOf(id).get(i);
+      }
+      return out;
     }
 }

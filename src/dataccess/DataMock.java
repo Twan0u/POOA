@@ -12,7 +12,7 @@ public class DataMock implements InterfaceData{
   private static ArrayList<Beer> beers = new ArrayList<>();
   private int load = 0;
 
-  public ArrayList<Client> getAllClients()throws ClientException{
+  public  ArrayList<Client> getAllClients()throws ClientException{
           clients.clear();
           clients.add(new Client (0, "Nathan", "0032007007005", 10, "TVA_025522095251"));
           clients.add(new Client (1, "Antoine", "0032498194975", 80, "TVA_062232095251"));
@@ -23,8 +23,11 @@ public class DataMock implements InterfaceData{
           return clients;
   }
 
-  public Client getClient(int index){
-    return clients.get(index);
+  public Client getClient(int id){
+    try{
+      return clients.get(id);
+    }catch(Exception e){}
+      return null;
   }
 
   private void loadbusiness()throws BusinessUnitException,LocalityException{
@@ -39,7 +42,7 @@ public class DataMock implements InterfaceData{
     }
   }
 
-  public BusinessUnit[] getBusinessOf(int id)throws BusinessUnitException,LocalityException{
+  public ArrayList<BusinessUnit> getBusinessOf(int id)throws BusinessUnitException,LocalityException{
     loadbusiness();
     return clients.get(id).getBusiness();
   }

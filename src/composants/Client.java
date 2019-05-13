@@ -158,13 +158,11 @@ public class Client {
   * @see BusinessUnit
   * @since 1.3
   */
-  public BusinessUnit[] getBusiness(){
-    if (this.businessUnits.size() == 0){ return null;}
-    BusinessUnit [] out= new BusinessUnit[this.businessUnits.size()];
-    for (int i=0;i<this.businessUnits.size();i++){
-      out[i]=this.businessUnits.get(i);
+  public ArrayList<BusinessUnit> getBusiness(){
+    if (this.businessUnits.size() == 0){
+      return null;
     }
-    return out;
+    return this.businessUnits;
   }
 
   /** Calcule le nombre de business pour le client
