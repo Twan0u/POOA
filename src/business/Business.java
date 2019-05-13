@@ -26,13 +26,13 @@ public class Business implements BusinessInterface {
       return out;
     }
 
-    /** Recupération d'une courte description d'un client sur base de son index
+    /** Recupération d'un sur base de son index
     * @param index
-    *             index dans le tableau des clients du client à afficher
+    *             index dans le tableau des clients du client à retourner
     * @return une courte description du client
     * @since 1.0
     */
-    public Client getInfoClient(int index){
+    public Client getClient(int index){
       return dataLayer.getClient(index);
     }
 
@@ -57,7 +57,7 @@ public class Business implements BusinessInterface {
     * @throws LocalityException en cas de création d'une Locality incorrecte
     * @since 1.0
     */
-    public BusinessUnit[] getBusinessOf(int index)throws BusinessUnitException,LocalityException{
-      return dataLayer.getBusinessOf(index);
+    public BusinessUnit[] getBusinessOf(int id)throws BusinessUnitException,LocalityException{
+      return dataLayer.getBusinessOf(id);
     }
 }

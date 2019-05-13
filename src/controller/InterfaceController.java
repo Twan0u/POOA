@@ -16,13 +16,13 @@ public interface InterfaceController {
   * @return un tableau contenant chaque client sous la forme d'un string
   * @since 1.1
   */
-  public String[] getClients();
+  public String[] getClients()throws ProgramErrorException;
 
   /** Enregistre quel client est sélectionné
   * @param index index du client selectionné dans le tableau des clients
   * @since 1.2
   */
-  public void selectClient(int index);
+  public void selectClient(int index)throws ProgramErrorException;
 
   /** Enregistre quel Business est sélectionné (null si pas de livraison à effectuer(defaut))
   * @param index index du client selectionné dans le tableau des clients  (négatif si pas de livraison à effectuer)
@@ -30,19 +30,11 @@ public interface InterfaceController {
   */
   public void selectBusiness(int index);
 
-  /** Recupération d'une courte description d'un client sur base de son index
-  * @param index
-  *             index dans le tableau des clients du client à affiche//TODO notify Veuillez selectionner un clientr
-  * @return une courte description du client
-  * @since 1.0
-  */
-  public String getInfoClient(int index);
-
-  /** Récupération de toutes les bières de la base de donnée//TODO notify Veuillez selectionner un client
+  /** Récupération de toutes les bières de la base de donnée
   * @return un tableau des différentes bières que vends l'entreprise
   * @since 1.0
   */
-  public String[] getBeers();
+  public String[] getBeers()throws ProgramErrorException;
 
   /** Ajoute une bière à la commande
   * @param index
@@ -52,7 +44,7 @@ public interface InterfaceController {
   * @throws UserInputErrorException quand les valeurs d'entrées sont erronnées ou que la création des objets n'a pas pu aboutir
   * @since 1.2
   */
-  public void addBeer(int index, int quantity)throws UserInputErrorException;
+  public void addBeer(int index, int quantity)throws UserInputErrorException, ProgramErrorException;
 
   /** récupère tous les BusinessUnit d'un client sur base de son index dans le tableau
   * @param index
@@ -60,7 +52,7 @@ public interface InterfaceController {
   * @return une liste de business si il y en a et null sinon
   * @since 1.0
   */
-  public String[] getBusiness();
+  public String[] getBusiness()throws ProgramErrorException;
 
 
   /**

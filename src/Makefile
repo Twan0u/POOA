@@ -62,7 +62,7 @@ composants/Order.class: composants/Order.java
 composants/OrderLine.class:	composants/OrderLine.java
 		$(JC) composants/OrderLine.java
 
-exceptions: exceptions/UserInputErrorException.class exceptions/ClientException.class exceptions/LocalityException.class exceptions/BusinessUnitException.class exceptions/OrderException.class exceptions/OrderLineException.class
+exceptions: exceptions/ProgramErrorException.class exceptions/UserInputErrorException.class exceptions/ClientException.class exceptions/LocalityException.class exceptions/BusinessUnitException.class exceptions/OrderException.class exceptions/OrderLineException.class
 
 exceptions/ClientException.class: exceptions/ClientException.java
 	$(JC) exceptions/ClientException.java
@@ -81,6 +81,9 @@ exceptions/OrderLineException.class: exceptions/OrderLineException.java
 
 exceptions/UserInputErrorException.class: exceptions/UserInputErrorException.java
 	$(JC) exceptions/UserInputErrorException.java
+
+exceptions/ProgramErrorException.class: exceptions/ProgramErrorException.java
+	$(JC) exceptions/ProgramErrorException.java
 
 javadoc: ##Génère la javadoc
 	$(DOC) business controller dataccess composants gui

@@ -18,48 +18,46 @@ public class OrderGui extends JFrame{
   private JTable table;
 
   public OrderGui() {
-
     super("Outil de Création de Commandes");
     setSize(800,400);
     setResizable(true);
-
     pannel = new JPanel();
 
+    /*ComboBox Client*/
     labelClient = new JLabel("Client : ");
-      comboBoxClient = new JComboBox(controller.getClients());
-      comboBoxClient.setSelectedIndex(-1);
+    comboBoxClient = new JComboBox(loadClients());
+    comboBoxClient.setSelectedIndex(-1);
+    pannel.add(labelClient);
+    pannel.add(comboBoxClient);
 
-      pannel.add(labelClient);
-      pannel.add(comboBoxClient);
-
-      // TODO erreur lors de la connexion à la Base de donnée
-
+    /*ComboBox Business*/
     labelBusiness = new JLabel("Business : ");
     comboBoxBusiness = new JComboBox();
     BusinessComboRefresh();
-
     pannel.add(labelBusiness);
     pannel.add(comboBoxBusiness);
 
+    /*ComboBox Beer*/
     labelBeer = new JLabel("Ajouer : ");
-    comboBoxBeer = new JComboBox(controller.getBeers());
+    comboBoxBeer = new JComboBox(loadBeers());
     pannel.add(labelBeer);
     pannel.add(comboBoxBeer);
 
+    /*Jspinner quantity*/
     SpinnerModel model = new SpinnerNumberModel(0,0,100000000,1);
     spinnerQuantity = new JSpinner(model);
     addBeerButton = new JButton("ajouter");
-
     pannel.add(spinnerQuantity);
     pannel.add(addBeerButton);
 
+    /*Tableau Commande*/
     String column[]={"Bière","Quantité","Prix Unit","Total"};
     table=new JTable(controller.getOrderLines(),column);
-
+    table.setEnabled(false);
     table.setBounds(5,10,100,200);
-
     JScrollPane sp=new JScrollPane(table);
     pannel.add(sp);
+
 
     add(pannel);
     setVisible(true);
@@ -83,16 +81,47 @@ public class OrderGui extends JFrame{
   * @since 1.2
   */
   private void BusinessComboRefresh(){
-      String [] business = controller.getBusiness();
-      comboBoxBusiness.removeAllItems();
-      for(int i=0;i<business.length;i++){
-        comboBoxBusiness.addItem(business[i]);
-        }
+    String [] business = null;
+    try{
+      business = controller.getBusiness();
+    }catch(ProgramErrorException error){
+        JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
+    }
+    comboBoxBusiness.removeAllItems();
+    for(int i=0;i<business.length;i++){
+      comboBoxBusiness.addItem(business[i]);
+      }
+  }
+
+  private String[] loadBeers(){ //TODO RETRY
+    String [] beers = null;
+      try{
+        beers = controller.getBeers();
+      }catch(ProgramErrorException error){
+          JOptionPane.showMessageDialog (null, "Erreur du chargement des bières","FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
+          System.exit(1);
+      }
+      return beers;
+  }
+
+  private String[] loadClients(){//TODO RETRY
+    String [] clients = null;
+      try{
+        clients = controller.getClients();
+      }catch(ProgramErrorException error){
+          JOptionPane.showMessageDialog (null, "Erreur du chargement des Clients","FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
+          System.exit(1);
+      }
+      return clients;
   }
 
   public class ClientComboBoxListener implements ItemListener {
       public void itemStateChanged(ItemEvent event){
-        controller.selectClient(comboBoxClient.getSelectedIndex());
+        try{
+          controller.selectClient(comboBoxClient.getSelectedIndex());
+        }catch(ProgramErrorException error){
+            JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
+        }
         BusinessComboRefresh();
       }
   }
@@ -111,8 +140,11 @@ public class OrderGui extends JFrame{
         controller.addBeer(indexBeer,quantity);
       }catch(UserInputErrorException error){
           JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
+      }catch(ProgramErrorException error){
+          JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
       }
-      new  OrderGui();
+      table.setData(controller.getOrderLines());
+      //new  OrderGui();
     }
   }
 

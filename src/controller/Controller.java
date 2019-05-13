@@ -17,46 +17,33 @@ import java.util.*;
 */
 public class Controller implements InterfaceController {
 
+    private static Business businesslayer = new Business(); // cette variable est utilisée dans le cadre d'interactions avec la couchebusiness
+
+    /**Variable contenant l'order actuellement en préparation*/
     private static Order newOrder = new Order();
-
-    private static BusinessUnit selectedBusiness = null;
-
-    private static Client [] clients = null;
-    private static Beer [] beers = null;
 
     private static BusinessUnit [] businessOfClient = null;
 
-    private static Business businesslayer = new Business(); // cette variable est utilisée dans le cadre d'interactions avec la couchebusiness
-
     /** Constructeur de l'objet controller
-    * Il initialise la liste des clients
     */
     public Controller(){
 
-      //TODO Thread access aux données
-      try{
-        //TODO try connexion to Bdd
-        clients = businesslayer.getAllClients();
-        beers = businesslayer.getAllBeers();
-      }catch(ClientException clientError){
-        //TODO Affiche l'erreur dans le programme
-      }catch(BeerException beerException){
-        // TODO
-      }catch(Exception e){
-        // TODO
-      }
     }
 
     /** Recupération de tous les clients
     * @return un tableau contenant chaque client sous la forme d'un string
     * @since 1.1
     */
-    public String[] getClients(){
-      if (clients == null){
-        //Wait loading of clients
+    public String[] getClients()throws ProgramErrorException{
         // TODBusinessUnit [] listO erreur de chargement
         // TODO Retry Loading DataBase If Error plus timer sleep
+        Client [] clients = null;
+      try{
+        clients = businesslayer.getAllClients();
+      }catch(ClientException exception){
+        throw new ProgramErrorException("Erreur lors de l'access aux données client :" + exception.getMessage());
       }
+
       String [] out = new String[clients.length];
       for(int i = 0; i<out.length; i++){
         out[i] = clients[i].getName() + "-" + clients[i].getId();
@@ -64,15 +51,20 @@ public class Controller implements InterfaceController {
       return out;
     }
 
-    /** Enregistre quel client est sélectionnéjava.util.concurrent.TimeUnit
+    /** Enregistre quel client est sélectionné
     * @param index index du client selectionné dans le tableau des clients
     * @since 1.2
     */
-    public void selectClient(int index){
-      try{ //TODO
-        newOrder.setClient(clients[index]);
-          businessOfClient = businesslayer.getBusinessOf(index);// TODO Mise à jour de la liste des business Via Thread
-      }catch(Exception e){}
+    public void selectClient(int index)throws ProgramErrorException{
+      //TODO verifier index client valide
+      //TODO verifier client non null
+      Client client = businesslayer.getClient(index);
+      try{
+        newOrder.setClient(client);
+      }catch(OrderException e){
+        throw new ProgramErrorException(e.getMessage());
+      }
+
     }
 
     /** Enregistre quel Business est sélectionné (null si pas de livraison à effectuer(defaut))
@@ -80,40 +72,33 @@ public class Controller implements InterfaceController {
     * @since 1.2
     */
     public void selectBusiness(int index){
-        if (clients == null || index <= 0 ){ // le cas ou il n'y a pas encore de clients chargés ou pas de livraison à effectuer
-          newOrder.setBusinessUnitId(null);
-        }else{
-          newOrder.setBusinessUnitId(businessOfClient[index-1]);
-        }
-    }
-
-    /** Recupération d'une courte description d'un client sur base de son index
-    * @param index
-    *             index dans le tableau des clients du client à affiche
-    * @return une courte description du client
-    * @since 1.0
-    */
-    public String getInfoClient(int index){
-      return businesslayer.getInfoClient(index).toString();
+      if ( index <= 0 ){ // le cas ou il n'y a pas encore de clients chargés ou pas de livraison à effectuer
+        newOrder.setBusinessUnitId(null);
+      }else{
+        newOrder.setBusinessUnitId(businessOfClient[index-1]);
+      }
     }
 
     /** Récupération de toutes les bières de la base de donnée
     * @return un tableau des différentes bières que vends l'entreprise
     * @since 1.0
     */
-    public String[] getBeers(){
+    public String[] getBeers()throws ProgramErrorException{
+      Beer [] beers = null;
+      try{
+        beers = businesslayer.getAllBeers();
+      }catch(BeerException e){
+        throw new ProgramErrorException("Erreur du chargement des bières disponibles " + e.getMessage());
+      }
       if (beers == null){
-        // TODO ERROR POPUP
-        String [] out = new String[1];
-        out[0] = "erreur de chargement";
-        return out;
-      }else{
+        throw new ProgramErrorException("Erreur du chargement : Pas de bières disponibles ");
+      }
+
         String [] out = new String[beers.length];
         for(int i=0;i<out.length;i++){
           out[i] = beers[i].getName();
         }
         return out;
-      }
     }
 
     /** Ajoute une bière à la commande
@@ -124,9 +109,15 @@ public class Controller implements InterfaceController {
     * @throws UserInputErrorException quand les valeurs d'entrées sont erronnées ou que la création des objets n'a pas pu aboutir
     * @since 1.2
     */
-    public void addBeer(int index, int quantity)throws UserInputErrorException{
+    public void addBeer(int index, int quantity)throws UserInputErrorException, ProgramErrorException{
+      Beer [] beers = null; //TODO getBeer(Beername)
+      try{
+        beers = businesslayer.getAllBeers();
+      }catch(BeerException e){
+        throw new ProgramErrorException("Erreur du chargement des bières disponibles " + e.getMessage());
+      }
       if (beers == null){
-        throw new UserInputErrorException("Il y a eu un problème dans chargement de la bière");
+        throw new ProgramErrorException("Il y a eu un problème dans chargement de la bière");
       }else if(beers.length < index || index < 0){
         throw new UserInputErrorException("L'index de la bière sélectionnée est invalide");
       }else{
@@ -169,13 +160,21 @@ public class Controller implements InterfaceController {
     * @return une liste de business si il y en a et null sinon
     * @since 1.0
     */
-    public String[] getBusiness(){
-        if (newOrder.getClient()==null){
+    public String[] getBusiness()throws ProgramErrorException{
+      Client client = newOrder.getClient();
+        if (client==null){
           String [] out = new String [1];
           out[0] = "Aucun Client Sélectionné";
           return out;
         }else{
-          // TODO Wait loading of all the business of the client
+          BusinessUnit [] businessOfClient = null;
+          try{
+            businessOfClient = businesslayer.getBusinessOf(client.getId());
+          }catch(BusinessUnitException e){
+            throw new ProgramErrorException(e.getMessage());
+          }catch(LocalityException e){
+            throw new ProgramErrorException(e.getMessage());
+          }
           if (businessOfClient == null){
             String [] out = new String[1];
             out[0] = "Pas de Livraison";
