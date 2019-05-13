@@ -4,63 +4,66 @@ import controller.*;
 import exceptions.*;
 
 import javax.swing.*;
+import java.awt.*;
 import java.awt.event.*;
 
-public class OrderGui extends JFrame{
 
-  private InterfaceController controller = new Controller();
+public class OrderPanel extends JPanel{
 
-  private JPanel pannel;
+  private InterfaceController controller;
+
   private JLabel labelClient, labelBusiness, labelBeer;
   private JComboBox comboBoxClient, comboBoxBusiness, comboBoxBeer;
   private JSpinner spinnerQuantity;
-  private JButton addBeerButton;
+  private JButton addBeerButton, removeBeerButton;
   private JTable table;
+  private JScrollPane sp;
 
-  public OrderGui() {
-    super("Outil de Création de Commandes");
-    setSize(800,400);
-    setResizable(true);
-    pannel = new JPanel();
+
+  public OrderPanel(InterfaceController controller, Color colBackground) {
+    this.controller = controller;
+    this.setBackground(colBackground);
 
     /*ComboBox Client*/
     labelClient = new JLabel("Client : ");
     comboBoxClient = new JComboBox(loadClients());
     comboBoxClient.setSelectedIndex(-1);
-    pannel.add(labelClient);
-    pannel.add(comboBoxClient);
+    this.add(labelClient);
+    this.add(comboBoxClient);
 
     /*ComboBox Business*/
     labelBusiness = new JLabel("Business : ");
     comboBoxBusiness = new JComboBox();
     BusinessComboRefresh();
-    pannel.add(labelBusiness);
-    pannel.add(comboBoxBusiness);
+    this.add(labelBusiness);
+    this.add(comboBoxBusiness);
 
     /*ComboBox Beer*/
     labelBeer = new JLabel("Ajouer : ");
     comboBoxBeer = new JComboBox(loadBeers());
-    pannel.add(labelBeer);
-    pannel.add(comboBoxBeer);
+    this.add(labelBeer);
+    this.add(comboBoxBeer);
+
 
     /*Jspinner quantity*/
-    SpinnerModel model = new SpinnerNumberModel(0,0,100000000,1);
+    SpinnerModel model = new SpinnerNumberModel(1,0,100000000,1);
     spinnerQuantity = new JSpinner(model);
     addBeerButton = new JButton("ajouter");
-    pannel.add(spinnerQuantity);
-    pannel.add(addBeerButton);
+    this.add(spinnerQuantity);
+    this.add(addBeerButton);
+
+
+    removeBeerButton = new JButton("Delete");
+    this.add(removeBeerButton);
 
     /*Tableau Commande*/
     String column[]={"Bière","Quantité","Prix Unit","Total"};
     table=new JTable(controller.getOrderLines(),column);
     table.setEnabled(false);
     table.setBounds(5,10,100,200);
-    JScrollPane sp=new JScrollPane(table);
-    pannel.add(sp);
+    sp=new JScrollPane(table);
+    this.add(sp);
 
-
-    add(pannel);
-    setVisible(true);
 
     ClientComboBoxListener listenerClient = new ClientComboBoxListener();
     comboBoxClient.addItemListener(listenerClient);
@@ -68,10 +71,12 @@ public class OrderGui extends JFrame{
     BusinessComboBoxListener listenerBusiness = new BusinessComboBoxListener();
     comboBoxBusiness.addItemListener(listenerBusiness);
 
-    ButtonListener listenerAddBeer = new ButtonListener();
+    ButtonAddListener listenerAddBeer = new ButtonAddListener();
     addBeerButton.addActionListener(listenerAddBeer);
 
-    setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+    ButtonRemoveListener listenerRemoveBeer = new ButtonRemoveListener();
+    removeBeerButton.addActionListener(listenerRemoveBeer);
+
   }
 
   /** Actualise le combobox contenant les adresses de livraison
@@ -115,6 +120,17 @@ public class OrderGui extends JFrame{
       return clients;
   }
 
+  private void refreshTable(){ // TODO Find an alternative
+    this.remove(sp);
+    String column[]={"Bière","Quantité","Prix Unit","Total"};
+    table=new JTable(controller.getOrderLines(),column);
+    table.setEnabled(false);
+    //table.setBounds(5,10,100,200);
+    sp=new JScrollPane(table);
+    this.add(sp);
+    this.updateUI();
+  }
+
   public class ClientComboBoxListener implements ItemListener {
       public void itemStateChanged(ItemEvent event){
         try{
@@ -132,7 +148,7 @@ public class OrderGui extends JFrame{
       }
   }
 
-  private class ButtonListener implements ActionListener{
+  private class ButtonAddListener implements ActionListener{
     public void actionPerformed( ActionEvent event) {
       int indexBeer = comboBoxBeer.getSelectedIndex();
       int quantity = (int) spinnerQuantity.getValue();
@@ -143,9 +159,16 @@ public class OrderGui extends JFrame{
       }catch(ProgramErrorException error){
           JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
       }
-      //table.setData(controller.getOrderLines());
-      new  OrderGui();
+      refreshTable();
     }
   }
+
+  private class ButtonRemoveListener implements ActionListener{
+    public void actionPerformed( ActionEvent event) {
+      controller.removeLastBeer();
+      refreshTable();
+    }
+  }
+
 
 }

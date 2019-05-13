@@ -54,6 +54,8 @@ public interface InterfaceController {
   */
   public String[] getBusiness()throws ProgramErrorException;
 
+  public void removeLastBeer();
+
 
   /**
   * TODO

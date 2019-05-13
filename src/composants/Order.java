@@ -223,6 +223,11 @@ public class Order{
   }
 
   //TODO
+  public void removeLastOrderLine(){
+    this.orderList.remove(orderList.size()-1);
+  }
+
+  //TODO
   public OrderLine getOrderLine(int i){
     return this.orderList.get(i);
   }

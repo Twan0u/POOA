@@ -16,10 +16,18 @@ all: gui/OrderGui.class Main.class javadoc## Compile tout le projet et la javado
 Main.class: Main.java
 	$(JC) Main.java
 
-compile: gui/OrderGui.class Main.class## Compile tout le projet
+compile: gui Main.class## Compile tout le projet
 
-gui/OrderGui.class: controller gui/OrderGui.java
-	$(JC) gui/OrderGui.java
+gui: controller gui/MenuPanel.class gui/OrderPanel.class gui/Gui.class
+
+gui/MenuPanel.class: gui/MenuPanel.java
+	$(JC) gui/MenuPanel.java
+
+gui/Gui.class:  gui/Gui.java
+	$(JC) gui/Gui.java
+
+gui/OrderPanel.class: gui/OrderPanel.java
+	$(JC) gui/OrderPanel.java
 
 controller: business controller/Controller.class controller/InterfaceController.class
 

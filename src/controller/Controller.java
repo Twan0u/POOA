@@ -194,4 +194,8 @@ public class Controller implements InterfaceController {
           }
         }
       }
+
+      public void removeLastBeer(){
+        newOrder.removeLastOrderLine();
+      }
 }
