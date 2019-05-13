@@ -143,8 +143,8 @@ public class OrderGui extends JFrame{
       }catch(ProgramErrorException error){
           JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
       }
-      table.setData(controller.getOrderLines());
-      //new  OrderGui();
+      //table.setData(controller.getOrderLines());
+      new  OrderGui();
     }
   }
 

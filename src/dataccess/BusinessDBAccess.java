@@ -8,7 +8,7 @@ import exceptions.*;
 
 public class BusinessDBAccess {
 
-    public static BusinessUnit getBusinessOf(int id){
+    public static BusinessUnit[] getBusinessOf(int id){
         Connection connection = SingletonConnection.getInstance();
         BusinessUnit business;
 
