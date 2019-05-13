@@ -1,4 +1,4 @@
-/*package dataccess;
+package dataccess;
 
 import java.util.*;
 
@@ -7,12 +7,15 @@ import exceptions.*;
 
 public class DBAccess implements InterfaceData {
 
-    ArrayList<Client> getAllClients()throws ClientException {
+    public ArrayList<Client> getAllClients()throws ClientException {
         return ClientDBAccess.getAllClients();
     }
-    //Client getClient(int id);
-    ArrayList<Beer> getAllBeers()throws BeerException {
+    public Client getClient(int id){return(null);}
+
+    public ArrayList<Beer> getAllBeers()throws BeerException {
         return BeerDBAccess.getAllBeers();
     }
-    //BusinessUnit getBusinessOf(int index)throws BusinessUnitException,LocalityException;
-}*/
+    public BusinessUnit[] getBusinessOf(int id)throws BusinessUnitException,LocalityException{
+        return BusinessDBAccess.getBusinessOf(id);
+    }
+}
