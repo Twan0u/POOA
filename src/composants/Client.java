@@ -159,9 +159,6 @@ public class Client {
   * @since 1.3
   */
   public ArrayList<BusinessUnit> getBusiness(){
-    if (this.businessUnits.size() == 0){
-      return null;
-    }
     return this.businessUnits;
   }
 
