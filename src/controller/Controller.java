@@ -22,8 +22,6 @@ public class Controller implements InterfaceController {
     /**Variable contenant l'order actuellement en préparation*/
     private static Order newOrder = new Order();
 
-    private static BusinessUnit [] businessOfClient = null;
-
     /** Constructeur de l'objet controller
     */
     public Controller(){
@@ -75,6 +73,13 @@ public class Controller implements InterfaceController {
       if ( index <= 0 ){ // le cas ou il n'y a pas encore de clients chargés ou pas de livraison à effectuer
         newOrder.setBusinessUnitId(null);
       }else{
+        BusinessUnit [] businessOfClient = null;
+        try{
+          Client client = newOrder.getClient();//TODO REMOVE
+          businessOfClient = businesslayer.getBusinessOf(client.getId()); // TODO remove this shit and replace by a proper method getBuisness(Business)
+        }catch(Exception e){
+          //TODO see later
+        }
         newOrder.setBusinessUnitId(businessOfClient[index-1]);
       }
     }
