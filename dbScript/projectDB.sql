@@ -111,7 +111,7 @@ INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orde
 INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
 	VALUES (4, 3, 198, 0, '2019-02-24', "payed", 30);
 INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
-	VALUES (5, 4, 25, 1, '2019-05-17', "prepared", 23);
+	VALUES (5, 5, 25, 1, '2019-05-17', "prepared", 23);
 
 
 INSERT INTO OrderLine (beerName, orderNumber, quantity, price)

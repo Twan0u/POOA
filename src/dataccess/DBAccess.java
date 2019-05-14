@@ -57,4 +57,8 @@ public class DBAccess implements InterfaceData {
         Client client = this.getClient(clientID);
         return OrderDBAccess.getOrdersWithClient(client, orders);
     }
+
+    public ArrayList<Order> getOrdersToDeliver(int localityID) {
+        return OrderDBAccess.getOrdersToDeliver(localityID, orders);
+    }
 }

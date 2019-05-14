@@ -47,6 +47,6 @@ public class ClientDBAccess {
             }
         }
         //throw new ClientException("No client matching the given id was found");
-        return(null);
+        return null;
     }
 }

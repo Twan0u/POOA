@@ -135,4 +135,17 @@ public class OrderDBAccess {
         }
         return selectedOrders;
     }
+
+    public static ArrayList<Order> getOrdersToDeliver(int localityID, ArrayList<Order> orders) {
+        ArrayList<Order> selectedOrders = new ArrayList<>();
+
+        for(Order o : orders) {
+            if(o.getBusinessUnitId() != null) {
+                if(o.getBusinessUnitId().getLocality().getIdLocality() == localityID && o.getState().equals("prepared")) {
+                        selectedOrders.add(o);
+                }
+            }
+        }
+        return selectedOrders;
+    }
 }
