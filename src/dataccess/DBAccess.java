@@ -11,6 +11,7 @@ public class DBAccess implements InterfaceData {
     private ArrayList<Locality> localities;
     private ArrayList<BusinessUnit> businesses;
     private ArrayList<Order> orders;
+    private ArrayList<OrderLine> orderLines;
 
     public DBAccess()/*throws ClientException, BeerException, LocalityException, BusinessUnitException */ {
         reloadData();
@@ -22,6 +23,7 @@ public class DBAccess implements InterfaceData {
         localities = LocalityDBAccess.getAllLocalities();
         businesses = BusinessDBAccess.getAllBusinesses(clients, localities);
         orders = OrderDBAccess.getAllOrders(clients, businesses);
+        orderLines = OrderLineDBAccess.getAllOrderLines(beers, orders);
     }
 
     public ArrayList<Client> getAllClients()/*throws ClientException*/ {
@@ -60,5 +62,25 @@ public class DBAccess implements InterfaceData {
 
     public ArrayList<Order> getOrdersToDeliver(int localityID) {
         return OrderDBAccess.getOrdersToDeliver(localityID, orders);
+    }
+
+    public ArrayList<Order> getAllOrders() {
+        return orders;
+    }
+
+    private ArrayList<OrderLine> getAllOrderLines() {
+        return orderLines;
+    }
+
+    public void deleteOrder(int orderID) {
+
+    }
+
+    public void addOrderLine(int orderID, String beerName){
+
+    }
+
+    public void deleteOrderLine(int orderID, String beerName) {
+
     }
 }

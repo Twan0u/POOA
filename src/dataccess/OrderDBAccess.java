@@ -5,6 +5,7 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class OrderDBAccess {
+
     public static void saveOrder(Order order) {
         Connection connection = SingletonConnection.getInstance();
 
@@ -46,13 +47,16 @@ public class OrderDBAccess {
         Order order;
         int idNumber;
         int businessUnitId;
+        BusinessUnit business = null;
         int clientNumber;
         boolean hasPriority;
         String orderDate;
         String state;
         int timeLimit;
+        int tailleArrayBusiness;
+        int tailleArrayClients;
         Client client;
-        BusinessUnit business = null;  // contiendra la référence vers le bon business dans l'arraylist
+        int i;
         String sql = "select * from ClientOrder";
 
         try {
@@ -64,13 +68,12 @@ public class OrderDBAccess {
                 hasPriority = data.getInt("hasPriority") == 1;
                 orderDate = data.getString("orderDate");
                 state = data.getString("state");
-                int i;
 
                 businessUnitId = data.getInt("businessUnit");
                 if(!data.wasNull()) {
                     i = 0;
                     business = businesses.get(i);
-                    int tailleArrayBusiness = businesses.size();
+                    tailleArrayBusiness = businesses.size();
                     while(i < tailleArrayBusiness && business.getIdBusinessUnit() != businessUnitId) {
                         i++;
                         business = businesses.get(i);
@@ -81,7 +84,7 @@ public class OrderDBAccess {
                         clientNumber = data.getInt("clientNumber");
                         i = 0;
                         client = clients.get(i);
-                        int tailleArrayClients = clients.size();
+                        tailleArrayClients = clients.size();
                         while(i < tailleArrayClients && client.getId() != clientNumber) {
                             i++;
                             client = clients.get(i);

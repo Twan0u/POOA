@@ -48,13 +48,28 @@ business/BusinessInterface.class: business/BusinessInterface.java
 business/Business.class:	business/Business.java
 	$(JC) business/Business.java
 
-dataccess: composants dataccess/InterfaceData.class dataccess/DataMock.class
+dataccess: composants dataccess/SingletonConnection.class dataccess/BeerDBAccess.class dataccess/OrderDBAccess.class dataccess/BusinessDBAccess.class dataccess/LocalityDBAccess.class dataccess/ClientDBAccess.class
 
 dataccess/InterfaceData.class: dataccess/InterfaceData.java
 	$(JC) dataccess/InterfaceData.java
 
-dataccess/DataMock.class: dataccess/DataMock.java
-	$(JC) dataccess/DataMock.java
+dataccess/BeerDBAccess.class: dataccess/BeerDBAccess.java
+	$(JC) dataccess/BeerDBAccess.java
+
+dataccess/BusinessDBAccess.class: dataccess/BusinessDBAccess.java
+		$(JC) dataccess/BusinessDBAccess.java
+
+dataccess/ClientDBAccess.class: dataccess/ClientDBAccess.java
+			$(JC) dataccess/ClientDBAccess.java
+
+dataccess/LocalityDBAccess.class: dataccess/LocalityDBAccess.java
+			$(JC) dataccess/LocalityDBAccess.java
+
+dataccess/OrderDBAccess.class: dataccess/OrderDBAccess.java
+			$(JC) dataccess/OrderDBAccess.java
+
+dataccess/SingletonConnection.class: dataccess/SingletonConnection.java
+			$(JC) dataccess/SingletonConnection.java
 
 composants: exceptions composants/Client.class composants/Locality.class composants/BusinessUnit.class composants/Order.class composants/OrderLine.class
 
