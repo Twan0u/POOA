@@ -224,7 +224,9 @@ public class Order{
 
   //TODO
   public void removeLastOrderLine(){
-    this.orderList.remove(orderList.size()-1);
+    if (orderList.size() > 0){
+      this.orderList.remove(orderList.size()-1);
+    }
   }
 
   //TODO

@@ -1,199 +1,115 @@
 package gui;
 
 import controller.*;
-import exceptions.*;
-
 import javax.swing.*;
-//import java.awt.event.*;
 import java.awt.*;
+import java.awt.event.*;
+
 
 public class Gui extends JFrame{
 
-  private InterfaceController controller = new Controller();
 
-  private Container frameContainer;
+  private Container frameContainer,  mainPanel;
+  private JPanel menuPanel;
 
-  private MenuPanel menuPanel;
-  private OrderPanel mainPanel;
+  private JLabel logo,commande, stock, livraison, comptabilite, prepare;
 
-  public Gui() {
+  private Color colText = new Color(29, 34, 40);
+  private Color colBis = new Color(250,229,150);
+  private Color colBackground = new Color(224,255,255);
+  private Color colSidePanel = new Color(63,176,172);
+
+  private String path;
+
+  public Gui(String path) {
     super("BrassiGestion");
+    this.path = path;
+
     setSize(800,400);
     setResizable(true);
-    Color colText = new Color(198,0,33);
-    Color colBackground = new Color(246,246,246);
-    Color colSidePanel = new Color(227,227,227);
+    menuPanel = new JPanel();
+    menuPanel.setPreferredSize(new Dimension(125, 100));
+    menuPanel.setBackground(colSidePanel);
+    loadMenuPanel();
 
-    mainPanel = new OrderPanel(controller,colBackground);
-
-    menuPanel = new MenuPanel(colSidePanel);
+    mainPanel = new OrderPanel(colBackground, colText, colBis);
 
     frameContainer = this.getContentPane();
     frameContainer.setLayout(new BorderLayout());
-    frameContainer.add(menuPanel, BorderLayout. WEST );
-    frameContainer.add(mainPanel, BorderLayout. CENTER );
-  /*  pannel = new JPanel();
+    frameContainer.add(menuPanel, BorderLayout.WEST );
+    frameContainer.add(mainPanel, BorderLayout.CENTER );
 
-    //ComboBox Client
-    labelClient = new JLabel("Client : ");
-    comboBoxClient = new JComboBox(loadClients());
-    comboBoxClient.setSelectedIndex(-1);
-    pannel.add(labelClient);
-    pannel.add(comboBoxClient);
-
-    //ComboBox Business
-    labelBusiness = new JLabel("Business : ");
-    comboBoxBusiness = new JComboBox();
-    BusinessComboRefresh();
-    pannel.add(labelBusiness);
-    pannel.add(comboBoxBusiness);
-
-    //ComboBox Beer
-    labelBeer = new JLabel("Ajouer : ");
-    comboBoxBeer = new JComboBox(loadBeers());
-    pannel.add(labelBeer);
-    pannel.add(comboBoxBeer);
-
-
-    //Jspinner quantity
-    SpinnerModel model = new SpinnerNumberModel(1,0,100000000,1);
-    spinnerQuantity = new JSpinner(model);
-    addBeerButton = new JButton("ajouter");
-    pannel.add(spinnerQuantity);
-    pannel.add(addBeerButton);
-
-
-    removeBeerButton = new JButton("Delete");
-    pannel.add(removeBeerButton);
-
-    //Tableau Commande
-    String column[]={"Bière","Quantité","Prix Unit","Total"};
-    table=new JTable(controller.getOrderLines(),column);
-    table.setEnabled(false);
-    table.setBounds(5,10,100,200);
-    sp=new JScrollPane(table);
-    pannel.add(sp);
-
-
-
-
-    ClientComboBoxListener listenerClient = new ClientComboBoxListener();
-    comboBoxClient.addItemListener(listenerClient);
-
-    BusinessComboBoxListener listenerBusiness = new BusinessComboBoxListener();
-    comboBoxBusiness.addItemListener(listenerBusiness);
-
-    ButtonAddListener listenerAddBeer = new ButtonAddListener();
-    addBeerButton.addActionListener(listenerAddBeer);
-
-    ButtonRemoveListener listenerRemoveBeer = new ButtonRemoveListener();
-    removeBeerButton.addActionListener(listenerRemoveBeer);
-*/
-    //add(pannel);
     setVisible(true);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
   }
 
-  /** Actualise le combobox contenant les adresses de livraison
-  *
-  * @param index
-  *             index du client dans le tableau contenant tous les clients
-  * @since 1.2
-  */
-  /*private void BusinessComboRefresh(){
-    String [] business = null;
-    try{
-      business = controller.getBusiness();
-    }catch(ProgramErrorException error){
-        JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
-    }
-    comboBoxBusiness.removeAllItems();
-    for(int i=0;i<business.length;i++){
-      comboBoxBusiness.addItem(business[i]);
-      }
+  public void loadMenuPanel(){
+
+        ImageIcon icon = new ImageIcon(path + "logo.png");
+        logo = new JLabel(icon);
+
+        ImageIcon commandeIcon = new ImageIcon(path + "commande.png");
+        commande = new JLabel(commandeIcon);
+
+        ImageIcon prepareIcon = new ImageIcon(path + "Preparation.png");
+        prepare = new JLabel(prepareIcon);
+
+        ImageIcon stockIcon = new ImageIcon(path + "stock.png");
+        stock = new JLabel(stockIcon);
+
+        ImageIcon livraisonIcon = new ImageIcon(path + "livraisonCrossed.png");
+        livraison = new JLabel(livraisonIcon);
+
+        ImageIcon comptabiliteIcon = new ImageIcon(path + "compta.png");
+        comptabilite = new JLabel(comptabiliteIcon);
+
+        menuPanel.setLayout(new GridLayout(6,1));
+        menuPanel.add(logo);
+        menuPanel.add(commande);
+        menuPanel.add(prepare);
+        menuPanel.add(stock);
+        menuPanel.add(livraison);
+        menuPanel.add(comptabilite);
+
+        commande.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+              changeMainPanel(new OrderPanel(colBackground, colText, colBis));
+            }
+        });
+
+        prepare.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+              changeMainPanel(new PreparePanel(colBackground, colText));
+            }
+        });
+
+        stock.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+              changeMainPanel(new StockPanel(colBackground, colText));
+            }
+        });
+
+
+        livraison.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+               JOptionPane.showMessageDialog(null,"L'onglet Livraison n'est pas encore disponible");
+            }
+        });
+
+        comptabilite.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+               JOptionPane.showMessageDialog(null,"L'onglet Comptabilité n'est pas encore disponible");
+
+            }
+        });
   }
-
-  private String[] loadBeers(){ //TODO RETRY
-    String [] beers = null;
-      try{
-        beers = controller.getBeers();
-      }catch(ProgramErrorException error){
-          JOptionPane.showMessageDialog (null, "Erreur du chargement des bières","FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
-          System.exit(1);
-      }
-      return beers;
+  public void changeMainPanel(Container newPanel){
+    if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+       frameContainer.removeAll();
+       frameContainer.add(menuPanel, BorderLayout.WEST );
+       frameContainer.add(newPanel, BorderLayout.CENTER );
+       frameContainer.revalidate();
+   }
   }
-
-  private String[] loadClients(){//TODO RETRY
-    String [] clients = null;
-      try{
-        clients = controller.getClients();
-      }catch(ProgramErrorException error){
-          JOptionPane.showMessageDialog (null, "Erreur du chargement des Clients","FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
-          System.exit(1);
-      }
-      return clients;
-  }
-
-  public class ClientComboBoxListener implements ItemListener {
-      public void itemStateChanged(ItemEvent event){
-        try{
-          controller.selectClient(comboBoxClient.getSelectedIndex());
-        }catch(ProgramErrorException error){
-            JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
-        }
-        BusinessComboRefresh();
-      }
-  }
-
-  public class BusinessComboBoxListener implements ItemListener {
-      public void itemStateChanged(ItemEvent event){
-        controller.selectBusiness(comboBoxBusiness.getSelectedIndex());//l'index de la selection dans la combobox est recupéré et envoyé au
-      }
-  }
-
-  private class ButtonAddListener implements ActionListener{
-    public void actionPerformed( ActionEvent event) {
-      int indexBeer = comboBoxBeer.getSelectedIndex();
-      int quantity = (int) spinnerQuantity.getValue();
-      try{
-        controller.addBeer(indexBeer,quantity);
-      }catch(UserInputErrorException error){
-          JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
-      }catch(ProgramErrorException error){
-          JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
-      }
-      pannel.remove(sp); //TODO
-      String column[]={"Bière","Quantité","Prix Unit","Total"};
-      table=new JTable(controller.getOrderLines(),column);
-      table.setEnabled(false);
-      table.setBounds(5,10,100,200);
-      sp=new JScrollPane(table);
-      pannel.add(sp);
-
-
-      add(pannel);
-      setVisible(true);
-    //new  OrderGui();
-    }
-  }
-
-  private class ButtonRemoveListener implements ActionListener{
-    public void actionPerformed( ActionEvent event) {
-      controller.removeLastBeer();
-      pannel.remove(sp); //TODO
-      String column[]={"Bière","Quantité","Prix Unit","Total"};
-      table=new JTable(controller.getOrderLines(),column);
-      table.setEnabled(false);
-      table.setBounds(5,10,100,200);
-      sp=new JScrollPane(table);
-      pannel.add(sp);
-
-
-      add(pannel);
-      setVisible(true);
-    //new  OrderGui();
-    }
-  }*/
 
 }

@@ -115,6 +115,10 @@ public class Beer{
     return this.lowThreshold;
   }
 
+  public boolean isLowInQuantity(){
+    return getLowThreshold()>=getQtInStock();
+  }
+
   /*____SETTEURS____*/
 
   /** modifie le nom d'une bière
