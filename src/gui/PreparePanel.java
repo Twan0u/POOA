@@ -21,13 +21,6 @@ public class PreparePanel extends Container{
     base = new JPanel();
     base.add(new JLabel("Onglet PREPARATION DE COMMANDE"));
 
-    /*Tableau des Commandes à préparer*/
-  /*  String column[]={"","Quantité","Prix Unit","Total"};
-    table=new JTable(null,column);
-    table.setEnabled(false);
-    sp=new JScrollPane(table);
-    base.add(sp);*/
-
     this.add(base);
   }
 }

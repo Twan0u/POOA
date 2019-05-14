@@ -11,13 +11,15 @@ public class OrderPanel extends Container{
 
   private ControllerNewOrder controller = new ControllerNewOrder();
 
-  private JLabel labelClient, labelBusiness, labelBeer,labelQuantity;
+  private JPanel left,right;
+
+  private JLabel labelClient, labelBusiness, labelBeer,labelQuantity, labelDays;
   private JComboBox comboBoxClient, comboBoxBusiness, comboBoxBeer;
-  private JSpinner spinnerQuantity;
+  private JSpinner spinnerQuantity, spinnerDays;
   private JButton addBeerButton, removeBeerButton, saveOrderButton;
+  private JCheckBox checkPriority;
   private JTable table;
   private JScrollPane sp;
-  private JPanel left,right;
   private Color colBackground;
   private Color colText;
   private Color colBis;
@@ -32,7 +34,7 @@ public class OrderPanel extends Container{
 
     left = new JPanel();
     left.setBackground(colBackground);
-    left.setLayout(new GridLayout(6,2,5,5));
+    left.setLayout(new GridLayout(8,2,5,5));
 
     right = new JPanel();
     right.setBackground(colBackground);
@@ -68,23 +70,35 @@ public class OrderPanel extends Container{
     left.add(labelBeer);
     left.add(comboBoxBeer);
 
-
     /*Jspinner quantity*/
     labelQuantity = new JLabel("Quantité : ");
     labelQuantity.setHorizontalAlignment(SwingConstants.RIGHT);
     labelQuantity.setForeground(colText);
-    SpinnerModel model = new SpinnerNumberModel(1,0,100000000,1);
-    spinnerQuantity = new JSpinner(model);
+    spinnerQuantity = new JSpinner(new SpinnerNumberModel(1,0,100000000,1));
     addBeerButton = new JButton("+");
     addBeerButton.setBackground(colBis);
     left.add(labelQuantity);
     left.add(spinnerQuantity);
     left.add(addBeerButton);
 
-
     removeBeerButton = new JButton("-");
     removeBeerButton.setBackground(colBis);
     left.add(removeBeerButton);
+
+    labelDays = new JLabel("Livraison dans les ... jours: ");
+    labelDays.setHorizontalAlignment(SwingConstants.RIGHT);
+    labelDays.setForeground(colText);
+    spinnerDays = new JSpinner(new SpinnerNumberModel(7,0,365,1));
+    left.add(labelDays);
+    left.add(spinnerDays);
+
+    checkPriority = new JCheckBox("Livraison Prioritaire ?");
+    checkPriority.setBackground(colBackground);
+    checkPriority.setHorizontalAlignment(SwingConstants.RIGHT);
+    left.add(checkPriority);
+
+    left.add(new JLabel("")); // gui spacer
+    left.add(new JLabel("")); // gui spacer
 
     saveOrderButton = new JButton("sauvegarder");
     saveOrderButton.setBackground(colBis);
@@ -113,6 +127,9 @@ public class OrderPanel extends Container{
     ButtonRemoveListener listenerRemoveBeer = new ButtonRemoveListener();
     removeBeerButton.addActionListener(listenerRemoveBeer);
 
+    ButtonSaveListener listenerSave = new ButtonSaveListener();
+    saveOrderButton.addActionListener(listenerSave);
+
     this.add(left);
     this.add(right);
   }
@@ -138,7 +155,6 @@ public class OrderPanel extends Container{
   public void tableStyle(){
     table.setEnabled(false);
     table.setBackground(colBackground);
-    //((DefaultTableCellRenderer)table.getDefaultRenderer(Object.class)).setBackground(new Color(0,0,0,0));
     table.setGridColor(colText);
     table.setForeground(colText);
   }
@@ -174,7 +190,7 @@ public class OrderPanel extends Container{
     right.add(sp);
     right.updateUI();
   }
-
+  /***/
   public class ClientComboBoxListener implements ItemListener {
       public void itemStateChanged(ItemEvent event){
         try{
@@ -211,6 +227,17 @@ public class OrderPanel extends Container{
     public void actionPerformed( ActionEvent event) {
       controller.removeLastBeer();
       refreshTable();
+    }
+  }
+  private class ButtonSaveListener implements ActionListener{
+    public void actionPerformed( ActionEvent event) {
+      int numDays = (int) spinnerDays.getValue();
+      boolean priority = checkPriority.isSelected();
+      try{
+        controller.saveOrder(priority,numDays);
+      }catch(UserInputErrorException error){
+        JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
+      }
     }
   }
 

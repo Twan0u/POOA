@@ -188,5 +188,17 @@ public class ControllerNewOrder extends Controller {
 
       public void removeLastBeer(){
         newOrder.removeLastOrderLine();
+      }  
+
+      public void saveOrder(boolean priority,int numDays)throws UserInputErrorException{
+        if (numDays<0){
+          throw new UserInputErrorException("Nombre de jours pour effectuer la livraison Invalide");
+        }
+        //TODO Auto save current Date
+        //TODO verifier integrité des données
+        newOrder.setHasPriority(priority);
+        newOrder.setTimeLimit(numDays);
+      //  IF DATA OK ( BUSINESSLAYER. SAVEORDER(newOrder));
+
       }
 }

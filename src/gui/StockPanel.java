@@ -12,7 +12,7 @@ public class StockPanel extends Container{
   private JScrollPane sp;
   private JTable table;
   private JCheckBox checkLow;
-  private JPanel base = new JPanel();
+  private JPanel base;
   private static String column[]={"Bière","QuantitéStock"};
   Controller controller= new Controller();
 
@@ -27,6 +27,7 @@ public class StockPanel extends Container{
     table=new JTable(controller.getstock(false),column);
     table.setEnabled(false);
     sp=new JScrollPane(table);
+    base = new JPanel();
     base.add(sp);
 
     this.add(base, BorderLayout.CENTER );

@@ -60,7 +60,7 @@ public class Gui extends JFrame{
         ImageIcon livraisonIcon = new ImageIcon(path + "livraisonCrossed.png");
         livraison = new JLabel(livraisonIcon);
 
-        ImageIcon comptabiliteIcon = new ImageIcon(path + "compta.png");
+        ImageIcon comptabiliteIcon = new ImageIcon(path + "comptaCrossed.png");
         comptabilite = new JLabel(comptabiliteIcon);
 
         menuPanel.setLayout(new GridLayout(6,1));
