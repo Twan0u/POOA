@@ -7,63 +7,113 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+public class OrderPanel extends Container{
 
-public class OrderPanel extends JPanel{
+  private ControllerNewOrder controller = new ControllerNewOrder();
 
-  private InterfaceController controller;
+  private JPanel left,right;
 
-  private JLabel labelClient, labelBusiness, labelBeer;
+  private JLabel labelClient, labelBusiness, labelBeer,labelQuantity, labelDays;
   private JComboBox comboBoxClient, comboBoxBusiness, comboBoxBeer;
-  private JSpinner spinnerQuantity;
-  private JButton addBeerButton, removeBeerButton;
+  private JSpinner spinnerQuantity, spinnerDays;
+  private JButton addBeerButton, removeBeerButton, saveOrderButton;
+  private JCheckBox checkPriority;
   private JTable table;
   private JScrollPane sp;
+  private Color colBackground;
+  private Color colText;
+  private Color colBis;
 
+  public OrderPanel(Color colBackground, Color colText, Color colBis) {
+    this.colBackground = colBackground;
+    this.colText = colText;
+    this.colBis = colBis;
 
-  public OrderPanel(InterfaceController controller, Color colBackground) {
-    this.controller = controller;
     this.setBackground(colBackground);
+    this.setLayout(new GridLayout(1,2));
+
+    left = new JPanel();
+    left.setBackground(colBackground);
+    left.setLayout(new GridLayout(8,2,5,5));
+
+    right = new JPanel();
+    right.setBackground(colBackground);
+    right.setLayout(new GridLayout(1,1));
 
     /*ComboBox Client*/
     labelClient = new JLabel("Client : ");
+    labelClient.setHorizontalAlignment(SwingConstants.RIGHT);
+    labelClient.setForeground(colText);
     comboBoxClient = new JComboBox(loadClients());
+    comboBoxClient.setMaximumRowCount(5);
     comboBoxClient.setSelectedIndex(-1);
-    this.add(labelClient);
-    this.add(comboBoxClient);
+
+    left.add(labelClient);
+    left.add(comboBoxClient);
 
     /*ComboBox Business*/
     labelBusiness = new JLabel("Business : ");
+    labelBusiness.setHorizontalAlignment(SwingConstants.RIGHT);
+    labelBusiness.setForeground(colText);
     comboBoxBusiness = new JComboBox();
+    comboBoxBusiness.setMaximumRowCount(5);
     BusinessComboRefresh();
-    this.add(labelBusiness);
-    this.add(comboBoxBusiness);
+    left.add(labelBusiness);
+    left.add(comboBoxBusiness);
 
     /*ComboBox Beer*/
-    labelBeer = new JLabel("Ajouer : ");
+    labelBeer = new JLabel("Ajouter : ");
+    labelBeer.setHorizontalAlignment(SwingConstants.RIGHT);
+    labelBeer.setForeground(colText);
     comboBoxBeer = new JComboBox(loadBeers());
-    this.add(labelBeer);
-    this.add(comboBoxBeer);
-
+    comboBoxBeer.setMaximumRowCount(5);
+    left.add(labelBeer);
+    left.add(comboBoxBeer);
 
     /*Jspinner quantity*/
-    SpinnerModel model = new SpinnerNumberModel(1,0,100000000,1);
-    spinnerQuantity = new JSpinner(model);
-    addBeerButton = new JButton("ajouter");
-    this.add(spinnerQuantity);
-    this.add(addBeerButton);
+    labelQuantity = new JLabel("Quantité : ");
+    labelQuantity.setHorizontalAlignment(SwingConstants.RIGHT);
+    labelQuantity.setForeground(colText);
+    spinnerQuantity = new JSpinner(new SpinnerNumberModel(1,0,100000000,1));
+    addBeerButton = new JButton("+");
+    addBeerButton.setBackground(colBis);
+    left.add(labelQuantity);
+    left.add(spinnerQuantity);
+    left.add(addBeerButton);
 
+    removeBeerButton = new JButton("-");
+    removeBeerButton.setBackground(colBis);
+    left.add(removeBeerButton);
 
-    removeBeerButton = new JButton("Delete");
-    this.add(removeBeerButton);
+    labelDays = new JLabel("Livraison dans les ... jours: ");
+    labelDays.setHorizontalAlignment(SwingConstants.RIGHT);
+    labelDays.setForeground(colText);
+    spinnerDays = new JSpinner(new SpinnerNumberModel(7,0,365,1));
+    left.add(labelDays);
+    left.add(spinnerDays);
+
+    checkPriority = new JCheckBox("Livraison Prioritaire ?");
+    checkPriority.setBackground(colBackground);
+    checkPriority.setHorizontalAlignment(SwingConstants.RIGHT);
+    left.add(checkPriority);
+
+    left.add(new JLabel("")); // gui spacer
+    left.add(new JLabel("")); // gui spacer
+
+    saveOrderButton = new JButton("sauvegarder");
+    saveOrderButton.setBackground(colBis);
+    left.add(saveOrderButton);
 
     /*Tableau Commande*/
     String column[]={"Bière","Quantité","Prix Unit","Total"};
     table=new JTable(controller.getOrderLines(),column);
-    table.setEnabled(false);
-    table.setBounds(5,10,100,200);
+    tableStyle();
+    table.setOpaque(false);
     sp=new JScrollPane(table);
-    this.add(sp);
-
+    sp.setBackground(new Color(0,0,0,0));
+    sp.setOpaque(false);
+    sp.getViewport().setOpaque(false);
+    right.add(sp);
 
     ClientComboBoxListener listenerClient = new ClientComboBoxListener();
     comboBoxClient.addItemListener(listenerClient);
@@ -77,6 +127,11 @@ public class OrderPanel extends JPanel{
     ButtonRemoveListener listenerRemoveBeer = new ButtonRemoveListener();
     removeBeerButton.addActionListener(listenerRemoveBeer);
 
+    ButtonSaveListener listenerSave = new ButtonSaveListener();
+    saveOrderButton.addActionListener(listenerSave);
+
+    this.add(left);
+    this.add(right);
   }
 
   /** Actualise le combobox contenant les adresses de livraison
@@ -96,6 +151,12 @@ public class OrderPanel extends JPanel{
     for(int i=0;i<business.length;i++){
       comboBoxBusiness.addItem(business[i]);
       }
+  }
+  public void tableStyle(){
+    table.setEnabled(false);
+    table.setBackground(colBackground);
+    table.setGridColor(colText);
+    table.setForeground(colText);
   }
 
   private String[] loadBeers(){ //TODO RETRY
@@ -121,16 +182,15 @@ public class OrderPanel extends JPanel{
   }
 
   private void refreshTable(){ // TODO Find an alternative
-    this.remove(sp);
+    right.remove(sp);
     String column[]={"Bière","Quantité","Prix Unit","Total"};
     table=new JTable(controller.getOrderLines(),column);
-    table.setEnabled(false);
-    //table.setBounds(5,10,100,200);
+    tableStyle();
     sp=new JScrollPane(table);
-    this.add(sp);
-    this.updateUI();
+    right.add(sp);
+    right.updateUI();
   }
-
+  /***/
   public class ClientComboBoxListener implements ItemListener {
       public void itemStateChanged(ItemEvent event){
         try{
@@ -167,6 +227,17 @@ public class OrderPanel extends JPanel{
     public void actionPerformed( ActionEvent event) {
       controller.removeLastBeer();
       refreshTable();
+    }
+  }
+  private class ButtonSaveListener implements ActionListener{
+    public void actionPerformed( ActionEvent event) {
+      int numDays = (int) spinnerDays.getValue();
+      boolean priority = checkPriority.isSelected();
+      try{
+        controller.saveOrder(priority,numDays);
+      }catch(UserInputErrorException error){
+        JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
+      }
     }
   }
 

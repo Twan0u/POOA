@@ -49,10 +49,15 @@ public class DataMock implements InterfaceData{
 
   public ArrayList<Beer> getAllBeers()throws BeerException{
     beers.clear();
-    beers.add(new Beer("Bûche Blonde",2.20,10));
+    beers.add(new Beer("Bush Blonde",2.20,50,10));
     beers.add(new Beer("Blonde ambrée",1.50,2));
-    beers.add(new Beer("Bûche double",2.50,16));
-    beers.add(new Beer("Bûche triple",3.10,11));
+    beers.add(new Beer("Bush double",2.50,50,100));
+    beers.add(new Beer("Bush triple",3.10,11));
+    beers.add(new Beer("Trap Triple",2.20,10));
+    beers.add(new Beer("Trap Quadruple",1.50,2));
+    beers.add(new Beer("Orval",2.50,50,100));
+    beers.add(new Beer("Chouffe",3.10,11));
+    beers.add(new Beer("Chouffe Verte",3.10,10,11));
     return beers;
   }
 }

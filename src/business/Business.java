@@ -61,9 +61,26 @@ public class Business implements BusinessInterface {
     * @since 1.0
     */
     public BusinessUnit[] getBusinessOf(int id)throws BusinessUnitException,LocalityException{
+      if (dataLayer.getBusinessOf(id) == null){return null;}
       BusinessUnit [] out = new BusinessUnit[dataLayer.getBusinessOf(id).size()];
       for(int i = 0; i<out.length;i++){
         out[i] = dataLayer.getBusinessOf(id).get(i);
+      }
+      return out;
+    }
+
+    public Beer[] getLowQuantityBeers()throws BeerException{
+      ArrayList<Beer> lowBeers = new ArrayList<>();
+      Beer current;
+      for(int i = 0; i<dataLayer.getAllBeers().size();i++){
+        current = dataLayer.getAllBeers().get(i);
+        if (current.isLowInQuantity()){
+          lowBeers.add(current);
+        }
+      }
+      Beer [] out = new Beer[lowBeers.size()];
+      for(int i = 0; i<out.length;i++){
+        out[i] = lowBeers.get(i);
       }
       return out;
     }

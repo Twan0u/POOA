@@ -47,4 +47,7 @@ public interface BusinessInterface {
   * @since 1.0
   */
   BusinessUnit[] getBusinessOf(int id)throws BusinessUnitException,LocalityException;
+
+  Beer[] getLowQuantityBeers()throws BeerException;
+
 }

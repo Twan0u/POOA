@@ -9,19 +9,22 @@ JVM= java
 DOC = javadoc
 
 run: compile## Lance le projet
-	$(JVM) Main
+	$(JVM) MainLinux
 
-all: gui/OrderGui.class Main.class javadoc## Compile tout le projet et la javadoc
+all: gui/OrderGui.class MainLinux.class javadoc## Compile tout le projet et la javadoc
 
-Main.class: Main.java
-	$(JC) Main.java
+MainLinux.class: MainLinux.java
+	$(JC) MainLinux.java
 
-compile: gui Main.class## Compile tout le projet
+compile: gui MainLinux.class## Compile tout le projet
 
-gui: controller gui/MenuPanel.class gui/OrderPanel.class gui/Gui.class
+gui: controller gui/PreparePanel.class gui/StockPanel.class gui/OrderPanel.class gui/Gui.class
 
-gui/MenuPanel.class: gui/MenuPanel.java
-	$(JC) gui/MenuPanel.java
+gui/StockPanel.class: gui/StockPanel.java
+	$(JC) gui/StockPanel.java
+
+gui/PreparePanel.class: gui/PreparePanel.java
+	$(JC) gui/PreparePanel.java
 
 gui/Gui.class:  gui/Gui.java
 	$(JC) gui/Gui.java

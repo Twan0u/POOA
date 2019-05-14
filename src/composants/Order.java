@@ -6,7 +6,7 @@ import java.util.*;
 * <b>classe de l'objet Order</b>
 *
 * @author Antoine Lambert et Nathan Surquin
-* @version 1.5
+* @version 1.6
 *
 * L'objet se compose de:
 * <ul>
@@ -17,17 +17,6 @@ import java.util.*;
 *   <li>une date de commande </li>
 *   <li>un état de cette commande</li>
 *   <li>une limite (facultative) pour la livraison</li>
-* </ul>
-
-* <b>A implementer</b>
-* <ul>
-*   <li>Implementation des IDs</li>
-*   <li>Verification des numéros d'identification</li>
-*   <li>erreur de commande vide</li>
-*   <li>le client null</li>
-*   <li>verification sur la validité de la date</li>
-*   <li>verification du state</li>
-*   <li>verification du time limit</li>
 * </ul>
 *
 */
@@ -224,7 +213,9 @@ public class Order{
 
   //TODO
   public void removeLastOrderLine(){
-    this.orderList.remove(orderList.size()-1);
+    if (orderList.size() > 0){
+      this.orderList.remove(orderList.size()-1);
+    }
   }
 
   //TODO
