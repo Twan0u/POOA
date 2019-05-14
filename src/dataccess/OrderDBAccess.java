@@ -1,9 +1,8 @@
 package dataccess;
-
 import composants.*;
 
-import java.util.*;
 import java.sql.*;
+import java.util.ArrayList;
 
 public class OrderDBAccess {
     public static void saveOrder(Order order) {
@@ -99,7 +98,7 @@ public class OrderDBAccess {
         }
 
         catch(Exception e) {
-            System.out.println(e.getMessage());
+
         }
         return orders;
     }
@@ -113,12 +112,18 @@ public class OrderDBAccess {
         return selectedOrders;
     }
 
-    public static Order getOrderWithDate(String date, ArrayList<Order> orders) {
+    public static ArrayList<Order> getOrdersWithDates(String dateMinimum, String dateMaximum, ArrayList<Order> orders) {
         ArrayList<Order> selectedOrders = new ArrayList<>();
-        for(Order o : orders) {
-            if(o.getOrderDate().equals(date))                   // todo la fonction prendra deux dates et selectionnera les commandes prises entre ces 2 dates
+
+        Date dateMin = Date.valueOf(dateMinimum);
+        Date dateMax = Date.valueOf(dateMaximum);
+
+        for (Order o : orders) {
+            Date oDate = Date.valueOf(o.getOrderDate());
+            if (oDate.after(dateMin) && oDate.before(dateMax)) {
                 selectedOrders.add(o);
+            }
         }
-        return null;
+        return selectedOrders;
     }
 }

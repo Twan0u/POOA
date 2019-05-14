@@ -10,7 +10,6 @@ public class ClientDBAccess {
 
     public static ArrayList<Client> getAllClients(){
         Connection connection = SingletonConnection.getInstance();
-
         ArrayList<Client> clients = new ArrayList<>();
         Client client;
         int idNumber;

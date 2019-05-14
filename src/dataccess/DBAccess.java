@@ -2,7 +2,6 @@ package dataccess;
 
 import java.util.*;
 
-import business.Business;
 import composants.*;
 import exceptions.*;
 
@@ -14,10 +13,10 @@ public class DBAccess implements InterfaceData {
     private ArrayList<Order> orders;
 
     public DBAccess()/*throws ClientException, BeerException, LocalityException, BusinessUnitException */ {
-        loadDB();
+        reloadData();
     }
 
-    public void loadDB() {
+    public void reloadData() {
         clients = ClientDBAccess.getAllClients();
         beers = BeerDBAccess.getAllBeers();
         localities = LocalityDBAccess.getAllLocalities();
@@ -43,9 +42,14 @@ public class DBAccess implements InterfaceData {
 
     public void saveOrder(Order order){
         OrderDBAccess.saveOrder(order);
+        orders.add(order);
     }
 
     public ArrayList<Order> getOrdersWithState(String state) {
         return OrderDBAccess.getOrdersWithState(state, orders);
+    }
+
+    public ArrayList<Order> getOrdersWithDates(String dateMin, String dateMax) {
+        return OrderDBAccess.getOrdersWithDates(dateMin, dateMax, orders);
     }
 }

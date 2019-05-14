@@ -12,5 +12,7 @@ public interface InterfaceData {
   Client getClient(int id);
   ArrayList<Beer> getAllBeers()throws BeerException;
   ArrayList<BusinessUnit> getBusinessOf(int id)throws BusinessUnitException,LocalityException;
-  public ArrayList<Order> getOrdersWithState(String state);
+  ArrayList<Order> getOrdersWithState(String state);
+  ArrayList<Order> getOrdersWithDates(String dateMin, String dateMax);
+  void reloadData();
 }

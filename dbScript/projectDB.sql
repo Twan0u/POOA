@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS Client
-	( idNumber INT PRIMARY KEY AUTO_INCREMENT
+	( idNumber INT PRIMARY KEY
 	, phoneNumber VARCHAR(18) NOT NULL
 	, clientName VARCHAR(64) NOT NULL
 	, vatNumber VARCHAR(32)
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS ClientOrder
 	, clientNumber INT NOT NULL
 	, hasPriority TINYINT NOT NULL
 	, orderDate DATE NOT NULL
-	, state INT NOT NULL
+	, state VARCHAR(30) NOT NULL
 	, timeLimit INT
 	
 	, CONSTRAINT businessUnit_fk FOREIGN KEY (businessUnit) REFERENCES BusinessUnit(idBusinessUnit)
@@ -99,15 +99,15 @@ INSERT INTO BusinessUnit(idBusinessUnit, clientNumber, locality, streetName, str
 	
 
 INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
-	VALUES (1, null, 165, 0, '2019-01-13', 1, null);
+	VALUES (1, null, 165, 0, '2019-01-13', "new", null);
 INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
-	VALUES (2, 1, 145, 1, '2018-12-29', 2, 15);
+	VALUES (2, 1, 145, 1, '2018-12-29', "prepared", 15);
 INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
-	VALUES (3, 2, 198, 0, '2018-05-14', 3, null);
+	VALUES (3, 2, 198, 0, '2018-05-14', "delivered", null);
 INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
-	VALUES (4, 3, 25, 0, '2019-02-24', 4, 30);
+	VALUES (4, 3, 25, 0, '2019-02-24', "payed", 30);
 INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
-	VALUES (5, 2, 73, 1, '2019-05-17', 2, 23);
+	VALUES (5, 2, 73, 1, '2019-05-17', "prepared", 23);
 
 
 INSERT INTO OrderLine (beerName, orderNumber, quantity, price)
