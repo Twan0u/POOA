@@ -48,7 +48,7 @@ CREATE TABLE IF NOT EXISTS OrderLine
 	( beerName VARCHAR(64)
 	, orderNumber INT
 	, quantity INT NOT NULL
-	, price FLOAT NOT NULL
+	, price DOUBLE NOT NULL
 	
 	, CONSTRAINT orderLine_pk PRIMARY KEY(beerName, orderNumber)
 	, CONSTRAINT beerName_fk FOREIGN KEY (beerName) REFERENCES Beer(idName)

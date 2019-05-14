@@ -54,4 +54,45 @@ public class OrderLineDBAccess {
         }
         return orderLines;
     }
+
+    public static OrderLine getOrderLine(int orderId, String beerName, ArrayList<OrderLine> orderLines) {
+        for(OrderLine o : orderLines) {
+            if(o.getBeer().getName().equals(beerName) && o.getOrder().getId() == orderId)
+                return o;
+        }
+        return null;
+    }
+
+    public static void saveOrderLine(int orderID, String beerName, OrderLine orderLine) {
+        Connection connection = SingletonConnection.getInstance();
+        String sql = "INSERT INTO OrderLine (beerName, orderNumber, quantity, price) VALUES (?,?,?,?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, beerName);
+            statement.setInt(2, orderID);
+            statement.setInt(3, orderLine.getQuantity());
+            statement.setDouble(4, orderLine.getPrice());
+            statement.executeUpdate();
+        }
+        catch(Exception e) {
+
+        }
+    }
+
+    public static void deleteOrderLine(int orderId, String beerName) {
+        Connection connection = SingletonConnection.getInstance();
+        String sql = "DELETE FROM OrderLine WHERE (beerName = ? AND orderNumber = ?);";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, beerName);
+            statement.setInt(2, orderId);
+            statement.executeUpdate();
+        }
+
+        catch(Exception e) {
+
+        }
+    }
 }

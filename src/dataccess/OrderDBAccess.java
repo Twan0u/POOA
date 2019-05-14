@@ -151,4 +151,42 @@ public class OrderDBAccess {
         }
         return selectedOrders;
     }
+
+    public static Order getOrder(int orderId, ArrayList<Order> orders) {
+        for(Order o : orders) {
+            if(o.getId() == orderId)
+                return o;
+        }
+        return null;
+    }
+
+    public static void deleteOrder(int orderId) {
+        Connection connection = SingletonConnection.getInstance();
+        String sql = "DELETE FROM ClientOrder WHERE idNumber = ?;";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, orderId);
+            statement.executeUpdate();
+        }
+
+        catch(Exception e) {
+
+        }
+    }
+
+    public static void setOrderState(String newState, int orderId) {
+        Connection connection = SingletonConnection.getInstance();
+        String sql = "UPDATE ClientOrder SET state = ? WHERE idNumber = ?;";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, newState);
+            statement.setInt(2, orderId);
+            statement.executeUpdate();
+        }
+        catch(Exception e) {
+
+        }
+    }
 }

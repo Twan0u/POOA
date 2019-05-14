@@ -3,7 +3,6 @@ package dataccess;
 import composants.*;
 import exceptions.*;
 
-import java.io.*;
 import java.util.*;
 
 public interface InterfaceData {
@@ -18,8 +17,9 @@ public interface InterfaceData {
   ArrayList<Order> getOrdersToDeliver(int localityID);
   ArrayList<Order> getAllOrders();
   void saveOrder(Order order);
-  void deleteOrder(int orderID); // todo
-  void addOrderLine(int orderID, String beerName); // todo
-  void deleteOrderLine(int orderID, String beerName); // todo
+  void deleteOrder(int orderID);
+  void saveOrderLine(int orderID, String beerName);
+  void deleteOrderLine(int orderID, String beerName);
+  void setOrderState(String newState, int orderId);
   void reloadData();
 }
