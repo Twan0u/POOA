@@ -19,6 +19,7 @@ public class ControllerNewOrder extends Controller {
     /**Variable contenant l'order actuellement en préparation*/
     private static Order newOrder = new Order();
 
+    private Client [] bufferClients = null;
     /** Recupération de tous les clients
     * @return un tableau contenant chaque client sous la forme d'un string
     * @since 1.1
@@ -29,6 +30,7 @@ public class ControllerNewOrder extends Controller {
         Client [] clients = null;
       try{
         clients = businesslayer.getAllClients();
+        bufferClients = businesslayer.getAllClients();
       }catch(ClientException exception){
         throw new ProgramErrorException("Erreur lors de l'access aux données client :" + exception.getMessage());
       }
@@ -47,7 +49,7 @@ public class ControllerNewOrder extends Controller {
     public void selectClient(int index)throws ProgramErrorException{
       //TODO verifier index client valide
       //TODO verifier client non null
-      Client client = businesslayer.getClient(index);
+      Client client = businesslayer.getClient(bufferClients[i].getId());
       try{
         newOrder.setClient(client);
       }catch(OrderException e){
@@ -188,7 +190,7 @@ public class ControllerNewOrder extends Controller {
 
       public void removeLastBeer(){
         newOrder.removeLastOrderLine();
-      }  
+      }
 
       public void saveOrder(boolean priority,int numDays)throws UserInputErrorException{
         if (numDays<0){
