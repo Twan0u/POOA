@@ -12,4 +12,9 @@ public interface InterfaceData {
   Client getClient(int id);
   ArrayList<Beer> getAllBeers()throws BeerException;
   ArrayList<BusinessUnit> getBusinessOf(int id)throws BusinessUnitException,LocalityException;
+  ArrayList<Order> getOrdersWithState(String state);
+  ArrayList<Order> getOrdersWithDates(String dateMin, String dateMax);
+  public ArrayList<Order> getOrdersWithClient(int clientID);
+  public ArrayList<Order> getOrdersToDeliver(int localityID);
+  void reloadData();
 }

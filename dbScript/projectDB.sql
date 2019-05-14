@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS Client
-	( idNumber INT PRIMARY KEY AUTO_INCREMENT
+	( idNumber INT PRIMARY KEY
 	, phoneNumber VARCHAR(18) NOT NULL
 	, clientName VARCHAR(64) NOT NULL
 	, vatNumber VARCHAR(32)
@@ -30,7 +30,7 @@ CREATE TABLE IF NOT EXISTS ClientOrder
 	, clientNumber INT NOT NULL
 	, hasPriority TINYINT NOT NULL
 	, orderDate DATE NOT NULL
-	, state INT NOT NULL
+	, state VARCHAR(30) NOT NULL
 	, timeLimit INT
 	
 	, CONSTRAINT businessUnit_fk FOREIGN KEY (businessUnit) REFERENCES BusinessUnit(idBusinessUnit)
@@ -85,29 +85,33 @@ INSERT INTO Client(idNumber, phoneNumber, clientName, vatNumber, discount)
 INSERT INTO Locality(idLocality, postalCode, localityName)
 	VALUES (1, 1457, 'Walhain');
 INSERT INTO Locality(idLocality, postalCode, localityName)
-	VALUES (5, 1348, 'LLN');
+	VALUES (2, 1348, 'LLN');
 INSERT INTO Locality(idLocality, postalCode, localityName)
-	VALUES (8, 5000, 'Namur');
+	VALUES (3, 5000, 'Namur');
 	
 	
 INSERT INTO BusinessUnit(idBusinessUnit, clientNumber, locality, streetName, streetNumber)
 	VALUES (1, 165, 1, 'Rue Haute', '45');
 INSERT INTO BusinessUnit(idBusinessUnit, clientNumber, locality, streetName, streetNumber)
-	VALUES (2, 145, 5, 'Hirondelles', '70');
+	VALUES (2, 145, 2, 'Rue des Hirondelles', '70');
 INSERT INTO BusinessUnit(idBusinessUnit, clientNumber, locality, streetName, streetNumber)
-	VALUES (3, 198, 8, 'Saint jean', '22');
+	VALUES (3, 198, 3, 'Rue Saint jean', '22');
+INSERT INTO BusinessUnit(idBusinessUnit, clientNumber, locality, streetName, streetNumber)
+	VALUES (4, 25, 1, 'Rue du youkoulele', '36');
+INSERT INTO BusinessUnit(idBusinessUnit, clientNumber, locality, streetName, streetNumber)
+	VALUES (5, 73, 2, 'Rue de la pistache', '14');
 	
 
 INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
-	VALUES (1, null, 165, 0, '2019-01-13', 1, null);
+	VALUES (1, null, 165, 0, '2019-01-13', "new", null);
 INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
-	VALUES (2, 1, 145, 1, '2018-12-29', 2, 15);
+	VALUES (2, 1, 165, 1, '2018-12-29', "prepared", 15);
 INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
-	VALUES (3, 2, 198, 0, '2018-05-14', 3, null);
+	VALUES (3, 2, 145, 0, '2018-05-14', "delivered", null);
 INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
-	VALUES (4, 3, 25, 0, '2019-02-24', 4, 30);
+	VALUES (4, 3, 198, 0, '2019-02-24', "payed", 30);
 INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
-	VALUES (5, 2, 73, 1, '2019-05-17', 2, 23);
+	VALUES (5, 5, 25, 1, '2019-05-17', "prepared", 23);
 
 
 INSERT INTO OrderLine (beerName, orderNumber, quantity, price)

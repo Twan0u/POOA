@@ -34,7 +34,6 @@ public class LocalityDBAccess {
         catch(Exception e) {
 
         }
-
         return localities;
     }
 }

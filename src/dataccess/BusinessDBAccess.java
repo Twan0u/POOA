@@ -3,15 +3,14 @@ package dataccess;
 import java.util.*;
 import java.sql.*;
 
-import business.Business;
 import composants.*;
 import exceptions.*;
 
 public class BusinessDBAccess {
 
-    public static void linkBusinessesToClients(ArrayList<Client> clients, ArrayList<Locality> localities){  // appeller la methode businessunit setclient sur tous les businessunit en mettant tous les clients
+    public static ArrayList<BusinessUnit> getAllBusinesses (ArrayList<Client> clients, ArrayList<Locality> localities){
         Connection connection = SingletonConnection.getInstance();
-        ArrayList<Business> businesses = new ArrayList<>();
+        ArrayList<BusinessUnit> businesses = new ArrayList<>();
         BusinessUnit business;
         int idBusinessUnit;
         int clientNumber;
@@ -43,17 +42,23 @@ public class BusinessDBAccess {
                         locality = l;
                 }
 
-                business = new BusinessUnit(idBusinessUnit, client, locality, streetName, streetNumber);
+                business = new BusinessUnit(idBusinessUnit, client, locality, streetName, streetNumber);  // le constructeur BusinnessUnit appelle la methode client.SetBusinessUnit
+                businesses.add(business);
             }
         }
         catch(Exception e){
 
         }
+        return businesses;
     }
 
     public static ArrayList<BusinessUnit> getBusinessOf(int id, ArrayList<Client> clients) {
-
-        return(null);
+        ArrayList<BusinessUnit> businesses;
+        for(Client client : clients) {
+            if(client.getId() == id)
+                return client.getBusiness();
+        }
+        return(null); // TODO : throw une erreur car client pas trouvé
     }
 }
 
