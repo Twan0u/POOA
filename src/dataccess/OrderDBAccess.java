@@ -95,7 +95,6 @@ public class OrderDBAccess {
                     order.setTimeLimit(timeLimit);
                 }
                 orders.add(order);
-                System.out.println(order);
             }
         }
 
@@ -105,15 +104,21 @@ public class OrderDBAccess {
         return orders;
     }
 
-    public static Order getOrderWithState(String state, ArrayList<Order> orders) {
-        Order order;
-
-        return null;
+    public static ArrayList<Order> getOrdersWithState(String state, ArrayList<Order> orders) {
+        ArrayList<Order> selectedOrders = new ArrayList<>();
+        for(Order o : orders) {
+            if(o.getState().equals(state))
+                selectedOrders.add(o);
+        }
+        return selectedOrders;
     }
 
     public static Order getOrderWithDate(String date, ArrayList<Order> orders) {
-        Order order;
-
+        ArrayList<Order> selectedOrders = new ArrayList<>();
+        for(Order o : orders) {
+            if(o.getOrderDate().equals(date))                   // todo la fonction prendra deux dates et selectionnera les commandes prises entre ces 2 dates
+                selectedOrders.add(o);
+        }
         return null;
     }
 }

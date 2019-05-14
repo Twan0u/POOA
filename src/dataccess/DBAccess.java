@@ -44,4 +44,8 @@ public class DBAccess implements InterfaceData {
     public void saveOrder(Order order){
         OrderDBAccess.saveOrder(order);
     }
+
+    public ArrayList<Order> getOrdersWithState(String state) {
+        return OrderDBAccess.getOrdersWithState(state, orders);
+    }
 }
