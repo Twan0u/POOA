@@ -49,7 +49,7 @@ public class ControllerNewOrder extends Controller {
     public void selectClient(int index)throws ProgramErrorException{
       //TODO verifier index client valide
       //TODO verifier client non null
-      Client client = businesslayer.getClient(bufferClients[i].getId());
+      Client client = businesslayer.getClient(bufferClients[index].getId());
       try{
         newOrder.setClient(client);
       }catch(OrderException e){
