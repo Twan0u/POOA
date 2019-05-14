@@ -14,5 +14,6 @@ public interface InterfaceData {
   ArrayList<BusinessUnit> getBusinessOf(int id)throws BusinessUnitException,LocalityException;
   ArrayList<Order> getOrdersWithState(String state);
   ArrayList<Order> getOrdersWithDates(String dateMin, String dateMax);
+  public ArrayList<Order> getOrdersWithClient(int clientID);
   void reloadData();
 }

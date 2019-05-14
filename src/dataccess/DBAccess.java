@@ -52,4 +52,9 @@ public class DBAccess implements InterfaceData {
     public ArrayList<Order> getOrdersWithDates(String dateMin, String dateMax) {
         return OrderDBAccess.getOrdersWithDates(dateMin, dateMax, orders);
     }
+
+    public ArrayList<Order> getOrdersWithClient(int clientID) {
+        Client client = this.getClient(clientID);
+        return OrderDBAccess.getOrdersWithClient(client, orders);
+    }
 }

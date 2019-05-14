@@ -120,9 +120,18 @@ public class OrderDBAccess {
 
         for (Order o : orders) {
             Date oDate = Date.valueOf(o.getOrderDate());
-            if (oDate.after(dateMin) && oDate.before(dateMax)) {
+            if (oDate.after(dateMin) && oDate.before(dateMax))
                 selectedOrders.add(o);
-            }
+        }
+        return selectedOrders;
+    }
+
+    public static ArrayList<Order> getOrdersWithClient(Client client, ArrayList<Order> orders) {
+        ArrayList<Order> selectedOrders = new ArrayList<>();
+
+        for(Order o : orders) {
+            if(o.getClient() == client)
+                selectedOrders.add(o);
         }
         return selectedOrders;
     }
