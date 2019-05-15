@@ -38,10 +38,22 @@ public class ControllerPrepare extends Controller {
     * @param index index du client selectionné dans le tableau des clients
     * @since 1.2
     */
-    public void getOrdersWithClient(int index)throws ProgramErrorException{
-      //TODO verifier index client valide
-      //TODO verifier client non null
-      Client client = businesslayer.getClient(bufferClients[index].getId());
+    public String[][] getAllOrders(){
+      Order [] orders = businesslayer.getAllOrders();
+      String [][] out = new String [2][orders.length];
+      for (int i=0;i<orders.length;i++){
+        out[0][i] = Integer.toString(orders[i].getId());
+        out[1][i] = orders[i].getClient().getName();
+      }
+      return out
     }
 
+    /** Enregistre quel client est sélectionné
+    * @param index index du client selectionné dans le tableau des clients
+    * @since 1.2
+    */
+    public void getOrdersWithClient(int index)throws ProgramErrorException{
+      //TODO verifier index client valide
+      Client client = businesslayer.getClient(bufferClients[index].getId());
+    }
 }

@@ -49,4 +49,5 @@ public interface BusinessInterface {
   BusinessUnit[] getBusinessOf(int id)throws ProgramErrorException;
   Beer[] getLowQuantityBeers()throws ProgramErrorException;
   void saveOrder(Order order) throws ProgramErrorException;
+  Order[] getAllOrders();
 }
