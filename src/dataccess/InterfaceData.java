@@ -16,6 +16,7 @@ public interface InterfaceData {
   ArrayList<Order> getOrdersWithClient(int clientID) throws ProgramErrorException;
   ArrayList<Order> getOrdersToDeliver(int localityID) throws ProgramErrorException;
   ArrayList<Order> getAllOrders() throws ProgramErrorException;
+  Order getOrder(int orderID) throws ProgramErrorException;
   void saveOrder(Order order) throws ProgramErrorException;
   void deleteOrder(int orderID) throws ProgramErrorException;
   void saveOrderLine(int orderID, String beerName) throws ProgramErrorException;

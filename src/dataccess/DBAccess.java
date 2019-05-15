@@ -90,7 +90,7 @@ public class DBAccess implements InterfaceData {
         return orders;
     }
 
-    private Order getOrder(int orderID) throws ProgramErrorException {
+    public Order getOrder(int orderID) throws ProgramErrorException {
         if(orders == null)
             loadOrders();
         return OrderDBAccess.getOrder(orderID, orders);
