@@ -3,7 +3,6 @@ package dataccess;
 import java.util.*;
 import java.sql.*;
 
-import composants.*;
 import exceptions.*;
 
 public class SingletonConnection{
@@ -20,5 +19,14 @@ public class SingletonConnection{
             }
         }
         return uniqueConnection;
+    }
+
+    public static void closeConnection() throws ProgramErrorException{
+        try {
+            uniqueConnection.close();
+        }
+        catch(SQLException e) {
+            throw new ProgramErrorException("Erreur à la fermeture de la connection avec la BD");
+        }
     }
 }
