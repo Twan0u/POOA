@@ -31,6 +31,7 @@ public class StockPanel extends Container{
     base.add(sp);
 
     this.add(base, BorderLayout.CENTER );
+
     checkLow.addItemListener(new ItemListener() {
       public void itemStateChanged(ItemEvent e) {
           reloadTable(e.getStateChange() == ItemEvent.SELECTED);//recharge le tableau en fonction de la checkbox

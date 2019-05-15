@@ -21,7 +21,7 @@ public interface BusinessInterface {
   * @throws ClientException erreur renvoyée si il y a eu une erreur dans la création d'un objet client
   * @since 1.1
   */
-  Client[] getAllClients()throws ClientException;
+  Client[] getAllClients()throws ProgramErrorException;
 
   /** Recupération d'un sur base de son index
   * @param index
@@ -29,14 +29,14 @@ public interface BusinessInterface {
   * @return une courte description du client
   * @since 1.0
   */
-  Client getClient(int index);
+  Client getClient(int index)throws ProgramErrorException;
 
   /** Récupération de toutes les bières de la base de donnée
   * @return un tableau des différentes bières que vends l'entreprise
   * @throws BeerException en cas d'erreur dans la création d'une des bières
   * @since 1.0
   */
-  Beer[] getAllBeers()throws BeerException;
+  Beer[] getAllBeers()throws ProgramErrorException;
 
   /** récupère tous les BusinessUnit d'un client sur base de son index dans le tableau
   * @param index
@@ -46,8 +46,7 @@ public interface BusinessInterface {
   * @throws LocalityException en cas de création d'une Locality incorrecte
   * @since 1.0
   */
-  BusinessUnit[] getBusinessOf(int id)throws BusinessUnitException,LocalityException;
-
-  Beer[] getLowQuantityBeers()throws BeerException;
-
+  BusinessUnit[] getBusinessOf(int id)throws ProgramErrorException;
+  Beer[] getLowQuantityBeers()throws ProgramErrorException;
+  void saveOrder(Order order) throws ProgramErrorException;
 }

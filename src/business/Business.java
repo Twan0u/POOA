@@ -21,7 +21,7 @@ public class Business implements BusinessInterface {
     * @throws ClientException erreur renvoyée si il y a eu une erreur dans la création d'un objet client
     * @since 1.1
     */
-    public Client[] getAllClients()throws ClientException{
+    public Client[] getAllClients()throws ProgramErrorException{
       Client [] out = new Client[dataLayer.getAllClients().size()];
       for(int i = 0; i<out.length;i++){
         out[i] = dataLayer.getAllClients().get(i);
@@ -35,7 +35,7 @@ public class Business implements BusinessInterface {
     * @return une courte description du client
     * @since 1.0
     */
-    public Client getClient(int index){
+    public Client getClient(int index)throws ProgramErrorException{
       return dataLayer.getClient(index);
     }
 
@@ -44,7 +44,7 @@ public class Business implements BusinessInterface {
     * @throws BeerException en cas d'erreur dans la création d'une des bières
     * @since 1.0
     */
-    public Beer[] getAllBeers()throws BeerException{
+    public Beer[] getAllBeers()throws ProgramErrorException{
       Beer [] out = new Beer[dataLayer.getAllBeers().size()];
       for(int i = 0; i<out.length;i++){
         out[i] = dataLayer.getAllBeers().get(i);
@@ -60,7 +60,7 @@ public class Business implements BusinessInterface {
     * @throws LocalityException en cas de création d'une Locality incorrecte
     * @since 1.0
     */
-    public BusinessUnit[] getBusinessOf(int id)throws BusinessUnitException,LocalityException{
+    public BusinessUnit[] getBusinessOf(int id)throws ProgramErrorException{
       if (dataLayer.getBusinessOf(id) == null){return null;}
       BusinessUnit [] out = new BusinessUnit[dataLayer.getBusinessOf(id).size()];
       for(int i = 0; i<out.length;i++){
@@ -69,7 +69,7 @@ public class Business implements BusinessInterface {
       return out;
     }
 
-    public Beer[] getLowQuantityBeers()throws BeerException{
+    public Beer[] getLowQuantityBeers()throws ProgramErrorException{
       ArrayList<Beer> lowBeers = new ArrayList<>();
       Beer current;
       for(int i = 0; i<dataLayer.getAllBeers().size();i++){
@@ -84,4 +84,8 @@ public class Business implements BusinessInterface {
       }
       return out;
     }
+
+  public void saveOrder(Order order) throws ProgramErrorException{
+    dataLayer.saveOrder(order);
+  }
 }

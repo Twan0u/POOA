@@ -200,6 +200,7 @@ public class ControllerNewOrder extends Controller {
         //TODO verifier integrité des données
         newOrder.setHasPriority(priority);
         newOrder.setTimeLimit(numDays);
+        businesslayer.saveOrder(neworder);
       //  IF DATA OK ( BUSINESSLAYER. SAVEORDER(newOrder));
 
       }
