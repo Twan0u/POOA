@@ -11,6 +11,8 @@ public class PreparePanel extends Container{
 
   ControllerPrepare controller = new ControllerPrepare();
 
+  private static String column[]={"ID-COMMANDE","Client"};
+
   private JPanel base;
 
   private JComboBox comboBoxClient;
@@ -44,7 +46,7 @@ public class PreparePanel extends Container{
     this.add(labelClient);
     this.add(comboBoxClient);
 
-    /*JTable table = new JTable(controller.get(),column);
+  /*  JTable table = new JTable(controller.getAllOrders(),column);
     table.setEnabled(false);
     sp=new JScrollPane(table);
     base = new JPanel();

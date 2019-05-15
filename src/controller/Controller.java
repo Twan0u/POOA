@@ -27,6 +27,7 @@ public class Controller {
         beers = businesslayer.getAllBeers();
       }
     }catch(Exception e){//TODO
+      System.out.println(e.getMessage());
       //throw new ProgramErrorException("Erreur du chargement des bières disponibles " + e.getMessage());
     }
     if (beers == null){//TODO

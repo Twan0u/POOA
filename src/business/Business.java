@@ -88,4 +88,22 @@ public class Business implements BusinessInterface {
   public void saveOrder(Order order) throws ProgramErrorException{
     dataLayer.saveOrder(order);
   }
+
+  public Order[] getAllOrders(){
+    ArrayList<Order> orders = new ArrayList<>();
+    try {
+      Order current;
+      for(int i = 0; i<dataLayer.getAllOrders().size();i++){
+        current = dataLayer.getAllOrders().get(i);
+          orders.add(current);
+      }
+    }catch(Exception e){
+      System.out.println(e.getMessage());
+    }
+    Order [] out = new Order[orders.size()];
+    for(int i = 0; i<out.length;i++){
+      out[i] = orders.get(i);
+    }
+    return out;
+  }
 }

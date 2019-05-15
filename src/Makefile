@@ -32,13 +32,19 @@ gui/Gui.class:  gui/Gui.java
 gui/OrderPanel.class: gui/OrderPanel.java
 	$(JC) gui/OrderPanel.java
 
-controller: business controller/Controller.class controller/InterfaceController.class
+controller: business controller/Controller.class controller/InterfaceController.class controller/ControllerNewOrder.class controller/ControllerPrepare.class
 
 controller/Controller.class: controller/InterfaceController.class controller/Controller.java
 		$(JC) controller/Controller.java
 
 controller/InterfaceController.class: business controller/InterfaceController.java
 		$(JC) controller/InterfaceController.java
+
+controller/ControllerNewOrder.class: controller/InterfaceController.class controller/ControllerNewOrder.java
+		$(JC) controller/ControllerNewOrder.java
+
+controller/ControllerPrepare.class: controller/ControllerNewOrder.java
+		$(JC) controller/ControllerNewOrder.java
 
 business: dataccess business/BusinessInterface.class business/Business.class
 

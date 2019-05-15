@@ -71,6 +71,7 @@ public class ControllerNewOrder extends Controller {
           Client client = newOrder.getClient();//TODO REMOVE
           businessOfClient = businesslayer.getBusinessOf(client.getId()); // TODO remove this shit and replace by a proper method getBuisness(Business)
         }catch(Exception e){
+                System.out.println(e.getMessage());
           //TODO see later
         }
         newOrder.setBusinessUnitId(businessOfClient[index-1]);
@@ -170,9 +171,7 @@ public class ControllerNewOrder extends Controller {
             businessOfClient = businesslayer.getBusinessOf(client.getId());
           }catch(Exception e){
             throw new ProgramErrorException(e.getMessage());
-          }/*catch(LocalityException e){
-            throw new ProgramErrorException(e.getMessage());
-          }*/
+          }
           if (businessOfClient == null){
             String [] out = new String[1];
             out[0] = "Pas de Livraison";
@@ -196,6 +195,12 @@ public class ControllerNewOrder extends Controller {
         if (numDays<0){
           throw new UserInputErrorException("Nombre de jours pour effectuer la livraison Invalide");
         }
+        if(newOrder.getClient() == null){
+            throw new UserInputErrorException("Veuillez selectionner un client");
+        }
+        if(newOrder.getOrderLinesSize() == 0){
+          throw new UserInputErrorException("Commande Vide");
+        }
         //TODO Auto save current Date
         //TODO verifier integrité des données
         newOrder.setHasPriority(priority);
@@ -204,7 +209,7 @@ public class ControllerNewOrder extends Controller {
           businesslayer.saveOrder(newOrder);
         }
         catch(Exception e){
-
+          throw new UserInputErrorException("Ajout impossible");
         }
       //  IF DATA OK ( BUSINESSLAYER. SAVEORDER(newOrder));
 

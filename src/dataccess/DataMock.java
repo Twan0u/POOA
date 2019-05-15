@@ -86,6 +86,14 @@ public class DataMock implements InterfaceData {
   public ArrayList<Order> getOrdersToDeliver(int localityID) throws ProgramErrorException{return null;}
 
   public ArrayList<Order> getAllOrders() throws ProgramErrorException{
+    try{
+      Locality local = new Locality (1, "Localité du petit bois", "7911");
+      BusinessUnit bubu = new BusinessUnit (1, clients.get(0), local, "Rue de la faim", "12");
+      Client client = new Client (0, "Nathan", "0032007007005", 10, "TVA_025522095251");
+      orders.add(new Order(0, bubu, client, false, "2019-06-30", "New"));
+    }catch (Exception e){
+      throw new ProgramErrorException(e.getMessage());
+    }
     return this.orders;
   }
 
@@ -100,11 +108,13 @@ public class DataMock implements InterfaceData {
     }
   }
 
-  public void saveOrder(Order order) throws ProgramErrorException{}
+  public void saveOrder(Order order) throws ProgramErrorException{
+    System.out.println("saved : "+ order.toString());
+  }
   public void deleteOrder(int orderID) throws ProgramErrorException{}
   public void saveOrderLine(int orderID, String beerName) throws ProgramErrorException{}
   public void deleteOrderLine(int orderID, String beerName) throws ProgramErrorException{}
   public void setOrderState(String newState, int orderId) throws ProgramErrorException{}
-public void closeConnection() throws ProgramErrorException{}
+  public void closeConnection() throws ProgramErrorException{}
 
 }
