@@ -133,4 +133,8 @@ public class DBAccess implements InterfaceData {
         orderLines.remove(getOrderLine(orderId, beerName));
         OrderLineDBAccess.deleteOrderLine(orderId, beerName);
     }
+
+    public void closeConnection() throws ProgramErrorException {
+        SingletonConnection.closeConnection();
+    }
 }

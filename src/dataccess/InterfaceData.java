@@ -22,4 +22,5 @@ public interface InterfaceData {
   void saveOrderLine(int orderID, String beerName) throws ProgramErrorException;
   void deleteOrderLine(int orderID, String beerName) throws ProgramErrorException;
   void setOrderState(String newState, int orderId) throws ProgramErrorException;
+  void closeConnection() throws ProgramErrorException;
 }
