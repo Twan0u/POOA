@@ -13,8 +13,8 @@ import java.util.ArrayList;
 *
 */
 public class Business implements BusinessInterface {
-    private static InterfaceData dataLayer = new DataMock() {
-    };
+
+    private static InterfaceData dataLayer = new DBAccess();
 
     /** Recupération de tous les clients
     * @return un tableau contenant chaque client

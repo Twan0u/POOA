@@ -26,7 +26,7 @@ public class Controller {
       }else{
         beers = businesslayer.getAllBeers();
       }
-    }catch(BeerException e){//TODO
+    }catch(Exception e){//TODO
       //throw new ProgramErrorException("Erreur du chargement des bières disponibles " + e.getMessage());
     }
     if (beers == null){//TODO

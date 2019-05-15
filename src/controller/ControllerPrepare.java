@@ -24,7 +24,7 @@ public class ControllerPrepare extends Controller {
     public String[] getClients()throws ProgramErrorException{
       try{
         bufferClients = businesslayer.getAllClients();
-      }catch(ClientException exception){
+      }catch(Exception exception){
         throw new ProgramErrorException("Erreur lors de l'access aux données client :" + exception.getMessage());
       }
       String [] out = new String[bufferClients.length];

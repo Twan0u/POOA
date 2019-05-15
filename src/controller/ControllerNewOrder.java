@@ -31,7 +31,7 @@ public class ControllerNewOrder extends Controller {
       try{
         clients = businesslayer.getAllClients();
         bufferClients = businesslayer.getAllClients();
-      }catch(ClientException exception){
+      }catch(Exception exception){
         throw new ProgramErrorException("Erreur lors de l'access aux données client :" + exception.getMessage());
       }
 
@@ -85,7 +85,7 @@ public class ControllerNewOrder extends Controller {
       Beer [] beers = null;
       try{
         beers = businesslayer.getAllBeers();
-      }catch(BeerException e){
+      }catch(Exception e){
         throw new ProgramErrorException("Erreur du chargement des bières disponibles " + e.getMessage());
       }
       if (beers == null){
@@ -111,7 +111,7 @@ public class ControllerNewOrder extends Controller {
       Beer [] beers = null; //TODO getBeer(Beername)
       try{
         beers = businesslayer.getAllBeers();
-      }catch(BeerException e){
+      }catch(Exception e){
         throw new ProgramErrorException("Erreur du chargement des bières disponibles " + e.getMessage());
       }
       if (beers == null){
@@ -168,11 +168,11 @@ public class ControllerNewOrder extends Controller {
           BusinessUnit [] businessOfClient = null;
           try{
             businessOfClient = businesslayer.getBusinessOf(client.getId());
-          }catch(BusinessUnitException e){
+          }catch(Exception e){
             throw new ProgramErrorException(e.getMessage());
-          }catch(LocalityException e){
+          }/*catch(LocalityException e){
             throw new ProgramErrorException(e.getMessage());
-          }
+          }*/
           if (businessOfClient == null){
             String [] out = new String[1];
             out[0] = "Pas de Livraison";
@@ -200,7 +200,12 @@ public class ControllerNewOrder extends Controller {
         //TODO verifier integrité des données
         newOrder.setHasPriority(priority);
         newOrder.setTimeLimit(numDays);
-        businesslayer.saveOrder(neworder);
+        try {
+          businesslayer.saveOrder(newOrder);
+        }
+        catch(Exception e){
+
+        }
       //  IF DATA OK ( BUSINESSLAYER. SAVEORDER(newOrder));
 
       }
