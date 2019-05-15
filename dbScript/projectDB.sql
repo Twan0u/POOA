@@ -35,19 +35,20 @@ CREATE TABLE IF NOT EXISTS ClientOrder
 	
 	, CONSTRAINT businessUnit_fk FOREIGN KEY (businessUnit) REFERENCES BusinessUnit(idBusinessUnit)
 	, CONSTRAINT clientNbr_fk FOREIGN KEY (clientNumber) REFERENCES Client(idNumber)
+    , CONSTRAINT state_chk CHECK (state IN ('new', 'prepared', 'delivered', 'paid'))
 	)ENGINE = InnoDB;
     
 CREATE TABLE IF NOT EXISTS Beer
 	( idName VARCHAR(64) PRIMARY KEY
 	, stockPrice DOUBLE NOT NULL
-	, qtInStock INT NOT NULL
+	, qtInStock INT NOT NULL CHECK (qtInStock > -1)
 	, lowTreshold INT NOT NULL
 	)ENGINE = InnoDB;
 	
 CREATE TABLE IF NOT EXISTS OrderLine
 	( beerName VARCHAR(64)
 	, orderNumber INT
-	, quantity INT NOT NULL
+	, quantity INT NOT NULL CHECK (quantity > 0)
 	, price DOUBLE NOT NULL
 	
 	, CONSTRAINT orderLine_pk PRIMARY KEY(beerName, orderNumber)
@@ -109,7 +110,7 @@ INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orde
 INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
 	VALUES (3, 2, 145, 0, '2018-05-14', "delivered", null);
 INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
-	VALUES (4, 3, 198, 0, '2019-02-24', "payed", 30);
+	VALUES (4, 3, 198, 0, '2019-02-24', "paid", 30);
 INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
 	VALUES (5, 5, 25, 1, '2019-05-17', "prepared", 23);
 
