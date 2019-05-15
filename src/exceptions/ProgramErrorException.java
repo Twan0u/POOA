@@ -1,7 +1,7 @@
 package exceptions;
 
 /**
- * <b> Cette classe est une exception liée aux erreurs d'entrées de l'utilisateur. elle est utilisée par la classe composant pour communiquer une erreur à la classe gui </b>
+ * <b> Cette classe est une exception liée aux erreurs du programme. </b>
  *
  * @author Antoine Lambert & Nathan Surquin
  * @version 1.0
