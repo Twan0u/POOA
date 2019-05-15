@@ -38,7 +38,6 @@ public class PreparePanel extends Container{
       comboBoxClient = new JComboBox(controller.getClients());
     }catch(ProgramErrorException error){
       JOptionPane.showMessageDialog (null, "Erreur du chargement des Clients","FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
-      System.exit(1);
     }
     comboBoxClient.setMaximumRowCount(5);
     comboBoxClient.setSelectedIndex(-1);

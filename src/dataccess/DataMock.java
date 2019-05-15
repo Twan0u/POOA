@@ -15,7 +15,6 @@ public class DataMock implements InterfaceData {
   private int load = 0;
 
 
-
   public  ArrayList<Client> getAllClients()throws ProgramErrorException{
     try{
           clients.clear();

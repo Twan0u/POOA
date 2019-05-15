@@ -20,24 +20,24 @@ public class ControllerNewOrder extends Controller {
     private static Order newOrder = new Order();
 
     private Client [] bufferClients = null;
+
+    public ControllerNewOrder()throws ProgramErrorException{
+      try{
+        bufferClients = businesslayer.getAllClients();
+      }catch(Exception exception){
+        throw new ProgramErrorException( exception.getMessage());
+      }
+    }
+
     /** Recupération de tous les clients
     * @return un tableau contenant chaque client sous la forme d'un string
     * @since 1.1
     */
     public String[] getClients()throws ProgramErrorException{
-        // TODBusinessUnit [] listO erreur de chargement
-        // TODO Retry Loading DataBase If Error plus timer sleep
-        Client [] clients = null;
-      try{
-        clients = businesslayer.getAllClients();
-        bufferClients = businesslayer.getAllClients();
-      }catch(Exception exception){
-        throw new ProgramErrorException("Erreur lors de l'access aux données client :" + exception.getMessage());
-      }
 
-      String [] out = new String[clients.length];
+      String [] out = new String[bufferClients.length];
       for(int i = 0; i<out.length; i++){
-        out[i] = clients[i].getName() + "-" + clients[i].getId();
+        out[i] = bufferClients[i].getName() + "-" + bufferClients[i].getId();
       }
       return out;
     }
@@ -49,9 +49,8 @@ public class ControllerNewOrder extends Controller {
     public void selectClient(int index)throws ProgramErrorException{
       //TODO verifier index client valide
       //TODO verifier client non null
-      Client client = businesslayer.getClient(bufferClients[index].getId());
       try{
-        newOrder.setClient(client);
+        newOrder.setClient(bufferClients[index]);
       }catch(OrderException e){
         throw new ProgramErrorException(e.getMessage());
       }
@@ -209,7 +208,7 @@ public class ControllerNewOrder extends Controller {
           businesslayer.saveOrder(newOrder);
         }
         catch(Exception e){
-          throw new UserInputErrorException("Ajout impossible : " + e.getMessage());
+          throw new UserInputErrorException("Ajout impossible");
         }
       //  IF DATA OK ( BUSINESSLAYER. SAVEORDER(newOrder));
 

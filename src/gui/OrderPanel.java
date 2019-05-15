@@ -9,7 +9,7 @@ import java.awt.event.*;
 
 public class OrderPanel extends Container{
 
-  private ControllerNewOrder controller = new ControllerNewOrder();
+  private ControllerNewOrder controller;
 
   private JPanel left,right;
 
@@ -25,6 +25,12 @@ public class OrderPanel extends Container{
   private Color colBis;
 
   public OrderPanel(Color colBackground, Color colText, Color colBis) {
+    try{
+      controller = new ControllerNewOrder();
+    }catch(Exception e){
+      JOptionPane.showMessageDialog (null, e.getMessage(),"FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
+      System.exit(1);
+    }
     this.colBackground = colBackground;
     this.colText = colText;
     this.colBis = colBis;
@@ -240,5 +246,5 @@ public class OrderPanel extends Container{
     }
   }
 
- 
+
 }
