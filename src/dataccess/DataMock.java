@@ -107,13 +107,13 @@ public class DataMock implements InterfaceData {
     }
   }
 
-  public void saveOrder(Order order) throws ProgramErrorException{
+  public int saveOrder(Order order) throws ProgramErrorException{
     System.out.println("saved : "+ order.toString());
+    return 3;
   }
   public void deleteOrder(int orderID) throws ProgramErrorException{}
   public void saveOrderLine(int orderID, String beerName) throws ProgramErrorException{}
   public void deleteOrderLine(int orderID, String beerName) throws ProgramErrorException{}
   public void setOrderState(String newState, int orderId) throws ProgramErrorException{}
   public void closeConnection() throws ProgramErrorException{}
-
 }

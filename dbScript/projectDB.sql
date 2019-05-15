@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS BusinessUnit
     
     
 CREATE TABLE IF NOT EXISTS ClientOrder
-	( idNumber INT PRIMARY KEY
+	( idNumber INT PRIMARY KEY AUTO_INCREMENT
 	, businessUnit INT
 	, clientNumber INT NOT NULL
 	, hasPriority TINYINT NOT NULL
@@ -46,17 +46,17 @@ CREATE TABLE IF NOT EXISTS Beer
 	)ENGINE = InnoDB;
 	
 CREATE TABLE IF NOT EXISTS OrderLine
-	( beerName VARCHAR(64)
+	( idOrderLigne INT AUTO_INCREMENT
 	, orderNumber INT
 	, quantity INT NOT NULL CHECK (quantity > 0)
 	, price DOUBLE NOT NULL
+	, beerName VARCHAR(64)
 	
-	, CONSTRAINT orderLine_pk PRIMARY KEY(beerName, orderNumber)
+	, CONSTRAINT orderLine_pk PRIMARY KEY(idOrderLigne)
 	, CONSTRAINT beerName_fk FOREIGN KEY (beerName) REFERENCES Beer(idName)
 	, CONSTRAINT orderNumber_fk FOREIGN KEY (orderNumber) REFERENCES clientOrder(idNumber)
 	)ENGINE = InnoDB;
 	
-
 INSERT INTO Beer(idName, stockPrice, qtInStock, lowTreshold)
 	VALUES ('stella', 1.50, 123, 4);
 INSERT INTO Beer(idName, stockPrice, qtInStock, lowTreshold)
