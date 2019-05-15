@@ -7,12 +7,12 @@ import exceptions.*;
 
 public class DBAccess implements InterfaceData {
     // arraylist pour retenir ce qui a déjà été chargé
-    private ArrayList<Client> clients;
-    private ArrayList<Beer> beers;
-    private ArrayList<Locality> localities;
-    private ArrayList<BusinessUnit> businesses;
-    private ArrayList<Order> orders;
-    private ArrayList<OrderLine> orderLines;
+    private ArrayList<Client> clients = null;
+    private ArrayList<Beer> beers = null;
+    private ArrayList<Locality> localities = null;
+    private ArrayList<BusinessUnit> businesses = null;
+    private ArrayList<Order> orders = null;
+    private ArrayList<OrderLine> orderLines = null;
 
     // appels de chargement des données
     private void loadClients() throws ProgramErrorException{
