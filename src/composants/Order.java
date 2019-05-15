@@ -121,7 +121,7 @@ public class Order{
     this.setState("New");
     this.setHasPriority(false);
     this.setBusinessUnitId(null);
-    this.setOrderDate(null);
+    this.setOrderDate("2019-05-15");
   }
 
   /*____METHODES____*/
@@ -262,7 +262,7 @@ public class Order{
   * @since 1.0
   */
   public void setHasPriority(boolean priority){
-    this.hasPriority = hasPriority;
+    this.hasPriority = priority;
   }
 
   /** modifie la date de création de la commande
