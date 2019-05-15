@@ -25,12 +25,24 @@ public class DBAccess implements InterfaceData {
         localities = LocalityDBAccess.getAllLocalities();
     }
     private void loadBusinesses() throws ProgramErrorException{
+        if(clients == null)
+            loadClients();
+        if(localities == null)
+            loadLocalities();
         businesses = BusinessDBAccess.getAllBusinesses(clients, localities);
     }
     private void loadOrders() throws ProgramErrorException{
+        if(clients == null)
+            loadClients();
+        if(businesses == null)
+            loadBusinesses();
         orders = OrderDBAccess.getAllOrders(clients, businesses);
     }
     private void loadOrderLines() throws ProgramErrorException{
+        if(beers == null)
+            loadBeers();
+        if(orders == null)
+            loadOrders();
         orderLines = OrderLineDBAccess.getAllOrderLines(beers, orders);
     }
 
@@ -100,11 +112,18 @@ public class DBAccess implements InterfaceData {
         OrderDBAccess.setOrderState(newState, orderId);
     }
 
-    public void saveOrder(Order order) throws ProgramErrorException {
+    public int saveOrder(Order order) throws ProgramErrorException {
         if(orders == null)
             loadOrders();
+        int id = OrderDBAccess.saveOrder(order);
+        order.setId(id);
         orders.add(order);
-        OrderDBAccess.saveOrder(order);
+        OrderLine orderLine;
+        for(int i = 0; i < order.getOrderLinesSize(); i++) {
+            orderLine = order.getOrderLine(i);
+            OrderLineDBAccess.saveOrderLine(id, orderLine.getBeer().getName(), orderLine);
+        }
+        return id;
     }
 
     public void deleteOrder(int orderId) throws ProgramErrorException {

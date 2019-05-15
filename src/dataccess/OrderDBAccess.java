@@ -7,36 +7,36 @@ import java.util.ArrayList;
 
 public class OrderDBAccess {
 
-    public static void saveOrder(Order order) throws ProgramErrorException {
+    public static int saveOrder(Order order) throws ProgramErrorException {
         Connection connection = SingletonConnection.getInstance();
 
-        String sql = "INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)"
-                + " VALUES (?,?,?,?,?,?,?);";
+        String sql = "INSERT INTO ClientOrder (businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)"
+                + " VALUES (?,?,?,?,?,?);";
         int hasPriority = order.getHasPriority() ? 1 : 0;
         BusinessUnit business = order.getBusinessUnitId();
 
         try {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, order.getId());
-            statement.setInt(3, order.getClient().getId());
-            statement.setInt(4, hasPriority);
-            statement.setString(5, order.getOrderDate());
-            statement.setString(6, order.getState());
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setInt(2, order.getClient().getId());
+            statement.setInt(3, hasPriority);
+            statement.setString(4, order.getOrderDate());
+            statement.setString(5, order.getState());
             if(business != null) {
-                statement.setInt(2, order.getBusinessUnitId().getIdBusinessUnit());
+                statement.setInt(1, business.getIdBusinessUnit());
             }
             else {
-                statement.setNull(2, Types.INTEGER);
+                statement.setNull(1, Types.INTEGER);
             }
             if(order.getTimeLimit() > 0) {
-                statement.setInt(7,order.getTimeLimit());
+                statement.setInt(6,order.getTimeLimit());
             }
             else {
-                statement.setNull(7, Types.INTEGER);
+                statement.setNull(6, Types.INTEGER);
             }
-
-            statement.executeUpdate();
-        } catch (Exception e) {
+            int id = statement.executeUpdate();
+            return id;
+        }
+        catch (Exception e) {
             throw new ProgramErrorException("Erreur lors de la sauvegarde d'une commande dans la BD");
         }
     }

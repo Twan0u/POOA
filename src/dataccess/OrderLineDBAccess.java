@@ -76,7 +76,8 @@ public class OrderLineDBAccess {
             statement.setDouble(4, orderLine.getPrice());
             statement.executeUpdate();
         }
-        catch(Exception e) {
+        catch(SQLException e) {
+            System.out.println(e.toString());
             throw new ProgramErrorException("Erreur lors de la sauvegarde d'une ligne de commande dans la BD");
         }
     }

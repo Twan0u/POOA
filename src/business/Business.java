@@ -57,6 +57,7 @@ public class Business implements BusinessInterface{
 
 
     public BusinessUnit[] getBusinessOf(int id)throws ProgramErrorException{
+<<<<<<< HEAD
       ArrayList<BusinessUnit> businesss;
       if (id < 0 ){
         throw new ProgramErrorException("L'identifiant de client est invalide");
@@ -75,6 +76,16 @@ public class Business implements BusinessInterface{
 
       for(int i = 0; i<out.length;i++){
         out[i] = businesss.get(i);
+=======
+        ArrayList<BusinessUnit> businesss =dataLayer.getBusinessOf(id);
+      if (businesss == null){return null;}
+      if (businesss.size() == 0){return null;}
+      BusinessUnit [] out = new BusinessUnit[businesss.size()];
+      for(int i = 0; i<out.length;i++){
+
+        out[i] = businesss.get(i);
+
+>>>>>>> 73aff75519900e6484ad2afdccaf1cf5e32d4be9
       }
       return out;
 

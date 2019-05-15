@@ -20,7 +20,6 @@ public class BusinessDBAccess {
         Client client = null;
         Locality locality = null;
         String sql ="select * from BusinessUnit;";
-
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet data = statement.executeQuery();
@@ -38,10 +37,10 @@ public class BusinessDBAccess {
                 }
 
                 for(Locality l : localities) {
-                    if(l.getIdLocality() == idLocality)
+                    if(l.getIdLocality() == idLocality) {
                         locality = l;
+                    }
                 }
-
                 business = new BusinessUnit(idBusinessUnit, client, locality, streetName, streetNumber);  // le constructeur BusinnessUnit appelle la methode client.SetBusinessUnit
                 businesses.add(business);
             }
