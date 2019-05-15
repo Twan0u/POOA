@@ -61,10 +61,14 @@ public class Business implements BusinessInterface {
     * @since 1.0
     */
     public BusinessUnit[] getBusinessOf(int id)throws ProgramErrorException{
-      if (dataLayer.getBusinessOf(id) == null){return null;}
-      BusinessUnit [] out = new BusinessUnit[dataLayer.getBusinessOf(id).size()];
+        ArrayList<BusinessUnit> businesss =dataLayer.getBusinessOf(id);
+      if (businesss == null){return null;}
+      if (businesss.size() == 0){return null;}
+      BusinessUnit [] out = new BusinessUnit[businesss.size()];
       for(int i = 0; i<out.length;i++){
-        out[i] = dataLayer.getBusinessOf(id).get(i);
+
+        out[i] = businesss.get(i);
+
       }
       return out;
     }

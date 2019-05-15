@@ -47,8 +47,6 @@ public class ControllerNewOrder extends Controller {
     * @since 1.2
     */
     public void selectClient(int index)throws ProgramErrorException{
-      //TODO verifier index client valide
-      //TODO verifier client non null
       try{
         newOrder.setClient(bufferClients[index]);
       }catch(OrderException e){

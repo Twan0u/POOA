@@ -23,7 +23,7 @@ public class OrderDBAccess {
             statement.setString(5, order.getOrderDate());
             statement.setString(6, order.getState());
             if(business != null) {
-                statement.setInt(2, order.getBusinessUnitId().getIdBusinessUnit());
+                statement.setInt(2, business.getIdBusinessUnit());
             }
             else {
                 statement.setNull(2, Types.INTEGER);
@@ -34,8 +34,8 @@ public class OrderDBAccess {
             else {
                 statement.setNull(7, Types.INTEGER);
             }
-
             statement.executeUpdate();
+
         } catch (Exception e) {
             throw new ProgramErrorException("Erreur lors de la sauvegarde d'une commande dans la BD");
         }

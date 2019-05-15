@@ -25,12 +25,24 @@ public class DBAccess implements InterfaceData {
         localities = LocalityDBAccess.getAllLocalities();
     }
     private void loadBusinesses() throws ProgramErrorException{
+        if(clients == null)
+            loadClients();
+        if(localities == null)
+            loadLocalities();
         businesses = BusinessDBAccess.getAllBusinesses(clients, localities);
     }
     private void loadOrders() throws ProgramErrorException{
+        if(clients == null)
+            loadClients();
+        if(businesses == null)
+            loadBusinesses();
         orders = OrderDBAccess.getAllOrders(clients, businesses);
     }
     private void loadOrderLines() throws ProgramErrorException{
+        if(beers == null)
+            loadBeers();
+        if(orders == null)
+            loadOrders();
         orderLines = OrderLineDBAccess.getAllOrderLines(beers, orders);
     }
 
