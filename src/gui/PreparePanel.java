@@ -50,10 +50,10 @@ public class PreparePanel extends Container{
     table.setEnabled(false);
     sp=new JScrollPane(table);
     base = new JPanel();
-    base.add(sp);*/
+    base.add(sp);
 
     this.add(base, BorderLayout.CENTER );
-
+*/
     this.add(base);
   }
 }
