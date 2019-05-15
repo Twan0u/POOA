@@ -205,8 +205,9 @@ public class ControllerNewOrder extends Controller {
         System.out.println(priority);
         newOrder.setHasPriority(priority);
         newOrder.setTimeLimit(numDays);
+        int idOfNew;
         try {
-          businesslayer.saveOrder(newOrder);
+          idOfNew = businesslayer.saveOrder(newOrder);
         }
         catch(Exception e){
           throw new UserInputErrorException("Ajout impossible");

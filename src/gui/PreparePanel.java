@@ -23,7 +23,7 @@ public class PreparePanel extends Container{
 
   public PreparePanel(Color colBackground,Color colText) {
     this.setBackground(colBackground);
-    this.setLayout(new GridLayout(2,2));
+    this.setLayout(new FlowLayout());
 
     base = new JPanel();
     base.add(new JLabel("Onglet PREPARATION DE COMMANDE"));
@@ -46,9 +46,9 @@ public class PreparePanel extends Container{
     this.add(labelClient);
     this.add(comboBoxClient);
 
-    JTable table = new JTable(controller.getAllOrders(),column);
+  /*  JTable table = new JTable(controller.getAllOrders(),column);
     table.setEnabled(false);
     sp=new JScrollPane(table);
-    this.add(sp);
+    this.add(sp);*/
   }
 }

@@ -30,7 +30,12 @@ public class Gui extends JFrame{
     menuPanel = new JPanel();
     menuPanel.setPreferredSize(new Dimension(125, 100));
     menuPanel.setBackground(colSidePanel);
+
     loadMenuPanel();
+
+    ThreadLoad threadX = new ThreadLoad(path);
+    Thread thread = new Thread(threadX);
+    thread.start();
 
     mainPanel = new OrderPanel(colBackground, colText, colBis);
 

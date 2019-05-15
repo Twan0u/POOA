@@ -48,10 +48,12 @@ public interface BusinessInterface {
 
   /** Sauvegarde une commande dans la base de donnée
   * @throws ProgramErrorException erreur renvoyée si il n'y a pas d'order ou si la couche data n'a pas réussi à ajouter l'order à la base de donnée
-  * @return un tableau des clients de l'entreprise
+  * @param order
+          La commande à Sauvegarder dans la base de donneé
+  * @return l'id de la commande sauvegardée
   * @since 1.4
   */
-  void saveOrder(Order order) throws ProgramErrorException;
+  int saveOrder(Order order) throws ProgramErrorException;
 
   /** Recupération de toutes les commandes stockées dans la base de donnée
   * @return un tableau contenant toutes les orders de la base de donnée

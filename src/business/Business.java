@@ -14,7 +14,7 @@ import java.util.ArrayList;
 * AMELIORATIONS : Prévenir le Stock qu'une commande importante  va vider son stock
 *
 */
-public class Business implements BusinessInterface {
+public class Business implements BusinessInterface{
 
     private static InterfaceData dataLayer = new DataMock();
 
@@ -100,15 +100,17 @@ public class Business implements BusinessInterface {
 
     }
 
-  public void saveOrder(Order order) throws ProgramErrorException{
+  public int saveOrder(Order order) throws ProgramErrorException{
+    int idSavedOrder=-1;
     if (order == null){
       throw new ProgramErrorException("Il n'y a pas d'order à ajouter à la base de donnée");
     }
     try {
-      dataLayer.saveOrder(order);
+      idSavedOrder = dataLayer.saveOrder(order);
     }catch(Exception e){
       throw new ProgramErrorException("Il y a eu un problème lors de l'enregistrement dans la base de donnée");
     }
+    return idSavedOrder;
   }
 
 
@@ -126,7 +128,6 @@ public class Business implements BusinessInterface {
       for(int i = 0; i<out.length;i++){
         out[i] = orders.get(i);
       }
-
     return out;
   }
 }
