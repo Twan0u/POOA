@@ -1,12 +1,13 @@
 package dataccess;
 import composants.*;
+import exceptions.ProgramErrorException;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class OrderLineDBAccess {
 
-    public static ArrayList<OrderLine> getAllOrderLines(ArrayList<Beer> beers, ArrayList<Order> orders) {
+    public static ArrayList<OrderLine> getAllOrderLines(ArrayList<Beer> beers, ArrayList<Order> orders) throws ProgramErrorException {
         Connection connection = SingletonConnection.getInstance();
         ArrayList<OrderLine> orderLines = new ArrayList<>();
         OrderLine orderLine;
@@ -31,7 +32,7 @@ public class OrderLineDBAccess {
                 quantity = data.getInt("quantity");
                 price = data.getDouble("price");
 
-                i = 0;                      // trouver la biere correspondant au nom de bière récupéré
+                i = 0;
                 beer = beers.get(i);
                 tailleArrayBeers = beers.size();
                 while(i < tailleArrayBeers && !beer.getName().equals(beerName)) {
@@ -50,7 +51,7 @@ public class OrderLineDBAccess {
             }
         }
         catch(Exception e) {
-
+            throw new ProgramErrorException("Erreur lors de la récupération des lignes de commande dans la BD");
         }
         return orderLines;
     }
@@ -63,7 +64,7 @@ public class OrderLineDBAccess {
         return null;
     }
 
-    public static void saveOrderLine(int orderID, String beerName, OrderLine orderLine) {
+    public static void saveOrderLine(int orderID, String beerName, OrderLine orderLine) throws ProgramErrorException {
         Connection connection = SingletonConnection.getInstance();
         String sql = "INSERT INTO OrderLine (beerName, orderNumber, quantity, price) VALUES (?,?,?,?);";
 
@@ -76,11 +77,11 @@ public class OrderLineDBAccess {
             statement.executeUpdate();
         }
         catch(Exception e) {
-
+            throw new ProgramErrorException("Erreur lors de la sauvegarde d'une ligne de commande dans la BD");
         }
     }
 
-    public static void deleteOrderLine(int orderId, String beerName) {
+    public static void deleteOrderLine(int orderId, String beerName) throws ProgramErrorException {
         Connection connection = SingletonConnection.getInstance();
         String sql = "DELETE FROM OrderLine WHERE (beerName = ? AND orderNumber = ?);";
 
@@ -92,7 +93,7 @@ public class OrderLineDBAccess {
         }
 
         catch(Exception e) {
-
+            throw new ProgramErrorException("Erreur lors de la suppression d'une ligne de commande dans la BD");
         }
     }
 }

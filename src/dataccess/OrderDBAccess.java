@@ -1,12 +1,13 @@
 package dataccess;
 import composants.*;
+import exceptions.ProgramErrorException;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class OrderDBAccess {
 
-    public static void saveOrder(Order order) {
+    public static void saveOrder(Order order) throws ProgramErrorException {
         Connection connection = SingletonConnection.getInstance();
 
         String sql = "INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)"
@@ -36,12 +37,11 @@ public class OrderDBAccess {
 
             statement.executeUpdate();
         } catch (Exception e) {
-            System.out.println(e.getMessage());
-
+            throw new ProgramErrorException("Erreur lors de la sauvegarde d'une commande dans la BD");
         }
     }
 
-    public static ArrayList<Order> getAllOrders(ArrayList<Client> clients, ArrayList<BusinessUnit> businesses){
+    public static ArrayList<Order> getAllOrders(ArrayList<Client> clients, ArrayList<BusinessUnit> businesses) throws ProgramErrorException{
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Order> orders = new ArrayList<>();
         Order order;
@@ -101,7 +101,7 @@ public class OrderDBAccess {
         }
 
         catch(Exception e) {
-
+            throw new ProgramErrorException("Erreur lors de la récupération des commandes dans la BD");
         }
         return orders;
     }
@@ -160,7 +160,7 @@ public class OrderDBAccess {
         return null;
     }
 
-    public static void deleteOrder(int orderId) {
+    public static void deleteOrder(int orderId) throws ProgramErrorException {
         Connection connection = SingletonConnection.getInstance();
         String sql = "DELETE FROM ClientOrder WHERE idNumber = ?;";
 
@@ -171,11 +171,11 @@ public class OrderDBAccess {
         }
 
         catch(Exception e) {
-
+            throw new ProgramErrorException("Erreur lors de la suppression d'une commande dans la BD");
         }
     }
 
-    public static void setOrderState(String newState, int orderId) {
+    public static void setOrderState(String newState, int orderId) throws ProgramErrorException {
         Connection connection = SingletonConnection.getInstance();
         String sql = "UPDATE ClientOrder SET state = ? WHERE idNumber = ?;";
 
@@ -186,7 +186,7 @@ public class OrderDBAccess {
             statement.executeUpdate();
         }
         catch(Exception e) {
-
+            throw new ProgramErrorException("Erreur lors de la modification de l'état d'une commande dans la BD");
         }
     }
 }

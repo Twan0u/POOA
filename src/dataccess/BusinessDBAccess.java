@@ -8,7 +8,7 @@ import exceptions.*;
 
 public class BusinessDBAccess {
 
-    public static ArrayList<BusinessUnit> getAllBusinesses (ArrayList<Client> clients, ArrayList<Locality> localities){
+    public static ArrayList<BusinessUnit> getAllBusinesses (ArrayList<Client> clients, ArrayList<Locality> localities) throws ProgramErrorException{
         Connection connection = SingletonConnection.getInstance();
         ArrayList<BusinessUnit> businesses = new ArrayList<>();
         BusinessUnit business;
@@ -47,18 +47,18 @@ public class BusinessDBAccess {
             }
         }
         catch(Exception e){
-
+            throw new ProgramErrorException("Erreur lors de la récupération des business unit dans la BD");
         }
         return businesses;
     }
 
-    public static ArrayList<BusinessUnit> getBusinessOf(int id, ArrayList<Client> clients) {
-        ArrayList<BusinessUnit> businesses;
-        for(Client client : clients) {
-            if(client.getId() == id)
-                return client.getBusiness();
+    public static ArrayList<BusinessUnit> getBusinessOf(int id, ArrayList<BusinessUnit> businesses) {
+        ArrayList<BusinessUnit> selectedBusinesses = new ArrayList<>();
+        for(BusinessUnit bU : businesses) {
+            if(bU.getClient().getId() == id)
+                selectedBusinesses.add(bU);
         }
-        return(null); // TODO : throw une erreur car client pas trouvé
+        return selectedBusinesses;
     }
 }
 

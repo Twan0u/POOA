@@ -1,6 +1,7 @@
 package dataccess;
 
 import composants.Locality;
+import exceptions.ProgramErrorException;
 
 import java.util.*;
 import java.sql.*;
@@ -9,7 +10,7 @@ import java.util.ArrayList;
 
 public class LocalityDBAccess {
 
-    public static ArrayList<Locality> getAllLocalities(){
+    public static ArrayList<Locality> getAllLocalities() throws ProgramErrorException {
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Locality> localities = new ArrayList<>();
         Locality locality;
@@ -32,7 +33,7 @@ public class LocalityDBAccess {
         }
 
         catch(Exception e) {
-
+            throw new ProgramErrorException("Erreur lors de la récupération des localités dans la BD");
         }
         return localities;
     }

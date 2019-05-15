@@ -8,7 +8,7 @@ import exceptions.*;
 
 public class BeerDBAccess {
 
-    public static ArrayList<Beer> getAllBeers(){
+    public static ArrayList<Beer> getAllBeers() throws ProgramErrorException{
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Beer> beers = new ArrayList<>();
         Beer beer;
@@ -32,7 +32,7 @@ public class BeerDBAccess {
             }
         }
         catch(Exception e){
-
+            throw new ProgramErrorException("Erreur lors de la récupération des bières dans la BD");
         }
         return beers;
     }

@@ -8,7 +8,7 @@ import exceptions.*;
 
 public class ClientDBAccess {
 
-    public static ArrayList<Client> getAllClients(){
+    public static ArrayList<Client> getAllClients() throws ProgramErrorException{
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Client> clients = new ArrayList<>();
         Client client;
@@ -35,18 +35,17 @@ public class ClientDBAccess {
             }
         }
         catch(Exception e){
-
+            throw new ProgramErrorException("Erreur lors de la récupération des clients dans la BD");
         }
         return clients;
     }
 
-    public static Client getClient(int id, ArrayList<Client> clients) {//throws ClientException{
+    public static Client getClient(int id, ArrayList<Client> clients) {
         for(Client client : clients) {
             if(client.getId() == id) {
                 return client;
             }
         }
-        //throw new ClientException("No client matching the given id was found");
         return null;
     }
 }
