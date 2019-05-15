@@ -6,7 +6,7 @@ import exceptions.*;
 import java.io.*;
 import java.util.*;
 
-public class DataMock {
+public class DataMock implements InterfaceData {
 
   private static ArrayList<Client> clients = new ArrayList<>();
   private static ArrayList<Beer> beers = new ArrayList<>();
@@ -105,6 +105,6 @@ public class DataMock {
   public void saveOrderLine(int orderID, String beerName) throws ProgramErrorException{}
   public void deleteOrderLine(int orderID, String beerName) throws ProgramErrorException{}
   public void setOrderState(String newState, int orderId) throws ProgramErrorException{}
-
+public void closeConnection() throws ProgramErrorException{}
 
 }

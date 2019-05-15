@@ -14,7 +14,7 @@ import java.util.ArrayList;
 */
 public class Business implements BusinessInterface {
 
-    private static InterfaceData dataLayer = new DBAccess();
+    private static InterfaceData dataLayer = new DataMock();
 
     /** Recupération de tous les clients
     * @return un tableau contenant chaque client
