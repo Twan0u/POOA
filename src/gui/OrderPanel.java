@@ -28,7 +28,6 @@ public class OrderPanel extends Container{
     this.colBackground = colBackground;
     this.colText = colText;
     this.colBis = colBis;
-
     this.setBackground(colBackground);
     this.setLayout(new GridLayout(1,2));
 

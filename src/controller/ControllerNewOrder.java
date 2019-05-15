@@ -209,7 +209,7 @@ public class ControllerNewOrder extends Controller {
           businesslayer.saveOrder(newOrder);
         }
         catch(Exception e){
-          throw new UserInputErrorException("Ajout impossible");
+          throw new UserInputErrorException("Ajout impossible : " + e.getMessage());
         }
       //  IF DATA OK ( BUSINESSLAYER. SAVEORDER(newOrder));
 
