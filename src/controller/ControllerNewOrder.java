@@ -82,7 +82,7 @@ public class ControllerNewOrder extends Controller {
     * @since 1.0
     */
     public String[] getBeers()throws ProgramErrorException{
-      Beer [] beers = null;
+      ArrayList<Beer> beers = null;
       try{
         beers = businesslayer.getAllBeers();
       }catch(Exception e){
@@ -92,9 +92,9 @@ public class ControllerNewOrder extends Controller {
         throw new ProgramErrorException("Erreur du chargement : Pas de bières disponibles ");
       }
 
-        String [] out = new String[beers.length];
+        String [] out = new String[beers.size()];
         for(int i=0;i<out.length;i++){
-          out[i] = beers[i].getName();
+          out[i] = beers.get(i).getName();
         }
         return out;
     }
@@ -108,7 +108,7 @@ public class ControllerNewOrder extends Controller {
     * @since 1.2
     */
     public void addBeer(int index, int quantity)throws UserInputErrorException, ProgramErrorException{
-      Beer [] beers = null; //TODO getBeer(Beername)
+      ArrayList<Beer> beers = null; //TODO getBeer(Beername)
       try{
         beers = businesslayer.getAllBeers();
       }catch(Exception e){
@@ -116,11 +116,11 @@ public class ControllerNewOrder extends Controller {
       }
       if (beers == null){
         throw new ProgramErrorException("Il y a eu un problème dans chargement de la bière");
-      }else if(beers.length < index || index < 0){
+      }else if(beers.size() < index || index < 0){
         throw new UserInputErrorException("L'index de la bière sélectionnée est invalide");
       }else{
         try{
-          new OrderLine(beers[index],newOrder,quantity);
+          new OrderLine(beers.get(index),newOrder,quantity);
         }catch(OrderLineException e){
           throw new UserInputErrorException(e.getMessage());
         }
@@ -202,6 +202,7 @@ public class ControllerNewOrder extends Controller {
         }
         //TODO Auto save current Date
         //TODO verifier integrité des données
+        System.out.println(priority);
         newOrder.setHasPriority(priority);
         newOrder.setTimeLimit(numDays);
         try {

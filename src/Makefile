@@ -43,8 +43,8 @@ controller/InterfaceController.class: business controller/InterfaceController.ja
 controller/ControllerNewOrder.class: controller/InterfaceController.class controller/ControllerNewOrder.java
 		$(JC) controller/ControllerNewOrder.java
 
-controller/ControllerPrepare.class: controller/ControllerNewOrder.java
-		$(JC) controller/ControllerNewOrder.java
+controller/ControllerPrepare.class: controller/ControllerPrepare.java
+		$(JC) controller/ControllerPrepare.java
 
 business: dataccess business/BusinessInterface.class business/Business.class
 

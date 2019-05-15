@@ -30,8 +30,6 @@ public class DataMock implements InterfaceData {
     }
   }
 
-
-
   public Client getClient(int id)throws ProgramErrorException{
     try{
       return clients.get(id);
@@ -85,11 +83,13 @@ public class DataMock implements InterfaceData {
   public ArrayList<Order> getOrdersToDeliver(int localityID) throws ProgramErrorException{return null;}
 
   public ArrayList<Order> getAllOrders() throws ProgramErrorException{
+    Order newOrder = null;
     try{
       Locality local = new Locality (1, "Localité du petit bois", "7911");
       BusinessUnit bubu = new BusinessUnit (1, clients.get(0), local, "Rue de la faim", "12");
       Client client = new Client (0, "Nathan", "0032007007005", 10, "TVA_025522095251");
-      orders.add(new Order(0, bubu, client, false, "2019-06-30", "New"));
+      newOrder = new Order(0, bubu, client, false, "2019-06-30", "New");
+      orders.add(newOrder);
     }catch (Exception e){
       throw new ProgramErrorException(e.getMessage());
     }

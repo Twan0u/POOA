@@ -9,101 +9,124 @@ import java.util.ArrayList;
 * <b>classe de la couche Business</b>
 *
 * @author Antoine Lambert et Nathan Surquin
-* @version 1.1
+* @version 1.5
+*
+* AMELIORATIONS : Prévenir le Stock qu'une commande importante  va vider son stock
 *
 */
 public class Business implements BusinessInterface {
 
-    private static InterfaceData dataLayer = new DBAccess();
+    private static InterfaceData dataLayer = new DataMock();
 
-    /** Recupération de tous les clients
-    * @return un tableau contenant chaque client
-    * @throws ClientException erreur renvoyée si il y a eu une erreur dans la création d'un objet client
-    * @since 1.1
-    */
     public Client[] getAllClients()throws ProgramErrorException{
-      Client [] out = new Client[dataLayer.getAllClients().size()];
-      for(int i = 0; i<out.length;i++){
-        out[i] = dataLayer.getAllClients().get(i);
+      ArrayList<Client> clients = null;
+
+      try{clients=  dataLayer.getAllClients();
+      }catch(Exception e){
+        throw new ProgramErrorException("Erreur de chargement de tous les clients depuis la base de donée");
       }
-      return out;
-    }
 
-    /** Recupération d'un sur base de son index
-    * @param index
-    *             index dans le tableau des clients du client à retourner
-    * @return une courte description du client
-    * @since 1.0
-    */
-    public Client getClient(int index)throws ProgramErrorException{
-      return dataLayer.getClient(index);
-    }
-
-    /** Récupération de toutes les bières de la base de donnée
-    * @return un tableau des différentes bières que vends l'entreprise
-    * @throws BeerException en cas d'erreur dans la création d'une des bières
-    * @since 1.0
-    */
-    public Beer[] getAllBeers()throws ProgramErrorException{
-      Beer [] out = new Beer[dataLayer.getAllBeers().size()];
-      for(int i = 0; i<out.length;i++){
-        out[i] = dataLayer.getAllBeers().get(i);
+      if (clients == null){
+        throw new ProgramErrorException("Il n'y a pas de Client chargé dans la base de Donnée (null)");
+      }else if(clients.size()==0){
+        throw new ProgramErrorException("Il n'y a pas de Client chargé dans la base de Donnée (0 clients)");
+      }else{
+        Client [] out = new Client[clients.size()];
+        for(int i = 0; i<out.length;i++){
+          out[i] = clients.get(i);
+        }
+        return out;
       }
-      return out;
     }
 
-    /** récupère tous les BusinessUnit d'un client sur base de son index dans le tableau
-    * @param id
-    *             index du client
-    * @return une liste de business
-    * @throws BusinessUnitException en cas de création d'un BusinessUnit incorrect
-    * @throws LocalityException en cas de création d'une Locality incorrecte
-    * @since 1.0
-    */
+    public ArrayList<Beer> getAllBeers()throws ProgramErrorException{
+      ArrayList<Beer> beers;
+      try{
+        beers  = dataLayer.getAllBeers();
+      }catch(Exception e){
+        throw new ProgramErrorException("Il y a eu une erreur dans le chargement des bières depuis la base de donée");
+      }
+      if (beers == null){
+        throw new ProgramErrorException("il n'y a pas de bières dans la base de donneé");
+      }else if (beers.size() == 0){
+        throw new ProgramErrorException("il n'y a pas de bières dans la base de donneé");
+      }
+
+      return beers;
+    }
+
+
     public BusinessUnit[] getBusinessOf(int id)throws ProgramErrorException{
-      if (dataLayer.getBusinessOf(id) == null){return null;}
-      BusinessUnit [] out = new BusinessUnit[dataLayer.getBusinessOf(id).size()];
+      ArrayList<BusinessUnit> businesss;
+      if (id < 0 ){
+        throw new ProgramErrorException("L'identifiant de client est invalide");
+      }
+      try{
+        businesss = dataLayer.getBusinessOf(id);
+      }catch(Exception e){
+        throw new ProgramErrorException("il y a eu une erreur lors du chargement des données depuis la base de donnée");
+      }
+
+      if (businesss == null){
+        return null;
+      }
+
+      BusinessUnit [] out = new BusinessUnit[businesss.size()];
+
       for(int i = 0; i<out.length;i++){
-        out[i] = dataLayer.getBusinessOf(id).get(i);
+        out[i] = businesss.get(i);
       }
       return out;
+
     }
 
-    public Beer[] getLowQuantityBeers()throws ProgramErrorException{
+    public ArrayList<Beer> getLowQuantityBeers()throws ProgramErrorException{
       ArrayList<Beer> lowBeers = new ArrayList<>();
-      Beer current;
-      for(int i = 0; i<dataLayer.getAllBeers().size();i++){
-        current = dataLayer.getAllBeers().get(i);
-        if (current.isLowInQuantity()){
-          lowBeers.add(current);
+      ArrayList<Beer> allBeers;
+      try{
+        allBeers = dataLayer.getAllBeers();
+      }catch(Exception e){
+        throw new ProgramErrorException("Il y a eu une erreur dans le chargement des bières depuis la couche data");
+      }
+      if (allBeers == null){
+        throw new ProgramErrorException("Aucune bière n'a été chargée depuis la base de donnée");
+      }
+      for(int i = 0; i<allBeers.size();i++){
+        if (allBeers.get(i).isLowInQuantity()){
+          lowBeers.add(allBeers.get(i));
         }
       }
-      Beer [] out = new Beer[lowBeers.size()];
-      for(int i = 0; i<out.length;i++){
-        out[i] = lowBeers.get(i);
-      }
-      return out;
+      return lowBeers;
+
     }
 
   public void saveOrder(Order order) throws ProgramErrorException{
-    dataLayer.saveOrder(order);
+    if (order == null){
+      throw new ProgramErrorException("Il n'y a pas d'order à ajouter à la base de donnée");
+    }
+    try {
+      dataLayer.saveOrder(order);
+    }catch(Exception e){
+      throw new ProgramErrorException("Il y a eu un problème lors de l'enregistrement dans la base de donnée");
+    }
   }
 
-  public Order[] getAllOrders(){
-    ArrayList<Order> orders = new ArrayList<>();
+
+  public Order[] getAllOrders()throws ProgramErrorException{
+    ArrayList<Order> orders;
     try {
-      Order current;
-      for(int i = 0; i<dataLayer.getAllOrders().size();i++){
-        current = dataLayer.getAllOrders().get(i);
-          orders.add(current);
-      }
+      orders = dataLayer.getAllOrders();
     }catch(Exception e){
-      System.out.println(e.getMessage());
+      throw new ProgramErrorException("Il y a eu une erreur lors du chargement de toutes les commandes depuis la base de donneé");
     }
-    Order [] out = new Order[orders.size()];
-    for(int i = 0; i<out.length;i++){
-      out[i] = orders.get(i);
+    if (orders == null){
+      throw new ProgramErrorException("aucune commande n'a pu être chargée depuis la base de donnée");
     }
+      Order [] out = new Order[orders.size()];
+      for(int i = 0; i<out.length;i++){
+        out[i] = orders.get(i);
+      }
+
     return out;
   }
 }

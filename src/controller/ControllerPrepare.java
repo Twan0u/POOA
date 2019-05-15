@@ -40,6 +40,7 @@ public class ControllerPrepare extends Controller {
     */
     public String[][] getAllOrders(){
       Order [] orders = businesslayer.getAllOrders();
+
       String [][] out = new String [2][orders.length];
       for (int i=0;i<orders.length;i++){
         out[0][i] = Integer.toString(orders[i].getId());

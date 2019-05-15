@@ -23,7 +23,7 @@ public class PreparePanel extends Container{
 
   public PreparePanel(Color colBackground,Color colText) {
     this.setBackground(colBackground);
-    this.setLayout(new GridLayout(1,2));
+    this.setLayout(new GridLayout(2,2));
 
     base = new JPanel();
     base.add(new JLabel("Onglet PREPARATION DE COMMANDE"));
@@ -34,6 +34,7 @@ public class PreparePanel extends Container{
     labelClient = new JLabel("Client : ");
     labelClient.setHorizontalAlignment(SwingConstants.RIGHT);
     labelClient.setForeground(colText);
+
     try{
       comboBoxClient = new JComboBox(controller.getClients());
     }catch(ProgramErrorException error){
@@ -45,14 +46,9 @@ public class PreparePanel extends Container{
     this.add(labelClient);
     this.add(comboBoxClient);
 
-  /*  JTable table = new JTable(controller.getAllOrders(),column);
+    JTable table = new JTable(controller.getAllOrders(),column);
     table.setEnabled(false);
     sp=new JScrollPane(table);
-    base = new JPanel();
-    base.add(sp);
-
-    this.add(base, BorderLayout.CENTER );
-*/
-    this.add(base);
+    this.add(sp);
   }
 }
