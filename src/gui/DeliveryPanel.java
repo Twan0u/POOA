@@ -25,7 +25,7 @@ public class DeliveryPanel extends Container{
 
     //try{
       String [] TODO = {"Select A PostCode","Please"};
-      comboBoxCodePostal = new JComboBox(TODO);//TODO 
+      comboBoxCodePostal = new JComboBox(TODO);//TODO
     //}catch(ProgramErrorException error){
     //  JOptionPane.showMessageDialog (null, "Erreur du chargement des Localités","FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
     //}
