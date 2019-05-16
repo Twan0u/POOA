@@ -69,6 +69,8 @@ INSERT INTO Beer(idName, stockPrice, qtInStock, lowTreshold)
 	VALUES ('carlsberg', 1.68, 145, 9);
 INSERT INTO Beer(idName, stockPrice, qtInStock, lowTreshold)
 	VALUES ('jupiler', 1.89, 115, 6);
+	INSERT INTO Beer(idName, stockPrice, qtInStock, lowTreshold)
+	VALUES ('bush', 2.12, 15, 30);
 
 
 INSERT INTO Client(idNumber, phoneNumber, clientName, vatNumber, discount)

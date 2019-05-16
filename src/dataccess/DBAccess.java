@@ -119,7 +119,8 @@ public class DBAccess implements InterfaceData {
         order.setId(id);
         orders.add(order);
         OrderLine orderLine;
-        for(int i = 0; i < order.getOrderLinesSize(); i++) {
+        int nbOrderLines = order.getOrderLinesSize();
+        for(int i = 0; i < nbOrderLines; i++) {
             orderLine = order.getOrderLine(i);
             OrderLineDBAccess.saveOrderLine(id, orderLine.getBeer().getName(), orderLine);
         }
@@ -129,7 +130,15 @@ public class DBAccess implements InterfaceData {
     public void deleteOrder(int orderId) throws ProgramErrorException {
         if(orders == null)
             loadOrders();
-        orders.remove(getOrder(orderId));
+        Order order = getOrder(orderId);
+        OrderLine orderLine;
+        int nbOrderLines = order.getOrderLinesSize();
+        for(int i = 0; i < nbOrderLines; i++) {
+            orderLine = order.getOrderLine(orderId);
+            deleteOrderLine(orderId, orderLine.getBeer().getName());
+            orderLines.remove(orderLine);
+        }
+        orders.remove(order);
         OrderDBAccess.deleteOrder(orderId);
     }
 
@@ -142,15 +151,16 @@ public class DBAccess implements InterfaceData {
     public void saveOrderLine(int orderId, String beerName) throws ProgramErrorException{
         if(orderLines == null)
             loadOrderLines();
-        orderLines.add(getOrderLine(orderId, beerName));
-        OrderLineDBAccess.saveOrderLine(orderId, beerName, getOrderLine(orderId, beerName));
+        OrderLine orderLine = getOrderLine(orderId, beerName);
+        orderLines.add(orderLine);
+        OrderLineDBAccess.saveOrderLine(orderId, beerName, orderLine);
     }
 
     public void deleteOrderLine(int orderId, String beerName) throws ProgramErrorException {
         if(orderLines == null)
             loadOrderLines();
-        orderLines.remove(getOrderLine(orderId, beerName));
         OrderLineDBAccess.deleteOrderLine(orderId, beerName);
+        orderLines.remove(getOrderLine(orderId, beerName));
     }
 
     public void closeConnection() throws ProgramErrorException {

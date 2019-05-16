@@ -33,7 +33,11 @@ public class OrderDBAccess {
             else {
                 statement.setNull(6, Types.INTEGER);
             }
-            int id = statement.executeUpdate();
+            statement.executeUpdate();
+            ResultSet rs = statement.getGeneratedKeys();
+            int id = 0;
+            if(rs.next())
+                id = rs.getInt(1);
             return id;
         }
         catch (Exception e) {
