@@ -16,7 +16,7 @@ import java.util.ArrayList;
 */
 public class Business implements BusinessInterface{
 
-    private static InterfaceData dataLayer = new DBAccess();
+    private static InterfaceData dataLayer = new DataMock();
 
     public Client[] getAllClients()throws ProgramErrorException{
       ArrayList<Client> clients = null;
@@ -112,6 +112,9 @@ public class Business implements BusinessInterface{
     }catch(Exception e){
       throw new ProgramErrorException("Il y a eu un problème lors de l'enregistrement dans la base de donnée");
     }
+    if (idSavedOrder == -1){
+      throw new ProgramErrorException("Il y a eu un problème avec la récupération d'un identifiant de commande");
+    }
     return idSavedOrder;
   }
 
@@ -131,5 +134,18 @@ public class Business implements BusinessInterface{
         out[i] = orders.get(i);
       }
     return out;
+  }
+
+  public ArrayList<Order> getOrdersToDeliver()throws ProgramErrorException{ //Retirer les orders Qu'il ne faut pas livrer
+    ArrayList<Order> orders;
+    try {
+      orders = dataLayer.getOrdersWithState("prepared");
+    }catch(Exception e){
+      throw new ProgramErrorException("Il y a eu une erreur lors du chargement des commandes à livrer depuis la base de donneé");
+    }
+    if (orders == null){
+      return new ArrayList<>();
+    }
+    return orders;
   }
 }

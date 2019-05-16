@@ -14,7 +14,6 @@ public class DataMock implements InterfaceData {
 
   private int load = 0;
 
-
   public  ArrayList<Client> getAllClients()throws ProgramErrorException{
     try{
           clients.clear();
@@ -49,7 +48,6 @@ public class DataMock implements InterfaceData {
     }
   }
 
-
   public ArrayList<BusinessUnit> getBusinessOf(int id)throws ProgramErrorException{
     try{
       loadbusiness();
@@ -77,7 +75,23 @@ public class DataMock implements InterfaceData {
     }
   }
 
-  public ArrayList<Order> getOrdersWithState(String state) throws ProgramErrorException{return null;}
+  public ArrayList<Order> getOrdersWithState(String state) throws ProgramErrorException{
+    if (state == "prepared"){
+      try{
+        ArrayList<Order> orders = new ArrayList<>();;
+        Locality local = new Locality (1, "Localité du petit bois", "7911");
+        BusinessUnit bubu = new BusinessUnit (1, clients.get(0), local, "Rue de la faim", "12");
+        Client client = new Client (0, "Nathan", "0032007007005", 10, "TVA_025522095251");
+        orders.add(new Order(0, bubu, client, false, "2019-06-30", "ToDeliver"));
+        orders.add(new Order(1, bubu, client, true, "2019-06-30", "ToDeliver"));
+        orders.add(new Order(2, bubu, client, false, "2019-06-30", "ToDeliver"));
+        orders.add(new Order(3, bubu, client, true, "2019-06-30", "ToDeliver"));
+        orders.add(new Order(4, bubu, client, false, "2019-06-30", "ToDeliver"));
+        return orders;
+      }catch(Exception e){}
+    }
+    return null;
+  }
   public ArrayList<Order> getOrdersWithDates(String dateMin, String dateMax) throws ProgramErrorException{return null;}
   public ArrayList<Order> getOrdersWithClient(int clientID) throws ProgramErrorException{return null;}
   public ArrayList<Order> getOrdersToDeliver(int localityID) throws ProgramErrorException{return null;}
@@ -109,11 +123,11 @@ public class DataMock implements InterfaceData {
 
   public int saveOrder(Order order) throws ProgramErrorException{
     System.out.println("saved : "+ order.toString());
-
     return 42;
-
   }
-  public void deleteOrder(int orderID) throws ProgramErrorException{}
+  public void deleteOrder(int orderID) throws ProgramErrorException{
+    System.out.println("Saved");
+  }
   public void saveOrderLine(int orderID, String beerName) throws ProgramErrorException{}
   public void deleteOrderLine(int orderID, String beerName) throws ProgramErrorException{}
   public void setOrderState(String newState, int orderId) throws ProgramErrorException{}
