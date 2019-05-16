@@ -17,8 +17,8 @@ public class BusinessDBAccess {
         int idLocality;
         String streetName;
         String streetNumber;
-        Client client = null;
-        Locality locality = null;
+        Client client;
+        Locality locality;
         String sql ="select * from BusinessUnit;";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -28,19 +28,12 @@ public class BusinessDBAccess {
                 idBusinessUnit = data.getInt("idBusinessUnit");
                 clientNumber = data.getInt("clientNumber");
                 idLocality = data.getInt("locality");
+                locality = LocalityDBAccess.getLocality(idLocality);
                 streetName = data.getString("streetName");
                 streetNumber = data.getString("streetNumber");
+                client = ClientDBAccess.getClient(clientNumber);
+                BusinessDBAccess.getBusinessOf(client.getId());
 
-                for(Client c : clients) {
-                    if(c.getId() == clientNumber)
-                        client = c;
-                }
-
-                for(Locality l : localities) {
-                    if(l.getIdLocality() == idLocality) {
-                        locality = l;
-                    }
-                }
                 business = new BusinessUnit(idBusinessUnit, client, locality, streetName, streetNumber);  // le constructeur BusinnessUnit appelle la methode client.SetBusinessUnit
                 businesses.add(business);
             }
@@ -54,10 +47,11 @@ public class BusinessDBAccess {
         return businesses;
     }
 
-    public static ArrayList<BusinessUnit> getBusinessOf(int ownerId, Client client) throws DataAccessException, CorruptedDataException {
+    public static ArrayList<BusinessUnit> getBusinessOf(int idClient) throws DataAccessException, CorruptedDataException {
         Connection connection = SingletonConnection.getInstance();
         String sql = "SELECT * FROM BusinessUnit WHERE clientNumber = ?";
         ArrayList<BusinessUnit> selectedBusinesses = new ArrayList<>();
+        Client client = ClientDBAccess.getClient(idClient);
         BusinessUnit business;
         Locality locality;
         int idBusiness;
@@ -67,7 +61,7 @@ public class BusinessDBAccess {
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, ownerId);
+            statement.setInt(1, client.getId());
             ResultSet data = statement.executeQuery();
 
             while(data.next()) {
@@ -88,5 +82,35 @@ public class BusinessDBAccess {
         }
 
         return selectedBusinesses;
+    }
+
+    public static BusinessUnit getBusinessWithId(int idBusiness) throws DataAccessException, CorruptedDataException {
+        Connection connection = SingletonConnection.getInstance();
+        String sql = "SELECT * FROM BusinessUnit WHERE idBusinessUnit = ?";
+        BusinessUnit business = null;
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, idBusiness);
+            ResultSet data = statement.executeQuery();
+
+            if(data.next()) {
+                String streetName = data.getString("streetName");
+                String streetNumber = data.getString("streetNumber");
+                int localityNumber = data.getInt("locality");
+                Locality locality = LocalityDBAccess.getLocality(localityNumber);
+                int clientNumber = data.getInt("clientNumber");
+                Client client = ClientDBAccess.getClient(clientNumber);
+                business = new BusinessUnit(idBusiness, client, locality, streetName, streetNumber);
+            }
+        }
+        catch(SQLException e){
+            throw new DataAccessException("Erreur lors de la récupération de données concernant des business unit dans la BD");
+        }
+        catch(BusinessUnitException e) {
+            throw new CorruptedDataException("Des données incohérentes concernant des business unit se trouvent dans BD");
+        }
+
+        return business;
     }
 }

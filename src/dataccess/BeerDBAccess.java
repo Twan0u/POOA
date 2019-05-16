@@ -35,8 +35,34 @@ public class BeerDBAccess {
             throw new DataAccessException("Erreur lors de la récupération de données sur les bières dans la BD");
         }
         catch(BeerException e) {
-            throw new CorruptedDataException("Des données incohérentes concernant les bières se trouvent dans la base de donnée");
+            throw new CorruptedDataException("Des données incohérentes concernant les bières se trouvent dans la BD");
         }
         return beers;
+    }
+
+    public static Beer getBeer(String name) throws DataAccessException, CorruptedDataException{
+        Connection connection = SingletonConnection.getInstance();
+        String sql = "SELECT * FROM Beer WHERE idName = ?";
+        Beer beer = null;
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setString(1, name);
+            ResultSet data = statement.executeQuery();
+
+            if(data.next()) {
+                double stockPrice = data.getDouble("stockPrice");
+                int qtInStock = data.getInt("qtInStock");
+                int lowThreshold = data.getInt("lowTreshold");
+                beer = new Beer(name, stockPrice, qtInStock, lowThreshold);
+            }
+        }
+        catch(SQLException e) {
+            throw new DataAccessException("Erreur lors de la récupération de données concernant une bière");
+        }
+        catch(BeerException e){
+            throw new CorruptedDataException("Des données incohérentes concernant une bière se trouve dans la BD");
+        }
+        return beer;
     }
 }

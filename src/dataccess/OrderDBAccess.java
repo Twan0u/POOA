@@ -159,12 +159,41 @@ public class OrderDBAccess {
         return selectedOrders;
     }
 
-    public static Order getOrder(int orderId, ArrayList<Order> orders) {
-        for(Order o : orders) {
-            if(o.getId() == orderId)
-                return o;
-        }
-        return null;
+    public static Order getOrderWithID(int orderId) throws DataAccessException, CorruptedDataException {
+        Connection connection = SingletonConnection.getInstance();
+        String sql = "SELECT * FROM ClientOrder WHERE idNumber = ?";
+        Order order = null;
+        BusinessUnit business = null;
+        ArrayList <OrderLine> orderLines;
+         try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, orderId);
+            ResultSet data = statement.executeQuery();
+
+            if(data.next()){
+                int clientNumber = data.getInt("clientNumber");
+                Client client = ClientDBAccess.getClient(clientNumber);
+                boolean hasPriority = data.getInt("hasPriority") == 1;
+                String orderDate = data.getString("orderDate");
+                String state = data.getString("state");
+                Integer bU = data.getInt("businessUnit");
+                if(!data.wasNull()) {
+                    business = BusinessDBAccess.getBusinessWithId(bU);
+                }
+                order = new Order(orderId, business, client, hasPriority, orderDate, state);
+                Integer timeLimit = data.getInt("timeLimit");
+                if(!data.wasNull())
+                    order.setTimeLimit(timeLimit.intValue());
+            }
+         }
+         catch(SQLException e){
+             throw new DataAccessException("Erreur lors de la récupération de données concernant une commande dans la BD");
+         }
+         catch(OrderException e) {
+             throw new CorruptedDataException("Des données incohérentes concernant une commande se trouvent dans BD");
+         }
+        orderLines = OrderLineDBAccess.getOrderLinesWithOrder(order);
+        return order;
     }
 
     public static void deleteOrder(int orderId) throws DataAccessException, DataDeletionException {

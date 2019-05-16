@@ -67,14 +67,14 @@ public class DBAccess implements InterfaceData {
 
 
 
-
     public Client getClient(int id) throws DataAccessException, CorruptedDataException {
-        return ClientDBAccess.getClient(id);
+        Client client = ClientDBAccess.getClient(id);
+        BusinessDBAccess.getBusinessOf(id);     // les business du clients sont créés et référencés
+        return client;
     }
 
     public ArrayList<BusinessUnit> getBusinessOf(int idClient) throws DataAccessException, CorruptedDataException {
-        Client client = ClientDBAccess.getClient(idClient);
-        return BusinessDBAccess.getBusinessOf(idClient, client);
+        return BusinessDBAccess.getBusinessOf(idClient);
     }
 
     public ArrayList<Order> getOrdersWithState(String state) throws DataAccessException, CorruptedDataException {
@@ -103,9 +103,7 @@ public class DBAccess implements InterfaceData {
     }
 
     public Order getOrder(int orderID) throws DataAccessException, CorruptedDataException {
-        if(orders == null)
-            loadOrders();
-        return OrderDBAccess.getOrder(orderID, orders);
+        return OrderDBAccess.getOrderWithID(orderID);
     }
 
     public void setOrderState(String newState, int orderId) throws DataAccessException, DataModificationException {
@@ -165,5 +163,9 @@ public class DBAccess implements InterfaceData {
 
     public void closeConnection() throws DataAccessException {
         SingletonConnection.closeConnection();
+    }
+
+    public ArrayList<Order> getOrdersWithStateAndDates(String state, String dateMin, String dateMax) throws DataAccessException, CorruptedDataException {
+        return OrderDBAccess.getOrdersWithState(state, getOrdersWithDates(dateMin, dateMax));
     }
 }

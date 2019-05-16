@@ -99,4 +99,33 @@ public class OrderLineDBAccess {
             throw new DataDeletionException("Erreur lors de la suppression d'une ligne de commande dans la BD");
         }
     }
+
+    public static ArrayList<OrderLine> getOrderLinesWithOrder(Order order) throws DataAccessException, CorruptedDataException {
+        Connection connection = SingletonConnection.getInstance();
+        String sql = "SELECT * FROM OrderLine WHERE orderNumber = ?";
+        ArrayList<OrderLine> selectedOrderLines = new ArrayList<>();
+        Beer beer;
+        int quantity;
+        double price;
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, order.getId());
+            ResultSet data = statement.executeQuery();
+
+            while(data.next()) {
+                beer = BeerDBAccess.getBeer(data.getString("beerName"));
+                quantity = data.getInt("quantity");
+                price = data.getDouble("price");
+                selectedOrderLines.add(new OrderLine(beer, order, quantity, price));
+            }
+        }
+        catch(SQLException e) {
+            throw new DataAccessException("Erreur lors de la récupération de données concernant une ligne de commande dans la BD");
+        }
+        catch(OrderLineException e){
+            throw new CorruptedDataException("Des données incohérentes concernant une ligne de commande se trouve dans BD");
+        }
+        return selectedOrderLines;
+    }
 }

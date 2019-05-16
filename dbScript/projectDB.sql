@@ -47,10 +47,10 @@ CREATE TABLE IF NOT EXISTS Beer
 	
 CREATE TABLE IF NOT EXISTS OrderLine
 	( idOrderLigne INT AUTO_INCREMENT
-	, orderNumber INT
+	, orderNumber INT NOT NULL
 	, quantity INT NOT NULL CHECK (quantity > 0)
 	, price DOUBLE NOT NULL
-	, beerName VARCHAR(64)
+	, beerName VARCHAR(64) NOT NULL
 	
 	, CONSTRAINT orderLine_pk PRIMARY KEY(idOrderLigne)
 	, CONSTRAINT beerName_fk FOREIGN KEY (beerName) REFERENCES Beer(idName)
