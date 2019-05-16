@@ -61,7 +61,7 @@ public class ModifyPanel extends Container{
     panel.add(labelDate);
     panel.add(spinnerDate);
 
-    labelDays = new JLabel("Livraison deans les X jours après la date Prévue: ");
+    labelDays = new JLabel("Livraison endéans les X jours après la date Prévue: ");
     labelDays.setHorizontalAlignment(SwingConstants.RIGHT);
     timeLimit = new JTextField("");
     panel.add(labelDays);
@@ -73,7 +73,7 @@ public class ModifyPanel extends Container{
     //checkPriority.setBackground(colBackground);
     checkPriority.setHorizontalAlignment(SwingConstants.RIGHT);
     panel.add(checkPriority);
-    sauvegarder = new JButton("sauvegarder la commande");
+    sauvegarder = new JButton("sauvegarder modification de la commande");
     panel.add(sauvegarder);
 
     supprimer = new JButton("supprimer la commande");

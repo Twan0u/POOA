@@ -50,7 +50,7 @@ private JTextField timeLimit;
     this.add(labelDate);
     this.add(spinnerDate);
 
-    labelDays = new JLabel("Livraison deans les X jours après la date Prévue: ");
+    labelDays = new JLabel("Livraison endéans les X jours après la date Prévue: ");
     labelDays.setHorizontalAlignment(SwingConstants.RIGHT);
     labelDays.setForeground(colorText);
     timeLimit = new JTextField("");

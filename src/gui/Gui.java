@@ -12,7 +12,7 @@ public class Gui extends JFrame{
   private Container frameContainer,  mainPanel;
   private JPanel menuPanel;
 
-  private JLabel logo, commande, modifier, recherche, stock, livraison, prepare;
+  private JLabel logo, commande, modifier, recherche,rechercheClient, stock, livraison, prepare;
 
   private Color colText = new Color(29, 34, 40);
   private Color colBis = new Color(250,229,150);
@@ -62,6 +62,9 @@ public class Gui extends JFrame{
         ImageIcon rechercheIcon = new ImageIcon(path + "search.png");
         recherche = new JLabel(rechercheIcon);
 
+        ImageIcon rechercheClientIcon = new ImageIcon(path + "user.png");
+        rechercheClient = new JLabel(rechercheClientIcon);
+
         ImageIcon prepareIcon = new ImageIcon(path + "Preparation.png");
         prepare = new JLabel(prepareIcon);
 
@@ -71,16 +74,16 @@ public class Gui extends JFrame{
         ImageIcon livraisonIcon = new ImageIcon(path + "livraison.png");
         livraison = new JLabel(livraisonIcon);
 
-
-
-        menuPanel.setLayout(new GridLayout(7,1));
+        menuPanel.setLayout(new GridLayout(8,1));
         menuPanel.add(logo);
         menuPanel.add(commande);
         menuPanel.add(modifier);
         menuPanel.add(recherche);
+        menuPanel.add(rechercheClient);
         menuPanel.add(prepare);
         menuPanel.add(stock);
         menuPanel.add(livraison);
+
 
         commande.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
@@ -91,15 +94,22 @@ public class Gui extends JFrame{
         modifier.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
                changeMainPanel(new ModifyPanel());
-
             }
         });
 
         recherche.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-               JOptionPane.showMessageDialog(null,"L'onglet recherche n'est pas encore disponible");
+              changeMainPanel(new SearchPanel());
+               //JOptionPane.showMessageDialog(null,"L'onglet recherche n'est pas encore disponible");
             }
         });
+
+        rechercheClient.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+              changeMainPanel(new SearchOrderByClientPanel());
+            }
+        });
+
 
         prepare.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
