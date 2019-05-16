@@ -239,7 +239,8 @@ public class OrderPanel extends Container{
       int numDays = (int) spinnerDays.getValue();
       boolean priority = checkPriority.isSelected();
       try{
-        controller.saveOrder(priority,numDays);
+        String idRetour =Integer.toString(controller.saveOrder(priority,numDays));
+        JOptionPane.showMessageDialog(null, "Votre Identifiant de commande est : "+ idRetour,"Ajout Successfull", JOptionPane.INFORMATION_MESSAGE);
       }catch(UserInputErrorException error){
         JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
       }

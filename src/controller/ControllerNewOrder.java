@@ -188,7 +188,7 @@ public class ControllerNewOrder extends Controller {
         newOrder.removeLastOrderLine();
       }
 
-      public void saveOrder(boolean priority,int numDays)throws UserInputErrorException{
+      public int saveOrder(boolean priority,int numDays)throws UserInputErrorException{
         if (numDays<0){
           throw new UserInputErrorException("Nombre de jours pour effectuer la livraison Invalide");
         }
@@ -198,19 +198,17 @@ public class ControllerNewOrder extends Controller {
         if(newOrder.getOrderLinesSize() == 0){
           throw new UserInputErrorException("Commande Vide");
         }
-        //TODO Auto save current Date
-        //TODO verifier integrité des données
         System.out.println(priority);
         newOrder.setHasPriority(priority);
         newOrder.setTimeLimit(numDays);
-        int idOfNew;
+        int idOfNew = -1;
         try {
           idOfNew = businesslayer.saveOrder(newOrder);
         }
         catch(Exception e){
           throw new UserInputErrorException("Ajout impossible");
         }
-      //  IF DATA OK ( BUSINESSLAYER. SAVEORDER(newOrder));
+        return idOfNew;
 
       }
 }
