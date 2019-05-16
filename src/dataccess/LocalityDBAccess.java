@@ -35,8 +35,33 @@ public class LocalityDBAccess {
             throw new DataAccessException("Erreur lors de la récupération de données sur les localités dans la BD");
         }
         catch(LocalityException e) {
-            throw new CorruptedDataException("Des données incohérentes concernant les localités se trouvent dans la base de donnée");
+            throw new CorruptedDataException("Des données incohérentes concernant les localités se trouvent dans la BD");
         }
         return localities;
+    }
+
+    public static Locality getLocality(int idLocality) throws DataAccessException, CorruptedDataException{
+        Connection connection = SingletonConnection.getInstance();
+        String sql = "SELECT * FROM Locality WHERE idLocality = ?";
+        Locality locality = null;
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, idLocality);
+            ResultSet data = statement.executeQuery();
+
+            while(data.next()){
+                String localityName = data.getString("localityName");
+                String postalCode = data.getString("postalCode");
+                locality = new Locality(idLocality, localityName, postalCode);
+            }
+        }
+        catch(SQLException e) {
+            throw new DataAccessException("Erreur lors de la récupération de données concernant les localiés");
+        }
+        catch(LocalityException e) {
+            throw new CorruptedDataException("Des données incohérentes concernant une localité se trouvent dans la BD");
+        }
+        return locality;
     }
 }

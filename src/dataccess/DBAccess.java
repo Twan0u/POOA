@@ -6,7 +6,7 @@ import composants.*;
 import exceptions.*;
 
 public class DBAccess implements InterfaceData {
-    // arraylist pour retenir ce qui a déjà été chargé
+
     private ArrayList<Client> clients = null;
     private ArrayList<Beer> beers = null;
     private ArrayList<Locality> localities = null;
@@ -14,7 +14,7 @@ public class DBAccess implements InterfaceData {
     private ArrayList<Order> orders = null;
     private ArrayList<OrderLine> orderLines = null;
 
-    // appels de chargement des données
+
     private void loadClients() throws DataAccessException, CorruptedDataException {
         clients = ClientDBAccess.getAllClients();
     }
@@ -38,7 +38,6 @@ public class DBAccess implements InterfaceData {
             loadBusinesses();
         orders = OrderDBAccess.getAllOrders(clients, businesses);
     }
-
     private void loadOrderLines() throws DataAccessException, CorruptedDataException {
         if(beers == null)
             loadBeers();
@@ -47,33 +46,35 @@ public class DBAccess implements InterfaceData {
         orderLines = OrderLineDBAccess.getAllOrderLines(beers, orders);
     }
 
+
+
+
     public ArrayList<Client> getAllClients() throws DataAccessException, CorruptedDataException {
         if(clients == null)
             loadClients();
         return clients;
     }
-
-    public Client getClient(int id) throws DataAccessException, CorruptedDataException {
-        if(clients == null)
-            loadClients();
-        for(Client client : clients) {
-            if(client.getId() == id) {
-                return client;
-            }
-        }
-        return null;                                        // todo throw erreur client pas trouvé
-    }
-
     public ArrayList<Beer> getAllBeers() throws DataAccessException, CorruptedDataException {
         if(beers == null)
             loadBeers();
         return beers;
     }
+    public ArrayList<Order> getAllOrders() throws DataAccessException, CorruptedDataException {
+        if(orders == null)
+            loadOrders();
+        return orders;
+    }
 
-    public ArrayList<BusinessUnit> getBusinessOf(int id) throws DataAccessException, CorruptedDataException {
-        if(businesses == null)
-            loadBusinesses();
-        return BusinessDBAccess.getBusinessOf(id, businesses);
+
+
+
+    public Client getClient(int id) throws DataAccessException, CorruptedDataException {
+        return ClientDBAccess.getClient(id);
+    }
+
+    public ArrayList<BusinessUnit> getBusinessOf(int idClient) throws DataAccessException, CorruptedDataException {
+        Client client = ClientDBAccess.getClient(idClient);
+        return BusinessDBAccess.getBusinessOf(idClient, client);
     }
 
     public ArrayList<Order> getOrdersWithState(String state) throws DataAccessException, CorruptedDataException {
@@ -99,12 +100,6 @@ public class DBAccess implements InterfaceData {
         if(orders == null)
             loadOrders();
         return OrderDBAccess.getOrdersToDeliver(localityID, orders);
-    }
-
-    public ArrayList<Order> getAllOrders() throws DataAccessException, CorruptedDataException {
-        if(orders == null)
-            loadOrders();
-        return orders;
     }
 
     public Order getOrder(int orderID) throws DataAccessException, CorruptedDataException {

@@ -42,4 +42,34 @@ public class ClientDBAccess {
         }
         return clients;
     }
+
+    public static Client getClient(int idClient) throws DataAccessException, CorruptedDataException{
+        Connection connection = SingletonConnection.getInstance();
+        String sql = "SELECT * FROM Client WHERE idNumber = ?";
+        Client client = null;
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, idClient);
+            ResultSet data = statement.executeQuery();
+
+            while(data.next()) {
+                String phoneNumber = data.getString("phoneNumber");
+                String clientName = data.getString("clientName");
+                double discount = data.getDouble("discount");
+                client = new Client(idClient, clientName, phoneNumber, discount);
+                String vatNumber = data.getString("vatNumber");
+                if(!data.wasNull())
+                    client.setVATNumber(vatNumber);
+            }
+        }
+        catch(SQLException e){
+            throw new DataAccessException("Erreur lors de la récupération des données d'un client dans la BD");
+        }
+        catch(ClientException e) {
+            throw new CorruptedDataException("Des données incohérentes concernant un client se trouvent dans la base de donnée");
+        }
+
+        return client;
+    }
 }

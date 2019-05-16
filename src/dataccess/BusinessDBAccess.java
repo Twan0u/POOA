@@ -54,13 +54,39 @@ public class BusinessDBAccess {
         return businesses;
     }
 
-    public static ArrayList<BusinessUnit> getBusinessOf(int id, ArrayList<BusinessUnit> businesses) {
+    public static ArrayList<BusinessUnit> getBusinessOf(int ownerId, Client client) throws DataAccessException, CorruptedDataException {
+        Connection connection = SingletonConnection.getInstance();
+        String sql = "SELECT * FROM BusinessUnit WHERE clientNumber = ?";
         ArrayList<BusinessUnit> selectedBusinesses = new ArrayList<>();
-        for(BusinessUnit bU : businesses) {
-            if(bU.getClient().getId() == id)
-                selectedBusinesses.add(bU);
+        BusinessUnit business;
+        Locality locality;
+        int idBusiness;
+        int localityNumber;
+        String streetName;
+        String streetNumber;
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, ownerId);
+            ResultSet data = statement.executeQuery();
+
+            while(data.next()) {
+                idBusiness = data.getInt("idBusinessUnit");
+                localityNumber = data.getInt("locality");
+                locality = LocalityDBAccess.getLocality(localityNumber);
+                streetName = data.getString("streetName");
+                streetNumber = data.getString("streetNumber");
+                business = new BusinessUnit(idBusiness, client, locality, streetName, streetNumber);
+                selectedBusinesses.add(business);
+            }
         }
+        catch(SQLException e){
+            throw new DataAccessException("Erreur lors de la récupération de données concernant des business unit dans la BD");
+        }
+        catch(BusinessUnitException e) {
+            throw new CorruptedDataException("Des données incohérentes concernant des business unit se trouvent dans BD");
+        }
+
         return selectedBusinesses;
     }
 }
-
