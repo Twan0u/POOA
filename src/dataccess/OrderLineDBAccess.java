@@ -1,13 +1,13 @@
 package dataccess;
 import composants.*;
-import exceptions.ProgramErrorException;
+import exceptions.*;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class OrderLineDBAccess {
 
-    public static ArrayList<OrderLine> getAllOrderLines(ArrayList<Beer> beers, ArrayList<Order> orders) throws ProgramErrorException {
+    public static ArrayList<OrderLine> getAllOrderLines(ArrayList<Beer> beers, ArrayList<Order> orders) throws ProgramErrorException, DataAccessException {
         Connection connection = SingletonConnection.getInstance();
         ArrayList<OrderLine> orderLines = new ArrayList<>();
         OrderLine orderLine;
@@ -64,7 +64,7 @@ public class OrderLineDBAccess {
         return null;
     }
 
-    public static void saveOrderLine(int orderID, String beerName, OrderLine orderLine) throws ProgramErrorException {
+    public static void saveOrderLine(int orderID, String beerName, OrderLine orderLine) throws ProgramErrorException, DataAccessException {
         Connection connection = SingletonConnection.getInstance();
         String sql = "INSERT INTO OrderLine (beerName, orderNumber, quantity, price) VALUES (?,?,?,?);";
 
@@ -82,7 +82,7 @@ public class OrderLineDBAccess {
         }
     }
 
-    public static void deleteOrderLine(int orderId, String beerName) throws ProgramErrorException {
+    public static void deleteOrderLine(int orderId, String beerName) throws ProgramErrorException, DataAccessException {
         Connection connection = SingletonConnection.getInstance();
         String sql = "DELETE FROM OrderLine WHERE (beerName = ? AND orderNumber = ?);";
 

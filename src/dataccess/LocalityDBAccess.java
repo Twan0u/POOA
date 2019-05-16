@@ -1,16 +1,15 @@
 package dataccess;
 
 import composants.Locality;
-import exceptions.ProgramErrorException;
+import exceptions.*;
 
-import java.util.*;
 import java.sql.*;
 
 import java.util.ArrayList;
 
 public class LocalityDBAccess {
 
-    public static ArrayList<Locality> getAllLocalities() throws ProgramErrorException {
+    public static ArrayList<Locality> getAllLocalities() throws ProgramErrorException, DataAccessException {
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Locality> localities = new ArrayList<>();
         Locality locality;

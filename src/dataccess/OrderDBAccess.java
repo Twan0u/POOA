@@ -1,13 +1,13 @@
 package dataccess;
 import composants.*;
-import exceptions.ProgramErrorException;
+import exceptions.*;
 
 import java.sql.*;
 import java.util.ArrayList;
 
 public class OrderDBAccess {
 
-    public static int saveOrder(Order order) throws ProgramErrorException {
+    public static int saveOrder(Order order) throws ProgramErrorException, DataAccessException {
         Connection connection = SingletonConnection.getInstance();
 
         String sql = "INSERT INTO ClientOrder (businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)"
@@ -45,7 +45,7 @@ public class OrderDBAccess {
         }
     }
 
-    public static ArrayList<Order> getAllOrders(ArrayList<Client> clients, ArrayList<BusinessUnit> businesses) throws ProgramErrorException{
+    public static ArrayList<Order> getAllOrders(ArrayList<Client> clients, ArrayList<BusinessUnit> businesses) throws ProgramErrorException, DataAccessException{
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Order> orders = new ArrayList<>();
         Order order;
@@ -164,7 +164,7 @@ public class OrderDBAccess {
         return null;
     }
 
-    public static void deleteOrder(int orderId) throws ProgramErrorException {
+    public static void deleteOrder(int orderId) throws ProgramErrorException, DataAccessException {
         Connection connection = SingletonConnection.getInstance();
         String sql = "DELETE FROM ClientOrder WHERE idNumber = ?;";
 
@@ -179,7 +179,7 @@ public class OrderDBAccess {
         }
     }
 
-    public static void setOrderState(String newState, int orderId) throws ProgramErrorException {
+    public static void setOrderState(String newState, int orderId) throws ProgramErrorException, DataAccessException {
         Connection connection = SingletonConnection.getInstance();
         String sql = "UPDATE ClientOrder SET state = ? WHERE idNumber = ?;";
 

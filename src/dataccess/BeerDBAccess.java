@@ -8,7 +8,7 @@ import exceptions.*;
 
 public class BeerDBAccess {
 
-    public static ArrayList<Beer> getAllBeers() throws ProgramErrorException{
+    public static ArrayList<Beer> getAllBeers() throws ProgramErrorException, DataAccessException{
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Beer> beers = new ArrayList<>();
         Beer beer;

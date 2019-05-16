@@ -8,7 +8,7 @@ import exceptions.*;
 
 public class ClientDBAccess {
 
-    public static ArrayList<Client> getAllClients() throws ProgramErrorException{
+    public static ArrayList<Client> getAllClients() throws ProgramErrorException, DataAccessException{
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Client> clients = new ArrayList<>();
         Client client;

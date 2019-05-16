@@ -8,7 +8,7 @@ import exceptions.*;
 
 public class BusinessDBAccess {
 
-    public static ArrayList<BusinessUnit> getAllBusinesses (ArrayList<Client> clients, ArrayList<Locality> localities) throws ProgramErrorException{
+    public static ArrayList<BusinessUnit> getAllBusinesses (ArrayList<Client> clients, ArrayList<Locality> localities) throws ProgramErrorException, DataAccessException{
         Connection connection = SingletonConnection.getInstance();
         ArrayList<BusinessUnit> businesses = new ArrayList<>();
         BusinessUnit business;
