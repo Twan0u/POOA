@@ -15,23 +15,23 @@ public class DBAccess implements InterfaceData {
     private ArrayList<OrderLine> orderLines = null;
 
     // appels de chargement des données
-    private void loadClients() throws ProgramErrorException, DataAccessException{
+    private void loadClients() throws DataAccessException, CorruptedDataException {
         clients = ClientDBAccess.getAllClients();
     }
-    private void loadBeers() throws ProgramErrorException, DataAccessException{
+    private void loadBeers() throws DataAccessException, CorruptedDataException {
         beers = BeerDBAccess.getAllBeers();
     }
-    private void loadLocalities() throws ProgramErrorException, DataAccessException{
+    private void loadLocalities() throws DataAccessException, CorruptedDataException {
         localities = LocalityDBAccess.getAllLocalities();
     }
-    private void loadBusinesses() throws ProgramErrorException, DataAccessException{
+    private void loadBusinesses() throws DataAccessException, CorruptedDataException {
         if(clients == null)
             loadClients();
         if(localities == null)
             loadLocalities();
         businesses = BusinessDBAccess.getAllBusinesses(clients, localities);
     }
-    private void loadOrders() throws ProgramErrorException, DataAccessException{
+    private void loadOrders() throws DataAccessException, CorruptedDataException {
         if(clients == null)
             loadClients();
         if(businesses == null)
@@ -39,7 +39,7 @@ public class DBAccess implements InterfaceData {
         orders = OrderDBAccess.getAllOrders(clients, businesses);
     }
 
-    private void loadOrderLines() throws ProgramErrorException, DataAccessException{
+    private void loadOrderLines() throws DataAccessException, CorruptedDataException {
         if(beers == null)
             loadBeers();
         if(orders == null)
@@ -47,13 +47,13 @@ public class DBAccess implements InterfaceData {
         orderLines = OrderLineDBAccess.getAllOrderLines(beers, orders);
     }
 
-    public ArrayList<Client> getAllClients() throws ProgramErrorException, DataAccessException{
+    public ArrayList<Client> getAllClients() throws DataAccessException, CorruptedDataException {
         if(clients == null)
             loadClients();
         return clients;
     }
 
-    public Client getClient(int id) throws ProgramErrorException, DataAccessException{
+    public Client getClient(int id) throws DataAccessException, CorruptedDataException {
         if(clients == null)
             loadClients();
         for(Client client : clients) {
@@ -64,60 +64,60 @@ public class DBAccess implements InterfaceData {
         return null;                                        // todo throw erreur client pas trouvé
     }
 
-    public ArrayList<Beer> getAllBeers() throws ProgramErrorException, DataAccessException{
+    public ArrayList<Beer> getAllBeers() throws DataAccessException, CorruptedDataException {
         if(beers == null)
             loadBeers();
         return beers;
     }
 
-    public ArrayList<BusinessUnit> getBusinessOf(int id) throws ProgramErrorException, DataAccessException{
+    public ArrayList<BusinessUnit> getBusinessOf(int id) throws DataAccessException, CorruptedDataException {
         if(businesses == null)
             loadBusinesses();
         return BusinessDBAccess.getBusinessOf(id, businesses);
     }
 
-    public ArrayList<Order> getOrdersWithState(String state) throws ProgramErrorException, DataAccessException {
+    public ArrayList<Order> getOrdersWithState(String state) throws DataAccessException, CorruptedDataException {
         if(orders == null)
             loadOrders();
         return OrderDBAccess.getOrdersWithState(state, orders);
     }
 
-    public ArrayList<Order> getOrdersWithDates(String dateMin, String dateMax) throws ProgramErrorException, DataAccessException {
+    public ArrayList<Order> getOrdersWithDates(String dateMin, String dateMax) throws DataAccessException, CorruptedDataException {
         if(orders == null)
             loadOrders();
         return OrderDBAccess.getOrdersWithDates(dateMin, dateMax, orders);
     }
 
-    public ArrayList<Order> getOrdersWithClient(int clientID) throws ProgramErrorException, DataAccessException {
+    public ArrayList<Order> getOrdersWithClient(int clientID) throws DataAccessException, CorruptedDataException {
         if(orders == null)
             loadOrders();
         Client client = this.getClient(clientID);
         return OrderDBAccess.getOrdersWithClient(client, orders);
     }
 
-    public ArrayList<Order> getOrdersToDeliver(int localityID) throws ProgramErrorException, DataAccessException {
+    public ArrayList<Order> getOrdersToDeliver(int localityID) throws DataAccessException, CorruptedDataException {
         if(orders == null)
             loadOrders();
         return OrderDBAccess.getOrdersToDeliver(localityID, orders);
     }
 
-    public ArrayList<Order> getAllOrders() throws ProgramErrorException, DataAccessException {
+    public ArrayList<Order> getAllOrders() throws DataAccessException, CorruptedDataException {
         if(orders == null)
             loadOrders();
         return orders;
     }
 
-    public Order getOrder(int orderID) throws ProgramErrorException, DataAccessException {
+    public Order getOrder(int orderID) throws DataAccessException, CorruptedDataException {
         if(orders == null)
             loadOrders();
         return OrderDBAccess.getOrder(orderID, orders);
     }
 
-    public void setOrderState(String newState, int orderId) throws ProgramErrorException, DataAccessException {
+    public void setOrderState(String newState, int orderId) throws DataAccessException, DataModificationException {
         OrderDBAccess.setOrderState(newState, orderId);
     }
 
-    public int saveOrder(Order order) throws ProgramErrorException, DataAccessException {
+    public int saveOrder(Order order) throws DataAccessException, CorruptedDataException, DataBackupException {
         if(orders == null)
             loadOrders();
         int id = OrderDBAccess.saveOrder(order);
@@ -132,7 +132,7 @@ public class DBAccess implements InterfaceData {
         return id;
     }
 
-    public void deleteOrder(int orderId) throws ProgramErrorException, DataAccessException {
+    public void deleteOrder(int orderId) throws DataAccessException, CorruptedDataException, DataDeletionException {
         if(orders == null)
             loadOrders();
         Order order = getOrder(orderId);
@@ -147,13 +147,13 @@ public class DBAccess implements InterfaceData {
         OrderDBAccess.deleteOrder(orderId);
     }
 
-    private OrderLine getOrderLine(int orderId, String beerName) throws ProgramErrorException, DataAccessException {
+    private OrderLine getOrderLine(int orderId, String beerName) throws DataAccessException, CorruptedDataException {
         if(orderLines == null)
             loadOrderLines();
         return OrderLineDBAccess.getOrderLine(orderId, beerName, orderLines);
     }
 
-    public void saveOrderLine(int orderId, String beerName) throws ProgramErrorException, DataAccessException {
+    public void saveOrderLine(int orderId, String beerName) throws DataAccessException, CorruptedDataException, DataBackupException {
         if(orderLines == null)
             loadOrderLines();
         OrderLine orderLine = getOrderLine(orderId, beerName);
@@ -161,14 +161,14 @@ public class DBAccess implements InterfaceData {
         OrderLineDBAccess.saveOrderLine(orderId, beerName, orderLine);
     }
 
-    public void deleteOrderLine(int orderId, String beerName) throws ProgramErrorException, DataAccessException {
+    public void deleteOrderLine(int orderId, String beerName) throws DataAccessException, CorruptedDataException, DataDeletionException {
         if(orderLines == null)
             loadOrderLines();
         OrderLineDBAccess.deleteOrderLine(orderId, beerName);
         orderLines.remove(getOrderLine(orderId, beerName));
     }
 
-    public void closeConnection() throws ProgramErrorException, DataAccessException {
+    public void closeConnection() throws DataAccessException {
         SingletonConnection.closeConnection();
     }
 }

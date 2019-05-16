@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class LocalityDBAccess {
 
-    public static ArrayList<Locality> getAllLocalities() throws ProgramErrorException, DataAccessException {
+    public static ArrayList<Locality> getAllLocalities() throws DataAccessException, CorruptedDataException {
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Locality> localities = new ArrayList<>();
         Locality locality;
@@ -31,8 +31,11 @@ public class LocalityDBAccess {
             }
         }
 
-        catch(Exception e) {
-            throw new ProgramErrorException("Erreur lors de la récupération des localités dans la BD");
+        catch(SQLException e) {
+            throw new DataAccessException("Erreur lors de la récupération de données sur les localités dans la BD");
+        }
+        catch(LocalityException e) {
+            throw new CorruptedDataException("Des données incohérentes concernant les localités se trouvent dans la base de donnée");
         }
         return localities;
     }

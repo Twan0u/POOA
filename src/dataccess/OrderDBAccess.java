@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class OrderDBAccess {
 
-    public static int saveOrder(Order order) throws ProgramErrorException, DataAccessException {
+    public static int saveOrder(Order order) throws DataAccessException, DataBackupException {
         Connection connection = SingletonConnection.getInstance();
 
         String sql = "INSERT INTO ClientOrder (businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)"
@@ -40,12 +40,12 @@ public class OrderDBAccess {
                 id = rs.getInt(1);
             return id;
         }
-        catch (Exception e) {
-            throw new ProgramErrorException("Erreur lors de la sauvegarde d'une commande dans la BD");
+        catch (SQLException e) {
+            throw new DataBackupException("Erreur lors de la sauvegarde d'une commande dans la BD");
         }
     }
 
-    public static ArrayList<Order> getAllOrders(ArrayList<Client> clients, ArrayList<BusinessUnit> businesses) throws ProgramErrorException, DataAccessException{
+    public static ArrayList<Order> getAllOrders(ArrayList<Client> clients, ArrayList<BusinessUnit> businesses) throws DataAccessException, CorruptedDataException{
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Order> orders = new ArrayList<>();
         Order order;
@@ -104,8 +104,11 @@ public class OrderDBAccess {
             }
         }
 
-        catch(Exception e) {
-            throw new ProgramErrorException("Erreur lors de la récupération des commandes dans la BD");
+        catch(SQLException e) {
+            throw new DataAccessException("Erreur lors de la récupération de données sur les commandes dans la BD");
+        }
+        catch(OrderException e) {
+            throw new CorruptedDataException("Des données incohérentes concernant les commandes se trouvent dans la base de donnée");
         }
         return orders;
     }
@@ -164,7 +167,7 @@ public class OrderDBAccess {
         return null;
     }
 
-    public static void deleteOrder(int orderId) throws ProgramErrorException, DataAccessException {
+    public static void deleteOrder(int orderId) throws DataAccessException, DataDeletionException {
         Connection connection = SingletonConnection.getInstance();
         String sql = "DELETE FROM ClientOrder WHERE idNumber = ?;";
 
@@ -174,12 +177,12 @@ public class OrderDBAccess {
             statement.executeUpdate();
         }
 
-        catch(Exception e) {
-            throw new ProgramErrorException("Erreur lors de la suppression d'une commande dans la BD");
+        catch(SQLException e) {
+            throw new DataDeletionException("Erreur lors de la suppression d'une commande dans la BD");
         }
     }
 
-    public static void setOrderState(String newState, int orderId) throws ProgramErrorException, DataAccessException {
+    public static void setOrderState(String newState, int orderId) throws DataAccessException, DataModificationException {
         Connection connection = SingletonConnection.getInstance();
         String sql = "UPDATE ClientOrder SET state = ? WHERE idNumber = ?;";
 
@@ -190,7 +193,7 @@ public class OrderDBAccess {
             statement.executeUpdate();
         }
         catch(Exception e) {
-            throw new ProgramErrorException("Erreur lors de la modification de l'état d'une commande dans la BD");
+            throw new DataModificationException("Erreur lors de la modification de l'état d'une commande dans la BD");
         }
     }
 }

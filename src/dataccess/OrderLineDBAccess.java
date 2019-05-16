@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 public class OrderLineDBAccess {
 
-    public static ArrayList<OrderLine> getAllOrderLines(ArrayList<Beer> beers, ArrayList<Order> orders) throws ProgramErrorException, DataAccessException {
+    public static ArrayList<OrderLine> getAllOrderLines(ArrayList<Beer> beers, ArrayList<Order> orders) throws DataAccessException, CorruptedDataException {
         Connection connection = SingletonConnection.getInstance();
         ArrayList<OrderLine> orderLines = new ArrayList<>();
         OrderLine orderLine;
@@ -50,8 +50,11 @@ public class OrderLineDBAccess {
                 orderLines.add(new OrderLine(beer, order, quantity, price));
             }
         }
-        catch(Exception e) {
-            throw new ProgramErrorException("Erreur lors de la récupération des lignes de commande dans la BD");
+        catch(SQLException e) {
+            throw new DataAccessException("Erreur lors de la récupération de données sur les lignes de commande dans la BD");
+        }
+        catch(OrderLineException e){
+            throw new CorruptedDataException("Des données incohérentes concernant les lignes de commande se trouvent dans la base de donnée");
         }
         return orderLines;
     }
@@ -64,7 +67,7 @@ public class OrderLineDBAccess {
         return null;
     }
 
-    public static void saveOrderLine(int orderID, String beerName, OrderLine orderLine) throws ProgramErrorException, DataAccessException {
+    public static void saveOrderLine(int orderID, String beerName, OrderLine orderLine) throws DataAccessException, DataBackupException {
         Connection connection = SingletonConnection.getInstance();
         String sql = "INSERT INTO OrderLine (beerName, orderNumber, quantity, price) VALUES (?,?,?,?);";
 
@@ -77,12 +80,11 @@ public class OrderLineDBAccess {
             statement.executeUpdate();
         }
         catch(SQLException e) {
-            System.out.println(e.toString());
-            throw new ProgramErrorException("Erreur lors de la sauvegarde d'une ligne de commande dans la BD");
+            throw new DataBackupException("Erreur lors de la sauvegarde d'une ligne de commande dans la BD");
         }
     }
 
-    public static void deleteOrderLine(int orderId, String beerName) throws ProgramErrorException, DataAccessException {
+    public static void deleteOrderLine(int orderId, String beerName) throws DataAccessException, DataDeletionException {
         Connection connection = SingletonConnection.getInstance();
         String sql = "DELETE FROM OrderLine WHERE (beerName = ? AND orderNumber = ?);";
 
@@ -93,8 +95,8 @@ public class OrderLineDBAccess {
             statement.executeUpdate();
         }
 
-        catch(Exception e) {
-            throw new ProgramErrorException("Erreur lors de la suppression d'une ligne de commande dans la BD");
+        catch(SQLException e) {
+            throw new DataDeletionException("Erreur lors de la suppression d'une ligne de commande dans la BD");
         }
     }
 }

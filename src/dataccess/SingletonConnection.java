@@ -9,7 +9,7 @@ public class SingletonConnection{
 
     private static Connection uniqueConnection;
 
-    public static Connection getInstance() throws ProgramErrorException, DataAccessException {
+    public static Connection getInstance() throws DataAccessException {
         if(uniqueConnection == null) {
             try{
                 uniqueConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectDB?serverTimezone=" + TimeZone.getDefault().getID(), "root", "AntNat");
@@ -21,7 +21,7 @@ public class SingletonConnection{
         return uniqueConnection;
     }
 
-    public static void closeConnection() throws ProgramErrorException, DataAccessException {
+    public static void closeConnection() throws DataAccessException {
         try {
             uniqueConnection.close();
         }

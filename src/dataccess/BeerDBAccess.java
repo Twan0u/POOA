@@ -8,7 +8,7 @@ import exceptions.*;
 
 public class BeerDBAccess {
 
-    public static ArrayList<Beer> getAllBeers() throws ProgramErrorException, DataAccessException{
+    public static ArrayList<Beer> getAllBeers() throws DataAccessException, CorruptedDataException{
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Beer> beers = new ArrayList<>();
         Beer beer;
@@ -31,8 +31,11 @@ public class BeerDBAccess {
                 beers.add(beer);
             }
         }
-        catch(Exception e){
-            throw new ProgramErrorException("Erreur lors de la récupération des bières dans la BD");
+        catch(SQLException e){
+            throw new DataAccessException("Erreur lors de la récupération de données sur les bières dans la BD");
+        }
+        catch(BeerException e) {
+            throw new CorruptedDataException("Des données incohérentes concernant les bières se trouvent dans la base de donnée");
         }
         return beers;
     }
