@@ -8,7 +8,7 @@ import exceptions.*;
 
 public class ClientDBAccess {
 
-    public static ArrayList<Client> getAllClients() throws ProgramErrorException{
+    public static ArrayList<Client> getAllClients() throws DataAccessException, CorruptedDataException {
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Client> clients = new ArrayList<>();
         Client client;
@@ -34,18 +34,12 @@ public class ClientDBAccess {
                 clients.add(client);
             }
         }
-        catch(Exception e){
-            throw new ProgramErrorException("Erreur lors de la récupération des clients dans la BD");
+        catch(SQLException e){
+            throw new DataAccessException("Erreur lors de la récupération de données sur les clients dans la BD");
+        }
+        catch(ClientException e){
+            throw new CorruptedDataException("Des données incohérentes concernant les clients se trouvent dans la base de donnée");
         }
         return clients;
-    }
-
-    public static Client getClient(int id, ArrayList<Client> clients) {
-        for(Client client : clients) {
-            if(client.getId() == id) {
-                return client;
-            }
-        }
-        return null;
     }
 }

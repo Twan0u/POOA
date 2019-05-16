@@ -8,7 +8,7 @@ import exceptions.*;
 
 public class BusinessDBAccess {
 
-    public static ArrayList<BusinessUnit> getAllBusinesses (ArrayList<Client> clients, ArrayList<Locality> localities) throws ProgramErrorException{
+    public static ArrayList<BusinessUnit> getAllBusinesses (ArrayList<Client> clients, ArrayList<Locality> localities) throws DataAccessException, CorruptedDataException{
         Connection connection = SingletonConnection.getInstance();
         ArrayList<BusinessUnit> businesses = new ArrayList<>();
         BusinessUnit business;
@@ -45,8 +45,11 @@ public class BusinessDBAccess {
                 businesses.add(business);
             }
         }
-        catch(Exception e){
-            throw new ProgramErrorException("Erreur lors de la récupération des business unit dans la BD");
+        catch(SQLException e){
+            throw new DataAccessException("Erreur lors de la récupération de données sur les business unit dans la BD");
+        }
+        catch(BusinessUnitException e) {
+            throw new CorruptedDataException("Des données incohérentes concernant les business unit se trouvent dans la base de donnée");
         }
         return businesses;
     }
