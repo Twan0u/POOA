@@ -109,11 +109,9 @@ public class DataMock implements InterfaceData {
 
   public int saveOrder(Order order) throws ProgramErrorException{
     System.out.println("saved : "+ order.toString());
-<<<<<<< HEAD
+
     return 42;
-=======
-    return 3;
->>>>>>> 73aff75519900e6484ad2afdccaf1cf5e32d4be9
+
   }
   public void deleteOrder(int orderID) throws ProgramErrorException{}
   public void saveOrderLine(int orderID, String beerName) throws ProgramErrorException{}

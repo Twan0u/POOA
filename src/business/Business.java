@@ -16,7 +16,7 @@ import java.util.ArrayList;
 */
 public class Business implements BusinessInterface{
 
-    private static InterfaceData dataLayer = new DataMock();
+    private static InterfaceData dataLayer = new DBAccess();
 
     public Client[] getAllClients()throws ProgramErrorException{
       ArrayList<Client> clients = null;
@@ -57,6 +57,7 @@ public class Business implements BusinessInterface{
 
 
     public BusinessUnit[] getBusinessOf(int id)throws ProgramErrorException{
+
       ArrayList<BusinessUnit> businesss;
       if (id < 0 ){
         throw new ProgramErrorException("L'identifiant de client est invalide");
@@ -75,6 +76,7 @@ public class Business implements BusinessInterface{
 
       for(int i = 0; i<out.length;i++){
         out[i] = businesss.get(i);
+
       }
       return out;
 

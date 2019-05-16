@@ -39,14 +39,15 @@ public class ControllerPrepare extends Controller {
     * @since 1.2
     */
     public String[][] getAllOrders(){
-      Order [] orders = businesslayer.getAllOrders();
+      /*Order [] orders = businesslayer.getAllOrders();
 
       String [][] out = new String [2][orders.length];
       for (int i=0;i<orders.length;i++){
         out[0][i] = Integer.toString(orders[i].getId());
         out[1][i] = orders[i].getClient().getName();
       }
-      return out;
+      return out;*/
+      return null;
     }
 
     /** Enregistre quel client est sélectionné
@@ -55,6 +56,6 @@ public class ControllerPrepare extends Controller {
     */
     public void getOrdersWithClient(int index)throws ProgramErrorException{
       //TODO verifier index client valide
-      Client client = businesslayer.getClient(bufferClients[index].getId());
+      //Client client = businesslayer.getClient(bufferClients[index].getId());
     }
 }

@@ -18,7 +18,7 @@ MainLinux.class: MainLinux.java
 
 compile: gui MainLinux.class## Compile tout le projet
 
-gui: controller gui/PreparePanel.class gui/StockPanel.class gui/OrderPanel.class gui/Gui.class
+gui: controller gui/ThreadLoad.class gui/PreparePanel.class gui/StockPanel.class gui/OrderPanel.class gui/Gui.class
 
 gui/StockPanel.class: gui/StockPanel.java
 	$(JC) gui/StockPanel.java
@@ -32,6 +32,9 @@ gui/Gui.class:  gui/Gui.java
 gui/OrderPanel.class: gui/OrderPanel.java
 	$(JC) gui/OrderPanel.java
 
+gui/ThreadLoad.class: gui/ThreadLoad.java
+	$(JC) gui/ThreadLoad.java
+
 controller: business controller/Controller.class controller/InterfaceController.class controller/ControllerNewOrder.class controller/ControllerPrepare.class
 
 controller/Controller.class: controller/InterfaceController.class controller/Controller.java
@@ -43,8 +46,8 @@ controller/InterfaceController.class: business controller/InterfaceController.ja
 controller/ControllerNewOrder.class: controller/InterfaceController.class controller/ControllerNewOrder.java
 		$(JC) controller/ControllerNewOrder.java
 
-controller/ControllerPrepare.class: controller/ControllerNewOrder.java
-		$(JC) controller/ControllerNewOrder.java
+controller/ControllerPrepare.class: controller/ControllerPrepare.java
+		$(JC) controller/ControllerPrepare.java
 
 business: dataccess business/BusinessInterface.class business/Business.class
 
