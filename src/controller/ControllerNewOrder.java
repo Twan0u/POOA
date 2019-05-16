@@ -17,7 +17,7 @@ import java.util.*;
 public class ControllerNewOrder extends Controller {
 
     /**Variable contenant l'order actuellement en préparation*/
-    private static Order newOrder = new Order();
+    private Order newOrder = new Order();
 
     private Client [] bufferClients = null;
 
@@ -188,27 +188,30 @@ public class ControllerNewOrder extends Controller {
         newOrder.removeLastOrderLine();
       }
 
-      public int saveOrder(boolean priority,int numDays)throws UserInputErrorException{
-        if (numDays<0){
+      public int saveOrder()throws UserInputErrorException{
+      /*  if (numDays<0){
           throw new UserInputErrorException("Nombre de jours pour effectuer la livraison Invalide");
         }
+        newOrder.setHasPriority(priority);
+        newOrder.setTimeLimit(numDays);
+        */
+
         if(newOrder.getClient() == null){
             throw new UserInputErrorException("Veuillez selectionner un client");
         }
+
         if(newOrder.getOrderLinesSize() == 0){
           throw new UserInputErrorException("Commande Vide");
         }
-        System.out.println(priority);
-        newOrder.setHasPriority(priority);
-        newOrder.setTimeLimit(numDays);
-        int idOfNew = -1;
+
+        int idOfNewOrder;
         try {
-          idOfNew = businesslayer.saveOrder(newOrder);
+          idOfNewOrder = businesslayer.saveOrder(newOrder);
         }
         catch(Exception e){
-          throw new UserInputErrorException("Ajout impossible");
+          throw new UserInputErrorException("Ajout impossible " + e.getMessage());
         }
-        return idOfNew;
+      return idOfNewOrder;
 
       }
 }

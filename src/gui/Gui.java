@@ -25,7 +25,7 @@ public class Gui extends JFrame{
     super("BrassiGestion");
     this.path = path;
 
-    setSize(800,400);
+    setSize(1080,720);
     setResizable(true);
     menuPanel = new JPanel();
     menuPanel.setPreferredSize(new Dimension(125, 100));
@@ -62,7 +62,7 @@ public class Gui extends JFrame{
         ImageIcon stockIcon = new ImageIcon(path + "stock.png");
         stock = new JLabel(stockIcon);
 
-        ImageIcon livraisonIcon = new ImageIcon(path + "livraisonCrossed.png");
+        ImageIcon livraisonIcon = new ImageIcon(path + "livraison.png");
         livraison = new JLabel(livraisonIcon);
 
         ImageIcon comptabiliteIcon = new ImageIcon(path + "comptaCrossed.png");
@@ -97,7 +97,8 @@ public class Gui extends JFrame{
 
         livraison.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-               JOptionPane.showMessageDialog(null,"L'onglet Livraison n'est pas encore disponible");
+              changeMainPanel(new DeliveryPanel());
+               //JOptionPane.showMessageDialog(null,"L'onglet Livraison n'est pas encore disponible");
             }
         });
 

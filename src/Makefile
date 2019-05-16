@@ -18,7 +18,7 @@ MainLinux.class: MainLinux.java
 
 compile: gui MainLinux.class## Compile tout le projet
 
-gui: controller gui/ThreadLoad.class gui/PreparePanel.class gui/StockPanel.class gui/OrderPanel.class gui/Gui.class
+gui: controller newOrderPanel gui/ThreadLoad.class gui/PreparePanel.class gui/StockPanel.class gui/OrderPanel.class gui/Gui.class gui/DeliveryPanel.class
 
 gui/StockPanel.class: gui/StockPanel.java
 	$(JC) gui/StockPanel.java
@@ -32,18 +32,32 @@ gui/Gui.class:  gui/Gui.java
 gui/OrderPanel.class: gui/OrderPanel.java
 	$(JC) gui/OrderPanel.java
 
+gui/DeliveryPanel.class: gui/DeliveryPanel.java
+	$(JC) gui/DeliveryPanel.java
+
 gui/ThreadLoad.class: gui/ThreadLoad.java
 	$(JC) gui/ThreadLoad.java
 
-controller: business controller/Controller.class controller/InterfaceController.class controller/ControllerNewOrder.class controller/ControllerPrepare.class
+newOrderPanel: gui/neworderpanel/OrderAddForm.class gui/neworderpanel/BeerAddForm.class gui/neworderpanel/BeerAdd.class gui/neworderpanel/BeerTable.class
 
-controller/Controller.class: controller/InterfaceController.class controller/Controller.java
+gui/neworderpanel/OrderAddForm.class: gui/neworderpanel/OrderAddForm.java
+	$(JC) gui/neworderpanel/OrderAddForm.java
+
+gui/neworderpanel/BeerAdd.class: gui/neworderpanel/BeerAdd.java
+	$(JC) gui/neworderpanel/BeerAdd.java
+
+gui/neworderpanel/BeerAddForm.class: gui/neworderpanel/BeerAddForm.java
+	$(JC) gui/neworderpanel/BeerAddForm.java
+
+gui/neworderpanel/BeerTable.class: gui/neworderpanel/BeerTable.java
+			$(JC) gui/neworderpanel/BeerTable.java
+
+controller: business controller/Controller.class controller/ControllerNewOrder.class controller/ControllerPrepare.class
+
+controller/Controller.class:  controller/Controller.java
 		$(JC) controller/Controller.java
 
-controller/InterfaceController.class: business controller/InterfaceController.java
-		$(JC) controller/InterfaceController.java
-
-controller/ControllerNewOrder.class: controller/InterfaceController.class controller/ControllerNewOrder.java
+controller/ControllerNewOrder.class: controller/ControllerNewOrder.java
 		$(JC) controller/ControllerNewOrder.java
 
 controller/ControllerPrepare.class: controller/ControllerPrepare.java

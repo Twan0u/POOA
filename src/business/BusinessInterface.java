@@ -61,4 +61,8 @@ public interface BusinessInterface {
   * @since 1.1
   */
   Order[] getAllOrders()throws ProgramErrorException;
+
+
+
+  ArrayList<Order> getOrdersToDeliver()throws ProgramErrorException;
 }
