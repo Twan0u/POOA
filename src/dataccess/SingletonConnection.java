@@ -9,24 +9,24 @@ public class SingletonConnection{
 
     private static Connection uniqueConnection;
 
-    public static Connection getInstance() throws ProgramErrorException {
+    public static Connection getInstance() throws ProgramErrorException, DataAccessException {
         if(uniqueConnection == null) {
             try{
                 uniqueConnection = DriverManager.getConnection("jdbc:mysql://localhost:3306/projectDB?serverTimezone=" + TimeZone.getDefault().getID(), "root", "AntNat");
             }
-            catch(Exception e){
-                throw new ProgramErrorException("Erreur lors de la connection à la BD");
+            catch(SQLException e){
+                throw new DataAccessException("Impossible de se connecter à la base de donnée");
             }
         }
         return uniqueConnection;
     }
 
-    public static void closeConnection() throws ProgramErrorException{
+    public static void closeConnection() throws ProgramErrorException, DataAccessException {
         try {
             uniqueConnection.close();
         }
         catch(SQLException e) {
-            throw new ProgramErrorException("Erreur à la fermeture de la connection avec la BD");
+            throw new DataAccessException("Erreur à la fermeture de la connection à la BD");
         }
     }
 }

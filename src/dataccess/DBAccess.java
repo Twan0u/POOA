@@ -38,6 +38,7 @@ public class DBAccess implements InterfaceData {
             loadBusinesses();
         orders = OrderDBAccess.getAllOrders(clients, businesses);
     }
+
     private void loadOrderLines() throws ProgramErrorException{
         if(beers == null)
             loadBeers();
@@ -45,7 +46,6 @@ public class DBAccess implements InterfaceData {
             loadOrders();
         orderLines = OrderLineDBAccess.getAllOrderLines(beers, orders);
     }
-
 
     public ArrayList<Client> getAllClients() throws ProgramErrorException {
         if(clients == null)
@@ -56,7 +56,12 @@ public class DBAccess implements InterfaceData {
     public Client getClient(int id) throws ProgramErrorException{
         if(clients == null)
             loadClients();
-        return ClientDBAccess.getClient(id, clients);
+        for(Client client : clients) {
+            if(client.getId() == id) {
+                return client;
+            }
+        }
+        return null;                                        // todo throw erreur client pas trouvé
     }
 
     public ArrayList<Beer> getAllBeers() throws ProgramErrorException{

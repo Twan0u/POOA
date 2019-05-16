@@ -39,13 +39,4 @@ public class ClientDBAccess {
         }
         return clients;
     }
-
-    public static Client getClient(int id, ArrayList<Client> clients) {
-        for(Client client : clients) {
-            if(client.getId() == id) {
-                return client;
-            }
-        }
-        return null;
-    }
 }
