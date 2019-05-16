@@ -189,11 +189,12 @@ public class ControllerNewOrder extends Controller {
       }
 
       public int saveOrder()throws UserInputErrorException{
-      /*  if (numDays<0){
+      /*
+        if (numDays<0){
           throw new UserInputErrorException("Nombre de jours pour effectuer la livraison Invalide");
         }
-        newOrder.setHasPriority(priority);
-        newOrder.setTimeLimit(numDays);
+          newOrder.setHasPriority(priority);
+          newOrder.setTimeLimit(numDays);
         */
 
         if(newOrder.getClient() == null){

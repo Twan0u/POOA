@@ -21,7 +21,8 @@ public class Business implements BusinessInterface{
     public Client[] getAllClients()throws ProgramErrorException{
       ArrayList<Client> clients = null;
 
-      try{clients=  dataLayer.getAllClients();
+      try{
+        clients=  dataLayer.getAllClients();
       }catch(Exception e){
         throw new ProgramErrorException("Erreur de chargement de tous les clients depuis la base de donée");
       }

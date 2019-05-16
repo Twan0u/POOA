@@ -7,29 +7,44 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class DeliveryPanel extends JPanel{
+public class DeliveryPanel extends Container{
 
   Controller controller = new Controller();
 
   private static String column[]={"ID-COMMANDE","Client","Prioritaire","Rue","localite"};
 
-  private JComboBox comboBoxLocality;
+  private JComboBox comboBoxLocality, comboBoxCodePostal;
 
   private JScrollPane sp;
   private JTable table;
-  private String[] localites;
 
   public DeliveryPanel() {
     this.setLayout(new BorderLayout());
+    JPanel topPanel = new JPanel();
+    topPanel.setLayout(new FlowLayout());
+
+    //try{
+      String [] TODO = {"Select A PostCode","Please"};
+      comboBoxCodePostal = new JComboBox(TODO);//TODO 
+    //}catch(ProgramErrorException error){
+    //  JOptionPane.showMessageDialog (null, "Erreur du chargement des Localités","FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
+    //}
+
+    comboBoxCodePostal.setMaximumRowCount(5);
+    comboBoxCodePostal.setSelectedIndex(-1);
+    topPanel.add(comboBoxCodePostal);
 
     try{
       comboBoxLocality = new JComboBox(controller.getLocalitesToDeliver());
     }catch(ProgramErrorException error){
       JOptionPane.showMessageDialog (null, "Erreur du chargement des Localités","FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
     }
+
     comboBoxLocality.setMaximumRowCount(5);
     comboBoxLocality.setSelectedIndex(-1);
-    this.add(comboBoxLocality,BorderLayout.NORTH);
+    topPanel.add(comboBoxLocality);
+
+    this.add(topPanel,BorderLayout.NORTH);
     try{
         JTable table = new JTable(controller.getOrdersToDeliver(),column);
         table.setEnabled(false);

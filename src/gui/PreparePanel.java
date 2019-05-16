@@ -46,7 +46,7 @@ public class PreparePanel extends Container{
     this.add(labelClient);
     this.add(comboBoxClient);
 
-  /*  JTable table = new JTable(controller.getAllOrders(),column);
+    /*  JTable table = new JTable(controller.getAllOrders(),column);
     table.setEnabled(false);
     sp=new JScrollPane(table);
     this.add(sp);*/

@@ -18,13 +18,16 @@ MainLinux.class: MainLinux.java
 
 compile: gui MainLinux.class## Compile tout le projet
 
-gui: controller newOrderPanel gui/ThreadLoad.class gui/PreparePanel.class gui/StockPanel.class gui/OrderPanel.class gui/Gui.class gui/DeliveryPanel.class
+gui: controller newOrderPanel gui/ThreadLoad.class gui/ModifyPanel.class gui/PreparePanel.class gui/StockPanel.class gui/OrderPanel.class gui/Gui.class gui/DeliveryPanel.class
 
 gui/StockPanel.class: gui/StockPanel.java
 	$(JC) gui/StockPanel.java
 
 gui/PreparePanel.class: gui/PreparePanel.java
 	$(JC) gui/PreparePanel.java
+
+gui/ModifyPanel.class: gui/ModifyPanel.java
+	$(JC) gui/ModifyPanel.java
 
 gui/Gui.class:  gui/Gui.java
 	$(JC) gui/Gui.java

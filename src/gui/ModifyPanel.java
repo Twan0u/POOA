@@ -1,4 +1,4 @@
-package gui.neworderpanel;
+package gui;
 
 import controller.*;
 import exceptions.*;
@@ -7,76 +7,89 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class OrderAddForm extends Container{
+public class ModifyPanel extends Container{
 
-ControllerNewOrder controller;
+  JTextField IdOrder;
+  JButton recherche, sauvegarder, supprimer;
 
-private JLabel labelClient, labelBusiness, labelDays, labelDate;
-private JComboBox comboBoxClient, comboBoxBusiness;
-private JCheckBox checkPriority;
-private JSpinner spinnerDate;
-private JTextField timeLimit;
+  private JPanel panel,topPanel;
 
-  public OrderAddForm(ControllerNewOrder controller,Color colorText){
-    this.controller = controller;
-    this.setLayout(new GridLayout(5,2,5,5));
+  private JLabel labelClient, labelBusiness, labelDays, labelDate;
+  private JComboBox comboBoxClient, comboBoxBusiness;
+  private JCheckBox checkPriority;
+  private JSpinner spinnerDate;
+  private JTextField timeLimit;
 
+  public ModifyPanel(){
+    this.setLayout(new BorderLayout());
+
+    topPanel = new JPanel();
+    IdOrder = new JTextField("XXXX");
+    topPanel.setLayout(new FlowLayout());
+    topPanel.add(new JLabel("Identifiant de la commande à modifier"));
+    topPanel.add(IdOrder);
+    recherche = new JButton("Rechercher la commande");
+    topPanel.add(recherche);
+
+    this.add(topPanel,BorderLayout.NORTH);
+
+    panel = new JPanel();
+    panel.setLayout(new GridLayout(6,2,5,5));
     //ComboBox Client
     labelClient = new JLabel("Client : ");
     labelClient.setHorizontalAlignment(SwingConstants.RIGHT);
-    labelClient.setForeground(colorText);
-    comboBoxClient = new JComboBox(loadClients());
+    comboBoxClient = new JComboBox();//loadClients());
     comboBoxClient.setMaximumRowCount(5);
     comboBoxClient.setSelectedIndex(-1);
 
-    this.add(labelClient);
-    this.add(comboBoxClient);
+    panel.add(labelClient);
+    panel.add(comboBoxClient);
 
     //ComboBox Business
     labelBusiness = new JLabel("Business : ");
     labelBusiness.setHorizontalAlignment(SwingConstants.RIGHT);
-    labelBusiness.setForeground(colorText);
     comboBoxBusiness = new JComboBox();
     comboBoxBusiness.setMaximumRowCount(5);
-    BusinessComboRefresh();
+    //BusinessComboRefresh();
 
-    this.add(labelBusiness);
-    this.add(comboBoxBusiness);
+    panel.add(labelBusiness);
+    panel.add(comboBoxBusiness);
 
     labelDate = new JLabel("Date de Livraison Prévue : ");
     labelDate.setHorizontalAlignment(SwingConstants.RIGHT);
-    labelDate.setForeground(colorText);
     spinnerDate = new JSpinner();
-    this.add(labelDate);
-    this.add(spinnerDate);
+    panel.add(labelDate);
+    panel.add(spinnerDate);
 
     labelDays = new JLabel("Livraison deans les X jours après la date Prévue: ");
     labelDays.setHorizontalAlignment(SwingConstants.RIGHT);
-    labelDays.setForeground(colorText);
     timeLimit = new JTextField("");
-    this.add(labelDays);
-    this.add(timeLimit);
+    panel.add(labelDays);
+    panel.add(timeLimit);
 
-    this.add(new JLabel("")); // grid spacer
+    panel.add(new JLabel("")); // grid spacer
 
     checkPriority = new JCheckBox("Livraison Prioritaire ?");
     //checkPriority.setBackground(colBackground);
     checkPriority.setHorizontalAlignment(SwingConstants.RIGHT);
-    this.add(checkPriority);
+    panel.add(checkPriority);
+    sauvegarder = new JButton("sauvegarder la commande");
+    panel.add(sauvegarder);
 
-    ClientComboBoxListener listenerClient = new ClientComboBoxListener();
+    supprimer = new JButton("supprimer la commande");
+    panel.add(supprimer);
+
+    this.add(panel,BorderLayout.CENTER);
+
+
+      /*ClientComboBoxListener listenerClient = new ClientComboBoxListener();
     comboBoxClient.addItemListener(listenerClient);
 
     BusinessComboBoxListener listenerBusiness = new BusinessComboBoxListener();
-    comboBoxBusiness.addItemListener(listenerBusiness);
+    comboBoxBusiness.addItemListener(listenerBusiness);*/
   }
 
-  /** Actualise le combobox contenant les adresses de livraison
-  *
-  * @param index
-  *             index du client dans le tableau contenant tous les clients
-  * @since 1.2
-  */
+/*
   private void BusinessComboRefresh(){
     String [] business = null;
     try{
@@ -115,5 +128,5 @@ private JTextField timeLimit;
       public void itemStateChanged(ItemEvent event){
         controller.selectBusiness(comboBoxBusiness.getSelectedIndex());//l'index de la selection dans la combobox est recupéré et envoyé au
       }
-  }
+  }*/
 }

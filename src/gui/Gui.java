@@ -12,7 +12,7 @@ public class Gui extends JFrame{
   private Container frameContainer,  mainPanel;
   private JPanel menuPanel;
 
-  private JLabel logo,commande, stock, livraison, comptabilite, prepare;
+  private JLabel logo, commande, modifier, recherche, stock, livraison, prepare;
 
   private Color colText = new Color(29, 34, 40);
   private Color colBis = new Color(250,229,150);
@@ -56,6 +56,12 @@ public class Gui extends JFrame{
         ImageIcon commandeIcon = new ImageIcon(path + "commande.png");
         commande = new JLabel(commandeIcon);
 
+        ImageIcon modifierIcon = new ImageIcon(path + "edit.png");
+        modifier = new JLabel(modifierIcon);
+
+        ImageIcon rechercheIcon = new ImageIcon(path + "search.png");
+        recherche = new JLabel(rechercheIcon);
+
         ImageIcon prepareIcon = new ImageIcon(path + "Preparation.png");
         prepare = new JLabel(prepareIcon);
 
@@ -65,20 +71,33 @@ public class Gui extends JFrame{
         ImageIcon livraisonIcon = new ImageIcon(path + "livraison.png");
         livraison = new JLabel(livraisonIcon);
 
-        ImageIcon comptabiliteIcon = new ImageIcon(path + "comptaCrossed.png");
-        comptabilite = new JLabel(comptabiliteIcon);
 
-        menuPanel.setLayout(new GridLayout(6,1));
+
+        menuPanel.setLayout(new GridLayout(7,1));
         menuPanel.add(logo);
         menuPanel.add(commande);
+        menuPanel.add(modifier);
+        menuPanel.add(recherche);
         menuPanel.add(prepare);
         menuPanel.add(stock);
         menuPanel.add(livraison);
-        menuPanel.add(comptabilite);
 
         commande.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
               changeMainPanel(new OrderPanel(colBackground, colText, colBis));
+            }
+        });
+
+        modifier.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+               changeMainPanel(new ModifyPanel());
+
+            }
+        });
+
+        recherche.addMouseListener(new MouseAdapter() {
+            public void mouseClicked(MouseEvent e) {
+               JOptionPane.showMessageDialog(null,"L'onglet recherche n'est pas encore disponible");
             }
         });
 
@@ -94,7 +113,6 @@ public class Gui extends JFrame{
             }
         });
 
-
         livraison.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
               changeMainPanel(new DeliveryPanel());
@@ -102,12 +120,7 @@ public class Gui extends JFrame{
             }
         });
 
-        comptabilite.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-               JOptionPane.showMessageDialog(null,"L'onglet Comptabilité n'est pas encore disponible");
 
-            }
-        });
   }
   public void changeMainPanel(Container newPanel){
     if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
