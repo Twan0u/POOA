@@ -41,7 +41,7 @@ public class DBAccess implements InterfaceData {
         return null;
     }
     public int saveOrder(Order order) throws DataAccessException, CorruptedDataException, DataBackupException {
-       return 2;
+       return OrderDBAccess.saveOrder(order);
     }
     public void deleteOrder(int orderID) throws DataAccessException, CorruptedDataException, DataDeletionException {
 

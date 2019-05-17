@@ -123,4 +123,58 @@ public class OrderDBAccess {
         }
         return orders;
     }
+
+    public static int saveOrder(Order order) throws DataAccessException, DataBackupException {
+        Connection connection = SingletonConnection.getInstance();
+        Integer id = null;
+
+        String sql = "INSERT INTO ClientOrder (businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)"
+                + " VALUES (?,?,?,?,?,?);";
+
+        try {
+            int hasPriority = order.getHasPriority() ? 1 : 0;
+            BusinessUnit business = order.getBusinessUnitId();
+            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+            statement.setInt(2, order.getClient().getId());
+            statement.setInt(3, hasPriority);
+            statement.setString(4, order.getOrderDate());
+            statement.setString(5, order.getState());
+            if(business != null) {
+                statement.setInt(1, business.getIdBusinessUnit());
+            }
+            else {
+                statement.setNull(1, Types.INTEGER);
+            }
+            if(order.getTimeLimit() > 0) {
+                statement.setInt(6,order.getTimeLimit());
+            }
+            else {
+                statement.setNull(6, Types.INTEGER);
+            }
+            statement.executeUpdate();
+            ResultSet rs = statement.getGeneratedKeys();
+
+            if(rs.next())
+                id = rs.getInt(1);
+
+            sql = "INSERT INTO OrderLine (orderNumber, quantity, price, beerName)"
+                    + " VALUES (?,?,?,?);";
+            statement = connection.prepareStatement(sql);
+            int nbOrderLines = order.getOrderLinesSize();
+            OrderLine orderLine;
+
+            for(int i = 0; i < nbOrderLines; i++) {
+                orderLine = order.getOrderLine(i);
+                statement.setInt(1, order.getId());
+                statement.setInt(2, orderLine.getQuantity());
+                statement.setDouble(3, orderLine.getPrice());
+                statement.setString(4, orderLine.getBeer().getName());
+                statement.executeUpdate();
+            }
+        }
+        catch(SQLException e){
+            throw new DataBackupException("Erreur lors de la sauvegarde d'une commande dans la BD");
+        }
+        return id;
+    }
 }
