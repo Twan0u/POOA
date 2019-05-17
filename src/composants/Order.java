@@ -307,6 +307,7 @@ public class Order{
     String spacer = "\n\t=========================\n"; // Délimiteur entre 2 parties d'une commande
     String output;
     output = borders + "\t\tCommande n°" + this.getId() + spacer;
+    output += this.getClient().toString()+spacer;
     if (getBusinessUnitId() != null){
       output += this.getBusinessUnitId().toString() + spacer;
     }else{

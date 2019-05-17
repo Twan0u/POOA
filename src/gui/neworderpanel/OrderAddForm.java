@@ -3,9 +3,11 @@ package gui.neworderpanel;
 import controller.*;
 import exceptions.*;
 
+import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.*; //pour le date format
 
 public class OrderAddForm extends Container{
 
@@ -25,35 +27,49 @@ private JTextField timeLimit;
     labelClient = new JLabel("Client : ");
     labelClient.setHorizontalAlignment(SwingConstants.RIGHT);
     labelClient.setForeground(colorText);
-    comboBoxClient = new JComboBox(loadClients());
-    comboBoxClient.setMaximumRowCount(5);
-    comboBoxClient.setSelectedIndex(-1);
 
-    this.add(labelClient);
-    this.add(comboBoxClient);
+
+    try{
+      comboBoxClient = new JComboBox(controller.getClients());
+      comboBoxClient.setMaximumRowCount(5);
+      comboBoxClient.setSelectedIndex(-1);
+
+      this.add(labelClient);
+      this.add(comboBoxClient);
+
+    }catch(ProgramErrorException error){
+        JOptionPane.showMessageDialog (null, "Erreur du chargement des Clients","FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
+        System.exit(1);
+    }
 
     //ComboBox Business
     labelBusiness = new JLabel("Business : ");
     labelBusiness.setHorizontalAlignment(SwingConstants.RIGHT);
     labelBusiness.setForeground(colorText);
-    comboBoxBusiness = new JComboBox();
+    String [] initBoxBusiness = {"aucun Client Sélectionné"};
+    comboBoxBusiness = new JComboBox(initBoxBusiness);
     comboBoxBusiness.setMaximumRowCount(5);
-    BusinessComboRefresh();
 
     this.add(labelBusiness);
     this.add(comboBoxBusiness);
 
-    labelDate = new JLabel("Date de Livraison Prévue : ");
+    labelDate = new JLabel("Date de Livraison Souhaitée : ");
     labelDate.setHorizontalAlignment(SwingConstants.RIGHT);
     labelDate.setForeground(colorText);
-    spinnerDate = new JSpinner();
+
+    SpinnerDateModel model = new SpinnerDateModel();
+    JSpinner spinnerDate = new JSpinner(model);
+
+    JSpinner.DateEditor editor = new JSpinner.DateEditor(spinnerDate, "dd-MM-yyyy");
+    spinnerDate.setEditor(editor);
+
     this.add(labelDate);
     this.add(spinnerDate);
 
-    labelDays = new JLabel("Livraison endéans les X jours après la date Prévue: ");
+    labelDays = new JLabel("Livraison maximum ... jours après la date Souhaitée (facultatif) : ");
     labelDays.setHorizontalAlignment(SwingConstants.RIGHT);
     labelDays.setForeground(colorText);
-    timeLimit = new JTextField("");
+    timeLimit = new JTextField("0");
     this.add(labelDays);
     this.add(timeLimit);
 
@@ -66,54 +82,33 @@ private JTextField timeLimit;
 
     ClientComboBoxListener listenerClient = new ClientComboBoxListener();
     comboBoxClient.addItemListener(listenerClient);
-
-    BusinessComboBoxListener listenerBusiness = new BusinessComboBoxListener();
-    comboBoxBusiness.addItemListener(listenerBusiness);
-  }
-
-  /** Actualise le combobox contenant les adresses de livraison
-  *
-  * @param index
-  *             index du client dans le tableau contenant tous les clients
-  * @since 1.2
-  */
-  private void BusinessComboRefresh(){
-    String [] business = null;
-    try{
-      business = controller.getBusiness();
-    }catch(ProgramErrorException error){
-        JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
-    }
-    comboBoxBusiness.removeAllItems();
-    for(int i=0;i<business.length;i++){
-      comboBoxBusiness.addItem(business[i]);
-      }
-  }
-  private String[] loadClients(){ //TODO clients can't be null
-    String [] clients = null;
-      try{
-        clients = controller.getClients();
-      }catch(ProgramErrorException error){
-          JOptionPane.showMessageDialog (null, "Erreur du chargement des Clients","FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
-          System.exit(1);
-      }
-      return clients;
   }
 
   public class ClientComboBoxListener implements ItemListener {
       public void itemStateChanged(ItemEvent event){
+
         try{
-          controller.selectClient(comboBoxClient.getSelectedIndex());
+          String [] business = controller.getBusinessOfSelectedClient(comboBoxClient.getSelectedIndex());
+          comboBoxBusiness.removeAllItems();
+          for(int i=0;i<business.length;i++){
+            comboBoxBusiness.addItem(business[i]);
+          }
         }catch(ProgramErrorException error){
             JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
         }
-        BusinessComboRefresh();
       }
   }
 
-  public class BusinessComboBoxListener implements ItemListener {
-      public void itemStateChanged(ItemEvent event){
-        controller.selectBusiness(comboBoxBusiness.getSelectedIndex());//l'index de la selection dans la combobox est recupéré et envoyé au
-      }
+  public int getSelectedBusiness(){
+    return comboBoxBusiness.getSelectedIndex();
+  }
+  public String getSelectedDate(){
+    return "16-09-1997";
+  }
+  public String getSelectedTimeLimit(){
+    return timeLimit.getText();
+  }
+  public boolean getSelectedPriority(){
+    return checkPriority.isSelected();
   }
 }

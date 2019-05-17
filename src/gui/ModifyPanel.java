@@ -20,25 +20,15 @@ public class ModifyPanel extends Container{
   private JSpinner spinnerDate;
   private JTextField timeLimit;
 
-  public ModifyPanel(){
-    this.setLayout(new BorderLayout());
-
-    topPanel = new JPanel();
-    IdOrder = new JTextField("XXXX");
-    topPanel.setLayout(new FlowLayout());
-    topPanel.add(new JLabel("Identifiant de la commande à modifier"));
-    topPanel.add(IdOrder);
-    recherche = new JButton("Rechercher la commande");
-    topPanel.add(recherche);
-
-    this.add(topPanel,BorderLayout.NORTH);
+  public ModifyPanel(int idCommande)throws ProgramErrorException{
+    this.setLayout(new FlowLayout());
 
     panel = new JPanel();
-    panel.setLayout(new GridLayout(6,2,5,5));
+    panel.setLayout(new GridLayout(8,2,5,5));
     //ComboBox Client
     labelClient = new JLabel("Client : ");
     labelClient.setHorizontalAlignment(SwingConstants.RIGHT);
-    comboBoxClient = new JComboBox();//loadClients());
+    comboBoxClient = new JComboBox();
     comboBoxClient.setMaximumRowCount(5);
     comboBoxClient.setSelectedIndex(-1);
 
@@ -67,19 +57,38 @@ public class ModifyPanel extends Container{
     panel.add(labelDays);
     panel.add(timeLimit);
 
+     JRadioButtonMenuItem neww, prepared,delivered,paid;
+     ButtonGroup radioButtonGroup;
+     neww = new JRadioButtonMenuItem("Nouvelle Commande");
+     panel.add(neww);
+     prepared = new JRadioButtonMenuItem("Commande préparée");
+     panel.add(prepared);
+     delivered = new JRadioButtonMenuItem("Commande Livrée");
+     panel.add(delivered);
+     paid = new JRadioButtonMenuItem("Commande Payée");
+     panel.add(paid);
+
+     radioButtonGroup = new ButtonGroup();
+     radioButtonGroup.add(neww);
+     radioButtonGroup.add(prepared);
+     radioButtonGroup.add(delivered);
+     radioButtonGroup.add(paid);
+
     panel.add(new JLabel("")); // grid spacer
 
     checkPriority = new JCheckBox("Livraison Prioritaire ?");
     //checkPriority.setBackground(colBackground);
     checkPriority.setHorizontalAlignment(SwingConstants.RIGHT);
     panel.add(checkPriority);
-    sauvegarder = new JButton("sauvegarder modification de la commande");
+    sauvegarder = new JButton("sauvegarder les modification de la commande");
     panel.add(sauvegarder);
 
     supprimer = new JButton("supprimer la commande");
+    supprimer.setBackground(Color.RED);
+    supprimer.setForeground(Color.WHITE);
     panel.add(supprimer);
 
-    this.add(panel,BorderLayout.CENTER);
+    this.add(panel);
 
 
       /*ClientComboBoxListener listenerClient = new ClientComboBoxListener();

@@ -6,7 +6,6 @@ import exceptions.*;
 import java.io.*;
 import java.util.*;
 
-
 /**
 * <b>classe du controller de l'interface</b>
 *java.util.concurrent.TimeUnit
@@ -18,60 +17,52 @@ public class ControllerNewOrder extends Controller {
 
     /**Variable contenant l'order actuellement en préparation*/
     private Order newOrder = new Order();
+    private BusinessUnit [] businessBuffer = null;
 
-    private Client [] bufferClients = null;
-
-    public ControllerNewOrder()throws ProgramErrorException{
+    public String[] getBusinessOfSelectedClient(int index)throws ProgramErrorException{
       try{
-        bufferClients = businesslayer.getAllClients();
-      }catch(Exception exception){
-        throw new ProgramErrorException( exception.getMessage());
-      }
-    }
-
-    /** Recupération de tous les clients
-    * @return un tableau contenant chaque client sous la forme d'un string
-    * @since 1.1
-    */
-    public String[] getClients()throws ProgramErrorException{
-
-      String [] out = new String[bufferClients.length];
-      for(int i = 0; i<out.length; i++){
-        out[i] = bufferClients[i].getName() + "-" + bufferClients[i].getId();
-      }
-      return out;
-    }
-
-    /** Enregistre quel client est sélectionné
-    * @param index index du client selectionné dans le tableau des clients
-    * @since 1.2
-    */
-    public void selectClient(int index)throws ProgramErrorException{
-      try{
-        newOrder.setClient(bufferClients[index]);
+        newOrder.setClient(clients[index]);
       }catch(OrderException e){
         throw new ProgramErrorException(e.getMessage());
       }
-
+      return getBusinessOfClient(newOrder.getClient());
     }
 
-    /** Enregistre quel Business est sélectionné (null si pas de livraison à effectuer(defaut))
+    public String[] getBusinessOfClient(Client client)throws ProgramErrorException{
+        if (client==null){
+          String [] out = new String [1];
+          out[0] = "Aucun Client Sélectionné";
+          return out;
+        }else{
+          try{
+            businessBuffer = businesslayer.getBusinessOf(client.getId());
+          }catch(Exception e){
+            throw new ProgramErrorException(e.getMessage());
+          }
+          if (businessBuffer == null){
+            String [] out = new String[1];
+            out[0] = "Pas de Livraison";
+            return out;
+          }else{
+            String [] out = new String[businessBuffer.length+1];
+            out[0] = "Pas de Livraison";
+            for(int i = 1; i<out.length; i++){
+              out[i] = businessBuffer[i-1].getStreetName();
+            }
+            return out;
+          }
+        }
+      }
+
+    /** Enregistre quel Business est sélectionné (null si pas de livraison à effectuer(defaut à null))
     * @param index index du client selectionné dans le tableau des clients  (négatif ou égal à zero, pas de livraison à effectuer)
     * @since 1.2
     */
     public void selectBusiness(int index){
-      if ( index <= 0 ){ // le cas ou il n'y a pas encore de clients chargés ou pas de livraison à effectuer
+      if ( index <= 0 ){
         newOrder.setBusinessUnitId(null);
       }else{
-        BusinessUnit [] businessOfClient = null;
-        try{
-          Client client = newOrder.getClient();//TODO REMOVE
-          businessOfClient = businesslayer.getBusinessOf(client.getId()); // TODO remove this shit and replace by a proper method getBuisness(Business)
-        }catch(Exception e){
-                System.out.println(e.getMessage());
-          //TODO see later
-        }
-        newOrder.setBusinessUnitId(businessOfClient[index-1]);
+        newOrder.setBusinessUnitId(businessBuffer[index-1]);
       }
     }
 
@@ -89,7 +80,6 @@ public class ControllerNewOrder extends Controller {
       if (beers == null){
         throw new ProgramErrorException("Erreur du chargement : Pas de bières disponibles ");
       }
-
         String [] out = new String[beers.size()];
         for(int i=0;i<out.length;i++){
           out[i] = beers.get(i).getName();
@@ -150,56 +140,22 @@ public class ControllerNewOrder extends Controller {
       return data;
     }
 
-    /** récupère tous les BusinessUnit d'un client sur base de son index dans le tableau
-    * @param index
-    *             index du client
-    * @return une liste de business si il y en a et null sinon
-    * @since 1.0
-    */
-    public String[] getBusiness()throws ProgramErrorException{
-      Client client = newOrder.getClient();
-        if (client==null){
-          String [] out = new String [1];
-          out[0] = "Aucun Client Sélectionné";
-          return out;
-        }else{
-          BusinessUnit [] businessOfClient = null;
-          try{
-            businessOfClient = businesslayer.getBusinessOf(client.getId());
-          }catch(Exception e){
-            throw new ProgramErrorException(e.getMessage());
-          }
-          if (businessOfClient == null){
-            String [] out = new String[1];
-            out[0] = "Pas de Livraison";
-            return out;
-          }else{
-            String [] out = new String[businessOfClient.length+1];
-            out[0] = "Pas de Livraison";
-            for(int i = 1; i<out.length; i++){
-              out[i] = businessOfClient[i-1].getStreetName();
-            }
-            return out;
-          }
-        }
-      }
-
       public void removeLastBeer(){
         newOrder.removeLastOrderLine();
       }
 
-      public int saveOrder()throws UserInputErrorException{
-      /*
-        if (numDays<0){
-          throw new UserInputErrorException("Nombre de jours pour effectuer la livraison Invalide");
-        }
-          newOrder.setHasPriority(priority);
-          newOrder.setTimeLimit(numDays);
-        */
+      public int saveOrder(int BusinessIndex,String Date ,String timeLimit,boolean priority)throws UserInputErrorException{
 
         if(newOrder.getClient() == null){
             throw new UserInputErrorException("Veuillez selectionner un client");
         }
+        try{
+          newOrder.setTimeLimit(Integer.parseInt(timeLimit));
+        }catch(Exception error){
+          throw new UserInputErrorException("Le nombre de jours supplémentaires autorisés pour effectuer la livraison est invalide");
+        }
+          newOrder.setHasPriority(priority);
+          selectBusiness(BusinessIndex);
 
         if(newOrder.getOrderLinesSize() == 0){
           throw new UserInputErrorException("Commande Vide");
@@ -213,6 +169,5 @@ public class ControllerNewOrder extends Controller {
           throw new UserInputErrorException("Ajout impossible " + e.getMessage());
         }
       return idOfNewOrder;
-
       }
 }

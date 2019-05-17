@@ -1,6 +1,7 @@
 package gui;
 
 import controller.*;
+import exceptions.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -93,52 +94,71 @@ public class Gui extends JFrame{
 
         modifier.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-               changeMainPanel(new ModifyPanel());
+              String s = (String)JOptionPane.showInputDialog(null,"Identifiant de la commande à modifier","Selectionner l'Identifiant", JOptionPane.QUESTION_MESSAGE);
+              if ((s != null) && (s.length() > 0)){
+                try{
+                  changeMainPanel(new ModifyPanel(Integer.parseInt(s)));
+                }catch(NumberFormatException error){
+                  JOptionPane.showMessageDialog(null,"Le numéro d'identification est incorrect");
+                }catch(ProgramErrorException erreur){
+                  JOptionPane.showMessageDialog(null,"Aucune Commande n'est liée avec ce numéro d'identification");
+                }
+              }else{
+                JOptionPane.showMessageDialog(null,"Il n'y a aucune commande sélectionnée");
+              }
             }
         });
 
         recherche.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-              changeMainPanel(new SearchPanel());
+              if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                changeMainPanel(new SearchPanel());
                //JOptionPane.showMessageDialog(null,"L'onglet recherche n'est pas encore disponible");
+             }
             }
         });
 
         rechercheClient.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-              changeMainPanel(new SearchOrderByClientPanel());
+              if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                changeMainPanel(new SearchOrderByClientPanel());
+              }
             }
         });
 
 
         prepare.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-              changeMainPanel(new PreparePanel(colBackground, colText));
+              if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                changeMainPanel(new PreparePanel(colBackground, colText));
+              }
             }
         });
 
         stock.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-              changeMainPanel(new StockPanel(colBackground, colText));
+              if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                changeMainPanel(new StockPanel(colBackground, colText));
+              }
             }
         });
 
         livraison.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-              changeMainPanel(new DeliveryPanel());
+              if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                changeMainPanel(new DeliveryPanel());
                //JOptionPane.showMessageDialog(null,"L'onglet Livraison n'est pas encore disponible");
+             }
             }
         });
 
 
   }
   public void changeMainPanel(Container newPanel){
-    if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
        frameContainer.removeAll();
        frameContainer.add(menuPanel, BorderLayout.WEST );
        frameContainer.add(newPanel, BorderLayout.CENTER );
        frameContainer.revalidate();
-   }
   }
 
 }

@@ -18,9 +18,8 @@ import java.util.*;
 
 public class Controller {
 
-  static Business businesslayer = new Business(); // cette variable est utilisée dans le cadre d'interactions avec la couchebusiness
-
-
+  protected static Business businesslayer = new Business(); // cette variable est utilisée dans le cadre d'interactions avec la couchebusiness
+  protected Client [] clients;
 
   public String[][]  getstock(boolean onlyLow){
     ArrayList<Beer> beers = null;
@@ -43,8 +42,6 @@ public class Controller {
     }
     return out;
   }
-
-
 
   public String[] getLocalitesToDeliver()throws ProgramErrorException{//TODO
     String [] out = new String[4];
@@ -75,5 +72,28 @@ public class Controller {
         }
         return out;
       }
+  }
+
+  /** Recupération de tous les clients
+  * @return un tableau contenant chaque client sous la forme d'un string
+  * @since 1.1
+  */
+  public String[] getClients()throws ProgramErrorException{
+    try{
+      clients = businesslayer.getAllClients();
+    }catch(Exception error){
+      throw new ProgramErrorException(error.getMessage());
+    }
+    if (clients == null){
+      throw new ProgramErrorException("Il y a eu une erreur dans le chargement des clients");
+    }
+    if (clients.length == 0){
+      throw new ProgramErrorException("Il n'y a pas de clients dans la base de donnée");
+    }
+    String [] out = new String[clients.length];
+    for(int i = 0; i<out.length; i++){
+      out[i] = clients[i].getName() + "-" + clients[i].getId();
+    }
+    return out;
   }
 }
