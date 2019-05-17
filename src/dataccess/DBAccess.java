@@ -14,7 +14,7 @@ public class DBAccess implements InterfaceData {
         return OrderDBAccess.getAllOrders();
     }
     public ArrayList<Client> getAllClients() throws DataAccessException, CorruptedDataException {
-        return null;
+        return ClientDBAccess.getAllClients();
     }
     public Client getClient(int id) throws DataAccessException, CorruptedDataException {
         return null;

@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS Client
-	( idClient INT PRIMARY KEY
+	( idClient INT PRIMARY KEY CHECK (idClient > -1)
 	, phoneNumber VARCHAR(18) NOT NULL
 	, clientName VARCHAR(64) NOT NULL
 	, vatNumber VARCHAR(32)
@@ -7,7 +7,7 @@ CREATE TABLE IF NOT EXISTS Client
 	)ENGINE = InnoDB;
     
 CREATE TABLE IF NOT EXISTS Locality
-	( idLocality INT PRIMARY KEY
+	( idLocality INT PRIMARY KEY CHECK (idLocality > -1)
 	, localityName VARCHAR(50) NOT NULL
 	, postalCode VARCHAR(15) NOT NULL
 	)ENGINE = InnoDB;
@@ -103,6 +103,8 @@ INSERT INTO BusinessUnit(idBusinessUnit, clientNumber, locality, streetName, str
 	VALUES (4, 25, 1, 'Rue du youkoulele', '36');
 INSERT INTO BusinessUnit(idBusinessUnit, clientNumber, locality, streetName, streetNumber)
 	VALUES (5, 73, 2, 'Rue de la pistache', '14');
+INSERT INTO BusinessUnit(idBusinessUnit, clientNumber, locality, streetName, streetNumber)
+	VALUES (6, 73, 2, 'Rue de la moustache', '41');
 	
 
 INSERT INTO ClientOrder (idOrder, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
