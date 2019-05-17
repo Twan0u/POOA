@@ -1,14 +1,14 @@
 package dataccess;
 
-import java.util.*;
-import java.sql.*;
-
 import composants.*;
 import exceptions.*;
 
+import java.util.*;
+import java.sql.*;
+
 public class BeerDBAccess {
 
-    public static ArrayList<Beer> getAllBeers() throws DataAccessException, CorruptedDataException{
+    public static ArrayList<Beer> getAllBeers() throws DataAccessException, CorruptedDataException {
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Beer> beers = new ArrayList<>();
         Beer beer;
@@ -38,31 +38,5 @@ public class BeerDBAccess {
             throw new CorruptedDataException("Des données incohérentes concernant les bières se trouvent dans la BD");
         }
         return beers;
-    }
-
-    public static Beer getBeer(String name) throws DataAccessException, CorruptedDataException{
-        Connection connection = SingletonConnection.getInstance();
-        String sql = "SELECT * FROM Beer WHERE idName = ?";
-        Beer beer = null;
-
-        try {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, name);
-            ResultSet data = statement.executeQuery();
-
-            if(data.next()) {
-                double stockPrice = data.getDouble("stockPrice");
-                int qtInStock = data.getInt("qtInStock");
-                int lowThreshold = data.getInt("lowTreshold");
-                beer = new Beer(name, stockPrice, qtInStock, lowThreshold);
-            }
-        }
-        catch(SQLException e) {
-            throw new DataAccessException("Erreur lors de la récupération de données concernant une bière");
-        }
-        catch(BeerException e){
-            throw new CorruptedDataException("Des données incohérentes concernant une bière se trouve dans la BD");
-        }
-        return beer;
     }
 }

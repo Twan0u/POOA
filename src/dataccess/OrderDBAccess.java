@@ -1,228 +1,126 @@
 package dataccess;
+
 import composants.*;
 import exceptions.*;
 
+import java.util.*;
 import java.sql.*;
-import java.util.ArrayList;
 
 public class OrderDBAccess {
-
-    public static int saveOrder(Order order) throws DataAccessException, DataBackupException {
-        Connection connection = SingletonConnection.getInstance();
-
-        String sql = "INSERT INTO ClientOrder (businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)"
-                + " VALUES (?,?,?,?,?,?);";
-        int hasPriority = order.getHasPriority() ? 1 : 0;
-        BusinessUnit business = order.getBusinessUnitId();
-
-        try {
-            PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
-            statement.setInt(2, order.getClient().getId());
-            statement.setInt(3, hasPriority);
-            statement.setString(4, order.getOrderDate());
-            statement.setString(5, order.getState());
-            if(business != null) {
-                statement.setInt(1, business.getIdBusinessUnit());
-            }
-            else {
-                statement.setNull(1, Types.INTEGER);
-            }
-            if(order.getTimeLimit() > 0) {
-                statement.setInt(6,order.getTimeLimit());
-            }
-            else {
-                statement.setNull(6, Types.INTEGER);
-            }
-            statement.executeUpdate();
-            ResultSet rs = statement.getGeneratedKeys();
-            int id = 0;
-            if(rs.next())
-                id = rs.getInt(1);
-            return id;
-        }
-        catch (SQLException e) {
-            throw new DataBackupException("Erreur lors de la sauvegarde d'une commande dans la BD");
-        }
-    }
-
-    public static ArrayList<Order> getAllOrders(ArrayList<Client> clients, ArrayList<BusinessUnit> businesses) throws DataAccessException, CorruptedDataException{
+    public static ArrayList<Order> getAllOrders() throws DataAccessException, CorruptedDataException {
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Order> orders = new ArrayList<>();
-        Order order;
-        int idNumber;
-        int businessUnitId;
-        BusinessUnit business = null;
-        int clientNumber;
-        boolean hasPriority;
-        String orderDate;
-        String state;
-        int timeLimit;
-        int tailleArrayBusiness;
-        int tailleArrayClients;
-        Client client;
-        int i;
-        String sql = "select * from ClientOrder";
 
+        String sql = "SELECT * FROM ClientOrder as cO"
+                + " LEFT JOIN OrderLine oL on oL.OrderNumber = cO.idOrder"
+                + " LEFT JOIN Beer b on oL.BeerName = b.idName"
+                + " LEFT JOIN BusinessUnit bU on cO.businessUnit = bU.idBusinessUnit"
+                +" LEFT JOIN Client c on cO.clientNumber = c.idClient"
+                +" LEFT JOIN Locality l on bU.locality = l.idLocality"
+                + " ORDER BY cO.idOrder";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
             ResultSet data = statement.executeQuery();
+
+            Order order = null;
+            int idOrder = -1;
+            Integer businessId;
+            int clientNumber;
+            boolean hasPriority;
+            String orderDate;
+            String state;
+            Integer timeLimit;
+
+            Client client;
+            String phoneNumber;
+            String clientName;
+            String vatNumber;
+            double discount;
+
+            OrderLine orderLine;
+            int quantity;
+            double price;
+            String beerName;
+
+            Beer beer;
+            double stockPrice;
+            int qtInStock;
+            int lowThreshold;
+
+            BusinessUnit business;
+            int localityNumber;
+            String streetNumber;
+            String streetName;
+
+            Locality locality;
+            String localityName;
+            String postalCode;
 
             while(data.next()) {
-                idNumber = data.getInt("idNumber");
-                hasPriority = data.getInt("hasPriority") == 1;
-                orderDate = data.getString("orderDate");
-                state = data.getString("state");
+                if(idOrder != data.getInt("idOrder")){
+                    idOrder = data.getInt("idOrder");
+                    hasPriority = data.getInt("hasPriority") == 1;
+                    orderDate = data.getString("orderDate");
+                    state = data.getString("state");
+                    clientNumber = data.getInt("clientNumber");
+                    timeLimit = data.getInt("timeLimit");
 
-                businessUnitId = data.getInt("businessUnit");
-                if(!data.wasNull()) {
-                    i = 0;
-                    business = businesses.get(i);
-                    tailleArrayBusiness = businesses.size();
-                    while(i < tailleArrayBusiness && business.getIdBusinessUnit() != businessUnitId) {
-                        i++;
-                        business = businesses.get(i);
-                    }
-                    client = business.getClient();
-                }
-                else {
-                        clientNumber = data.getInt("clientNumber");
-                        i = 0;
-                        client = clients.get(i);
-                        tailleArrayClients = clients.size();
-                        while(i < tailleArrayClients && client.getId() != clientNumber) {
-                            i++;
-                            client = clients.get(i);
-                    }
-                }
-                order = new Order(idNumber, business, client, hasPriority, orderDate, state);
+                    phoneNumber = data.getString("phoneNumber");
+                    clientName = data.getString("clientName");
+                    discount = data.getDouble("discount");
+                    client = new Client(clientNumber, clientName, phoneNumber, discount);
+                    vatNumber = data.getString("vatNumber");
+                    if(!data.wasNull())
+                        client.setVATNumber(vatNumber);
 
-                timeLimit = data.getInt("timeLimit");
-                if(!data.wasNull()){
-                    order.setTimeLimit(timeLimit);
+                    order = new Order(idOrder, client, hasPriority, orderDate, state, timeLimit);
+
+                    businessId = data.getInt("businessUnit");
+                    if(!data.wasNull()) {
+                        localityNumber = data.getInt("idLocality");
+                        localityName = data.getString("localityName");
+                        postalCode = data.getString("postalCode");
+                        locality = new Locality(localityNumber, localityName, postalCode);
+                        streetName = data.getString("streetName");
+                        streetNumber = data.getString("streetNumber");
+                        business = new BusinessUnit(businessId, client, locality, streetName, streetNumber);
+                        order.setBusinessUnitId(business);
+                    }
+                    orders.add(order);
                 }
-                orders.add(order);
+                    beerName = data.getString("idName");
+                    qtInStock = data.getInt("qtInStock");
+                    lowThreshold = data.getInt("lowTreshold");
+                    stockPrice = data.getDouble("stockPrice");
+                    beer = new Beer(beerName, stockPrice, qtInStock, lowThreshold);
+
+                    price = data.getDouble("price");
+                    quantity = data.getInt("quantity");
+                    orderLine = new OrderLine(beer, order, quantity, price);
+                    order.additem(orderLine);
             }
         }
-
         catch(SQLException e) {
-            throw new DataAccessException("Erreur lors de la récupération de données sur les commandes dans la BD");
+            throw new DataAccessException("Erreur lors de la récupération de données concernant les commandes");
         }
-        catch(OrderException e) {
-            throw new CorruptedDataException("Des données incohérentes concernant les commandes se trouvent dans la base de donnée");
+        catch(ClientException e) {
+            throw new CorruptedDataException("Des données incohérentes concernant les clients sont présentes dans la BD");
+        }
+        catch(OrderException e){
+            throw new CorruptedDataException("Des données incohérentes concernant les commandes sont présentes dans la BD");
+        }
+        catch(LocalityException e){
+            throw new CorruptedDataException("Des données incohérentes concernant les localités sont présentes dans la BD");
+        }
+        catch(BusinessUnitException e){
+            throw new CorruptedDataException("Des données incohérentes concernant les business sont présentes dans la BD");
+        }
+        catch(BeerException e){
+            throw new CorruptedDataException("Des données incohérentes concernant les bières sont présentes dans la BD");
+        }
+        catch (OrderLineException e) {
+            throw new CorruptedDataException("Des données incohérentes concernant les lignes commandes sont présentes dans la BD");
         }
         return orders;
-    }
-
-    public static ArrayList<Order> getOrdersWithState(String state, ArrayList<Order> orders) {
-        ArrayList<Order> selectedOrders = new ArrayList<>();
-        for(Order o : orders) {
-            if(o.getState().equals(state))
-                selectedOrders.add(o);
-        }
-        return selectedOrders;
-    }
-
-    public static ArrayList<Order> getOrdersWithDates(String dateMinimum, String dateMaximum, ArrayList<Order> orders) {
-        ArrayList<Order> selectedOrders = new ArrayList<>();
-
-        Date dateMin = Date.valueOf(dateMinimum);
-        Date dateMax = Date.valueOf(dateMaximum);
-
-        for (Order o : orders) {
-            Date oDate = Date.valueOf(o.getOrderDate());
-            if (oDate.after(dateMin) && oDate.before(dateMax))
-                selectedOrders.add(o);
-        }
-        return selectedOrders;
-    }
-
-    public static ArrayList<Order> getOrdersWithClient(Client client, ArrayList<Order> orders) {
-        ArrayList<Order> selectedOrders = new ArrayList<>();
-
-        for(Order o : orders) {
-            if(o.getClient() == client)
-                selectedOrders.add(o);
-        }
-        return selectedOrders;
-    }
-
-    public static ArrayList<Order> getOrdersToDeliver(int localityID, ArrayList<Order> orders) {
-        ArrayList<Order> selectedOrders = new ArrayList<>();
-
-        for(Order o : orders) {
-            if(o.getBusinessUnitId() != null) {
-                if(o.getBusinessUnitId().getLocality().getIdLocality() == localityID && o.getState().equals("prepared")) {
-                        selectedOrders.add(o);
-                }
-            }
-        }
-        return selectedOrders;
-    }
-
-    public static Order getOrderWithID(int orderId) throws DataAccessException, CorruptedDataException {
-        Connection connection = SingletonConnection.getInstance();
-        String sql = "SELECT * FROM ClientOrder WHERE idNumber = ?";
-        Order order = null;
-        BusinessUnit business = null;
-        ArrayList <OrderLine> orderLines;
-         try {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, orderId);
-            ResultSet data = statement.executeQuery();
-
-            if(data.next()){
-                int clientNumber = data.getInt("clientNumber");
-                Client client = ClientDBAccess.getClient(clientNumber);
-                boolean hasPriority = data.getInt("hasPriority") == 1;
-                String orderDate = data.getString("orderDate");
-                String state = data.getString("state");
-                Integer bU = data.getInt("businessUnit");
-                if(!data.wasNull()) {
-                    business = BusinessDBAccess.getBusinessWithId(bU);
-                }
-                order = new Order(orderId, business, client, hasPriority, orderDate, state);
-                Integer timeLimit = data.getInt("timeLimit");
-                if(!data.wasNull())
-                    order.setTimeLimit(timeLimit.intValue());
-            }
-         }
-         catch(SQLException e){
-             throw new DataAccessException("Erreur lors de la récupération de données concernant une commande dans la BD");
-         }
-         catch(OrderException e) {
-             throw new CorruptedDataException("Des données incohérentes concernant une commande se trouvent dans BD");
-         }
-        orderLines = OrderLineDBAccess.getOrderLinesWithOrder(order);
-        return order;
-    }
-
-    public static void deleteOrder(int orderId) throws DataAccessException, DataDeletionException {
-        Connection connection = SingletonConnection.getInstance();
-        String sql = "DELETE FROM ClientOrder WHERE idNumber = ?;";
-
-        try {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setInt(1, orderId);
-            statement.executeUpdate();
-        }
-
-        catch(SQLException e) {
-            throw new DataDeletionException("Erreur lors de la suppression d'une commande dans la BD");
-        }
-    }
-
-    public static void setOrderState(String newState, int orderId) throws DataAccessException, DataModificationException {
-        Connection connection = SingletonConnection.getInstance();
-        String sql = "UPDATE ClientOrder SET state = ? WHERE idNumber = ?;";
-
-        try {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setString(1, newState);
-            statement.setInt(2, orderId);
-            statement.executeUpdate();
-        }
-        catch(Exception e) {
-            throw new DataModificationException("Erreur lors de la modification de l'état d'une commande dans la BD");
-        }
     }
 }

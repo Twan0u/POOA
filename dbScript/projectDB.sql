@@ -1,5 +1,5 @@
 CREATE TABLE IF NOT EXISTS Client
-	( idNumber INT PRIMARY KEY
+	( idClient INT PRIMARY KEY
 	, phoneNumber VARCHAR(18) NOT NULL
 	, clientName VARCHAR(64) NOT NULL
 	, vatNumber VARCHAR(32)
@@ -19,13 +19,13 @@ CREATE TABLE IF NOT EXISTS BusinessUnit
 	, streetName VARCHAR(40) NOT NULL
 	, streetNumber VARCHAR(5) NOT NULL
 	
-	, CONSTRAINT clientNumber_fk FOREIGN KEY (clientNumber) REFERENCES Client(idNumber)
+	, CONSTRAINT clientNumber_fk FOREIGN KEY (clientNumber) REFERENCES Client(idClient)
 	, CONSTRAINT locality_fk FOREIGN KEY (locality) REFERENCES Locality(idLocality)
 	)ENGINE = InnoDB;
     
     
 CREATE TABLE IF NOT EXISTS ClientOrder
-	( idNumber INT PRIMARY KEY AUTO_INCREMENT
+	( idOrder INT PRIMARY KEY AUTO_INCREMENT
 	, businessUnit INT
 	, clientNumber INT NOT NULL
 	, hasPriority TINYINT NOT NULL
@@ -34,7 +34,7 @@ CREATE TABLE IF NOT EXISTS ClientOrder
 	, timeLimit INT
 	
 	, CONSTRAINT businessUnit_fk FOREIGN KEY (businessUnit) REFERENCES BusinessUnit(idBusinessUnit)
-	, CONSTRAINT clientNbr_fk FOREIGN KEY (clientNumber) REFERENCES Client(idNumber)
+	, CONSTRAINT clientNbr_fk FOREIGN KEY (clientNumber) REFERENCES Client(idClient)
     , CONSTRAINT state_chk CHECK (state IN ('new', 'prepared', 'delivered', 'paid'))
 	)ENGINE = InnoDB;
     
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS OrderLine
 	
 	, CONSTRAINT orderLine_pk PRIMARY KEY(idOrderLigne)
 	, CONSTRAINT beerName_fk FOREIGN KEY (beerName) REFERENCES Beer(idName)
-	, CONSTRAINT orderNumber_fk FOREIGN KEY (orderNumber) REFERENCES clientOrder(idNumber)
+	, CONSTRAINT orderNumber_fk FOREIGN KEY (orderNumber) REFERENCES clientOrder(idOrder)
 	)ENGINE = InnoDB;
 	
 INSERT INTO Beer(idName, stockPrice, qtInStock, lowTreshold)
@@ -73,15 +73,15 @@ INSERT INTO Beer(idName, stockPrice, qtInStock, lowTreshold)
 	VALUES ('bush', 2.12, 15, 30);
 
 
-INSERT INTO Client(idNumber, phoneNumber, clientName, vatNumber, discount)
+INSERT INTO Client(idClient, phoneNumber, clientName, vatNumber, discount)
 	VALUES (165, '+32497/05.65.89', 'jean', 'BE145668569', 0);
-INSERT INTO Client(idNumber, phoneNumber, clientName, vatNumber, discount)
+INSERT INTO Client(idClient, phoneNumber, clientName, vatNumber, discount)
 	VALUES (145, '+32497/15.45.89', 'marc', 'BE468465542', 8);
-INSERT INTO Client(idNumber, phoneNumber, clientName, vatNumber, discount)
+INSERT INTO Client(idClient, phoneNumber, clientName, vatNumber, discount)
 	VALUES (198, '+32496/25.44.65', 'jacqueline', 'BE455672494', 6.4);
-INSERT INTO Client(idNumber, phoneNumber, clientName, vatNumber, discount)
+INSERT INTO Client(idClient, phoneNumber, clientName, vatNumber, discount)
 	VALUES (25, '+32497/76.54.12', 'stephanie', NULL, 0);
-INSERT INTO Client(idNumber, phoneNumber, clientName, vatNumber, discount)
+INSERT INTO Client(idClient, phoneNumber, clientName, vatNumber, discount)
 	VALUES (73, '+32498/99.87.34', 'michel', 'BE456872465', 5);
 	
 
@@ -105,15 +105,15 @@ INSERT INTO BusinessUnit(idBusinessUnit, clientNumber, locality, streetName, str
 	VALUES (5, 73, 2, 'Rue de la pistache', '14');
 	
 
-INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
+INSERT INTO ClientOrder (idOrder, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
 	VALUES (1, null, 165, 0, '2019-01-13', "new", null);
-INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
+INSERT INTO ClientOrder (idOrder, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
 	VALUES (2, 1, 165, 1, '2018-12-29', "prepared", 15);
-INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
+INSERT INTO ClientOrder (idOrder, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
 	VALUES (3, 2, 145, 0, '2018-05-14', "delivered", null);
-INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
+INSERT INTO ClientOrder (idOrder, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
 	VALUES (4, 3, 198, 0, '2019-02-24', "paid", 30);
-INSERT INTO ClientOrder (idNumber, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
+INSERT INTO ClientOrder (idOrder, businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)
 	VALUES (5, 5, 25, 1, '2019-05-17', "prepared", 23);
 
 
