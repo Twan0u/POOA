@@ -16,7 +16,7 @@ import java.util.ArrayList;
 */
 public class Business implements BusinessInterface{
 
-    private static DataMock dataLayer = new DataMock();
+    private static InterfaceData dataLayer = new DBAccess();
 
     public Client[] getAllClients()throws ProgramErrorException {
       ArrayList<Client> clients = null;
