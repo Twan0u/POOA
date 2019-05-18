@@ -62,7 +62,11 @@ public interface BusinessInterface {
   */
   Order[] getAllOrders()throws ProgramErrorException;
 
-
+  Order getOrder(int orderId);
 
   ArrayList<Order> getOrdersToDeliver()throws ProgramErrorException;
+
+  ArrayList<Locality> localitiesWithPostCode(String postCode)throws ProgramErrorException;
+
+  ArrayList<BusinessUnit> getArrayBusinessOf(int id)throws ProgramErrorException;
 }

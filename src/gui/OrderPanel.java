@@ -23,12 +23,8 @@ public class OrderPanel extends Container{
   public OrderPanel(Color colBackground, Color colText, Color colBis) {
     this.setLayout(new FlowLayout());
     this.colText = colText;
-    //this.colBackground = colBackground;
-    //this.colBis = colBis;
-    //this.setBackground(colBackground);
 
     validateButton = new JButton("Sauvegarder La commande");
-    //validateButton.setBackground(colBis);
     try{
       this.controller = new ControllerNewOrder();
     }catch(Exception e){
@@ -59,7 +55,7 @@ public class OrderPanel extends Container{
   }
 
 public int save()throws ProgramErrorException, UserInputErrorException{
-  int idNewOrder  = controller.saveOrder(orderAddForm.getSelectedBusiness(),orderAddForm.getSelectedDate(),orderAddForm.getSelectedTimeLimit(),orderAddForm.getSelectedPriority());
+  int idNewOrder  = controller.saveOrder(orderAddForm.getSelectedClient(),orderAddForm.getSelectedBusiness(),orderAddForm.getSelectedDate(),orderAddForm.getSelectedTimeLimit(),orderAddForm.getSelectedPriority());
   return idNewOrder;
 }
 
@@ -85,9 +81,8 @@ private void reload(){
       JOptionPane.showMessageDialog(null, e.getMessage(),"FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
       System.exit(1);
     }
-
-
   }
+
 
 
 }

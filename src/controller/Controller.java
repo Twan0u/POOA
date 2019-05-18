@@ -7,12 +7,10 @@ import exceptions.*;
 import java.io.*;
 import java.util.*;
 
-
-/**
-* <b>classe du controller de l'interface</b>
+/** <b>classe du controller de l'interface</b>
 *
 * @author Antoine Lambert et Nathan Surquin
-* @version 3.0
+* @version 3.1
 *
 */
 
@@ -20,6 +18,7 @@ public class Controller {
 
   protected static Business businesslayer = new Business(); // cette variable est utilisée dans le cadre d'interactions avec la couchebusiness
   protected Client [] clients;
+  private ArrayList<Locality> bufferlocalitiesToDeliver = new ArrayList<>();
 
   public String[][]  getstock(boolean onlyLow){
     ArrayList<Beer> beers = null;
@@ -42,14 +41,40 @@ public class Controller {
     }
     return out;
   }
-
-  public String[] getLocalitesToDeliver()throws ProgramErrorException{//TODO
-    String [] out = new String[4];
-    out[0] = "Riccardo";
-    out[1] = "is";
-    out[2] = "DAMN";
-    out[3] = "SEXY";
-    return out;
+  public String[] getAllPostCodeToDeliverTo() throws ProgramErrorException{
+    if (bufferlocalitiesToDeliver != null){
+      ArrayList<String> allPostCodes = new ArrayList<>();
+      for(int i=0;i<bufferlocalitiesToDeliver.size();i++){
+        String currentPostCode =  bufferlocalitiesToDeliver.get(i).getPostCode();
+        boolean isInArray = false;
+        for (int j=0;j<allPostCodes.size();j++){
+          if (currentPostCode.equals(allPostCodes.get(j))){
+            isInArray = true;
+          }
+        }
+        if (isInArray == false){
+          allPostCodes.add(currentPostCode);
+        }
+      }
+      String [] out = new String[allPostCodes.size()];
+      for(int i=0; i<allPostCodes.size();i++){
+        out[i] = allPostCodes.get(i);
+      }
+      return out;
+    }else{
+      throw new ProgramErrorException("OOPS something went wrong");
+    }
+  }
+  public String[] getLocalitesToDeliverWithPostCode(String postCode)throws ProgramErrorException{
+    ArrayList<Locality> localities = businesslayer.localitiesWithPostCode(postCode);
+    if (localities!=null){
+      String [] out = new String[localities.size()];
+      for(int i=0; i<localities.size();i++){
+        out[i] = localities.get(i).getName();
+      }
+      return out;
+    }
+    throw new ProgramErrorException("locality Loading Error");
   }
 
   public String[][] getOrdersToDeliver()throws ProgramErrorException{
@@ -62,13 +87,15 @@ public class Controller {
       if (orders.size()==0){
         throw new ProgramErrorException("Il n'y a aucune Commandes a livrer"); //TODO changer par un message d'info
       }else{
-        String [][] out = new String[orders.size()][5];
+        String [][] out = new String[orders.size()][6];
         for(int i = 0; i<out.length;i++){
           out[i][0] = Integer.toString(orders.get(i).getId());
           out[i][1] = orders.get(i).getClient().getName();
           out[i][2] = Boolean.toString(orders.get(i).getHasPriority());
           out[i][3] = orders.get(i).getBusinessUnitId().getStreetName();
-          out[i][4] = orders.get(i).getBusinessUnitId().getLocality().getName();
+          out[i][4] = orders.get(i).getBusinessUnitId().getLocality().getPostCode();
+          bufferlocalitiesToDeliver.add(orders.get(i).getBusinessUnitId().getLocality());
+          out[i][5] = orders.get(i).getBusinessUnitId().getLocality().getName();
         }
         return out;
       }
@@ -96,4 +123,26 @@ public class Controller {
     }
     return out;
   }
+
+  public ArrayList<Client> getAllClients()throws ProgramErrorException{
+    try{
+      return businesslayer.getAllClientsArray();
+    }catch(Exception error){
+      throw new ProgramErrorException(error.getMessage());
+    }
+  }
+
+  public ArrayList<BusinessUnit> getBusinessOf(int clientId)throws ProgramErrorException{
+    try{
+      return businesslayer.getArrayBusinessOf(clientId);
+    }catch(Exception error){
+      throw new ProgramErrorException(error.getMessage());
+    }
+  }
+
+  public Order getOrder(int idCommande){
+    return businesslayer.getOrder(idCommande);
+  }
+
+
 }

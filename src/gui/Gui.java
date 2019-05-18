@@ -2,6 +2,8 @@ package gui;
 
 import controller.*;
 import exceptions.*;
+import composants.*;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -28,15 +30,18 @@ public class Gui extends JFrame{
 
     setSize(1080,720);
     setResizable(true);
+
+    int [] loadValue = new int[1];
+    loadValue[0]=1;//Begin to load The Program
+    ThreadLoad threadX = new ThreadLoad(loadValue);
+    Thread thread = new Thread(threadX);
+    thread.start();
+
     menuPanel = new JPanel();
     menuPanel.setPreferredSize(new Dimension(125, 100));
     menuPanel.setBackground(colSidePanel);
 
     loadMenuPanel();
-
-    ThreadLoad threadX = new ThreadLoad(path);
-    Thread thread = new Thread(threadX);
-    thread.start();
 
     mainPanel = new OrderPanel(colBackground, colText, colBis);
 
@@ -47,6 +52,8 @@ public class Gui extends JFrame{
 
     setVisible(true);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+    loadValue[0]=0;// finished to load
   }
 
   public void loadMenuPanel(){
@@ -66,8 +73,6 @@ public class Gui extends JFrame{
         ImageIcon rechercheClientIcon = new ImageIcon(path + "user.png");
         rechercheClient = new JLabel(rechercheClientIcon);
 
-        ImageIcon prepareIcon = new ImageIcon(path + "Preparation.png");
-        prepare = new JLabel(prepareIcon);
 
         ImageIcon stockIcon = new ImageIcon(path + "stock.png");
         stock = new JLabel(stockIcon);
@@ -75,29 +80,41 @@ public class Gui extends JFrame{
         ImageIcon livraisonIcon = new ImageIcon(path + "livraison.png");
         livraison = new JLabel(livraisonIcon);
 
-        menuPanel.setLayout(new GridLayout(8,1));
+        menuPanel.setLayout(new GridLayout(7,1));
         menuPanel.add(logo);
         menuPanel.add(commande);
         menuPanel.add(modifier);
         menuPanel.add(recherche);
         menuPanel.add(rechercheClient);
-        menuPanel.add(prepare);
         menuPanel.add(stock);
         menuPanel.add(livraison);
 
-
+        // Création d'une Commande
         commande.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
               changeMainPanel(new OrderPanel(colBackground, colText, colBis));
             }
         });
 
+        // Interface de Modification de commande
         modifier.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
               String s = (String)JOptionPane.showInputDialog(null,"Identifiant de la commande à modifier","Selectionner l'Identifiant", JOptionPane.QUESTION_MESSAGE);
               if ((s != null) && (s.length() > 0)){
                 try{
-                  changeMainPanel(new ModifyPanel(Integer.parseInt(s)));
+                  Controller controller = new Controller();
+                  Order order=null;
+                  try{
+                    order = controller.getOrder(Integer.parseInt(s));
+                  }catch(Exception err){
+                    System.out.println("order Not found or not exist");
+                  }
+                  if (order!=null){
+                    changeMainPanel(new ModifyPanel(order));
+                  }else{
+                    throw new ProgramErrorException("");//order not found
+                  }
+
                 }catch(NumberFormatException error){
                   JOptionPane.showMessageDialog(null,"Le numéro d'identification est incorrect");
                 }catch(ProgramErrorException erreur){
@@ -109,6 +126,7 @@ public class Gui extends JFrame{
             }
         });
 
+        //Interface de recherche des commandes
         recherche.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
               if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
@@ -118,6 +136,7 @@ public class Gui extends JFrame{
             }
         });
 
+        //rechercher les commandes effectuées par un client
         rechercheClient.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
               if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
@@ -127,14 +146,7 @@ public class Gui extends JFrame{
         });
 
 
-        prepare.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-              if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-                changeMainPanel(new PreparePanel(colBackground, colText));
-              }
-            }
-        });
-
+        //interface d'affichage du stock
         stock.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
               if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
@@ -143,11 +155,11 @@ public class Gui extends JFrame{
             }
         });
 
+        //interface permettant aux livreurs de sélectionner toutes les commandes à livrer par localité
         livraison.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
               if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
                 changeMainPanel(new DeliveryPanel());
-               //JOptionPane.showMessageDialog(null,"L'onglet Livraison n'est pas encore disponible");
              }
             }
         });

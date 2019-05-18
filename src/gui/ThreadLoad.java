@@ -4,27 +4,33 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class ThreadLoad extends Thread{
+public class ThreadLoad implements Runnable{
 
-JLabel label;
-boolean load;
+private int [] etat; //1 == chargement et 0 == chargé
+private JLabel label;
+JFrame frame;
 
-  public ThreadLoad(String path){
+  public ThreadLoad(int[] etat){
+    this.etat = etat;
     label = new JLabel("Chargement");
-    load = true;
+    frame = new JFrame("My JFrame Example");
+    frame.setLayout(new BorderLayout());
+    frame.add(label);
+    frame.setPreferredSize(new Dimension(400, 200));
+    frame.pack();
+    frame.setVisible(true);
   }
 
   public void run(){
-    while(load){
+    double loadTime= 0;
+    while(etat[0]==1){
       try{
-        label.setForeground(Color.BLACK);
         Thread.sleep(100);
-        
-        label.setForeground(Color.WHITE);
-        Thread.sleep(100);
-      }catch(Exception e){
-      }
+        loadTime++;
+      }catch(InterruptedException ignore){}
     }
+    System.out.println("Chargement du Programme en :"  + Double.toString(loadTime/10) + " Secondes");//Not accurate and not necessary
+    frame.dispose();
   }
 
   public JLabel getLabel(){

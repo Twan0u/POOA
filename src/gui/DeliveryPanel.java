@@ -11,7 +11,8 @@ public class DeliveryPanel extends Container{
 
   Controller controller = new Controller();
 
-  private static String column[]={"ID-COMMANDE","Client","Prioritaire","Rue","localite"};
+  private static String column[]={"ID-COMMANDE","Client","Prioritaire","Rue","Code Postal","Localite"};
+  private String [] codePostalDataCB = null;
 
   private JComboBox comboBoxLocality, comboBoxCodePostal;
 
@@ -22,49 +23,59 @@ public class DeliveryPanel extends Container{
     this.setLayout(new BorderLayout());
     JPanel topPanel = new JPanel();
     topPanel.setLayout(new FlowLayout());
+    String [][] allOrdersToDeliver = null;
+    try{
+      allOrdersToDeliver = controller.getOrdersToDeliver();
+    }catch(ProgramErrorException error){
+      JOptionPane.showMessageDialog (null, "Erreur du chargement des Commandes à livrer","FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
+      System.exit(1);
+    }
 
-    //try{
-      String [] TODO = {"Select A PostCode","Please"};
-      comboBoxCodePostal = new JComboBox(TODO);//TODO
-    //}catch(ProgramErrorException error){
-    //  JOptionPane.showMessageDialog (null, "Erreur du chargement des Localités","FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
-    //}
+    try{
+      codePostalDataCB = controller.getAllPostCodeToDeliverTo();
+      comboBoxCodePostal = new JComboBox(codePostalDataCB);
+    }catch(ProgramErrorException error){
+      JOptionPane.showMessageDialog (null, "Erreur du chargement des Codes Postaux","FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
+      System.exit(1);
+    }
 
     comboBoxCodePostal.setMaximumRowCount(5);
     comboBoxCodePostal.setSelectedIndex(-1);
     topPanel.add(comboBoxCodePostal);
 
-    try{
-      comboBoxLocality = new JComboBox(controller.getLocalitesToDeliver());
-    }catch(ProgramErrorException error){
-      JOptionPane.showMessageDialog (null, "Erreur du chargement des Localités","FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
-    }
-
+    comboBoxLocality = new JComboBox();
     comboBoxLocality.setMaximumRowCount(5);
     comboBoxLocality.setSelectedIndex(-1);
+    comboBoxLocality.setEnabled(false);
     topPanel.add(comboBoxLocality);
 
+    JButton search = new JButton("Rechercher");
+    topPanel.add(search);
+
     this.add(topPanel,BorderLayout.NORTH);
-    try{
-        JTable table = new JTable(controller.getOrdersToDeliver(),column);
-        table.setEnabled(false);
-        sp=new JScrollPane(table);
-        this.add(sp,BorderLayout.CENTER);
-    }catch(ProgramErrorException error){
-      JOptionPane.showMessageDialog (null, error.getMessage(),"FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
-    }
-    LocalityComboBoxListener listener = new LocalityComboBoxListener();
-    comboBoxLocality.addItemListener(listener);
+
+
+    JTable table = new JTable(allOrdersToDeliver,column);
+    table.setEnabled(false);
+    sp=new JScrollPane(table);
+
+    this.add(sp,BorderLayout.CENTER);
+
+    PostCodeComboBoxListener listener = new PostCodeComboBoxListener();
+    comboBoxCodePostal.addItemListener(listener);
+
   }
-  public class LocalityComboBoxListener implements ItemListener {
+  public class PostCodeComboBoxListener implements ItemListener {
       public void itemStateChanged(ItemEvent event){
         try{
-          System.out.println("table new");
-          if (0==1){throw new ProgramErrorException("");};
+          String [] localities = controller.getLocalitesToDeliverWithPostCode(codePostalDataCB[comboBoxCodePostal.getSelectedIndex()]);
+          for(int i = 0; i<localities.length; i++){
+            comboBoxLocality.addItem(localities[i]);
+            //TODO Reload Table with new data selected ORDERS WITH POSTCODE == POSTCODE;
+          }
         }catch(ProgramErrorException error){
-            JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
+          JOptionPane.showMessageDialog (null, "Erreur du chargement des localités depuis les codes Postaux","ERROR", JOptionPane.ERROR_MESSAGE);
         }
-        //TODO refresh Table
       }
   }
 

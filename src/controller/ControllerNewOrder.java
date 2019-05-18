@@ -54,17 +54,6 @@ public class ControllerNewOrder extends Controller {
         }
       }
 
-    /** Enregistre quel Business est sélectionné (null si pas de livraison à effectuer(defaut à null))
-    * @param index index du client selectionné dans le tableau des clients  (négatif ou égal à zero, pas de livraison à effectuer)
-    * @since 1.2
-    */
-    public void selectBusiness(int index){
-      if ( index <= 0 ){
-        newOrder.setBusinessUnitId(null);
-      }else{
-        newOrder.setBusinessUnitId(businessBuffer[index-1]);
-      }
-    }
 
     /** Récupération de toutes les bières de la base de donnée
     * @return un tableau des différentes bières que vends l'entreprise
@@ -144,18 +133,26 @@ public class ControllerNewOrder extends Controller {
         newOrder.removeLastOrderLine();
       }
 
-      public int saveOrder(int BusinessIndex,String Date ,String timeLimit,boolean priority)throws UserInputErrorException{
-
-        if(newOrder.getClient() == null){
-            throw new UserInputErrorException("Veuillez selectionner un client");
+      public int saveOrder(Client client,BusinessUnit business,String Date ,String timeLimit,boolean priority)throws UserInputErrorException{
+        if (client == null){
+          throw new UserInputErrorException("Veuillez selectionner un client");
+        }else{
+          try{
+            newOrder.setClient(client);
+          }catch(OrderException erreur) {
+            throw new UserInputErrorException("Impossible d'ajouter ce client à la commande");
+          }
         }
+
+          newOrder.setBusinessUnitId(business);
+
+
         try{
           newOrder.setTimeLimit(Integer.parseInt(timeLimit));
         }catch(Exception error){
           throw new UserInputErrorException("Le nombre de jours supplémentaires autorisés pour effectuer la livraison est invalide");
         }
           newOrder.setHasPriority(priority);
-          selectBusiness(BusinessIndex);
 
         if(newOrder.getOrderLinesSize() == 0){
           throw new UserInputErrorException("Commande Vide");

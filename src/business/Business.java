@@ -40,6 +40,16 @@ public class Business implements BusinessInterface{
       }
     }
 
+
+    public ArrayList<Client> getAllClientsArray()throws ProgramErrorException{
+      try{
+        return dataLayer.getAllClients();
+      }catch(Exception e){
+        throw new ProgramErrorException("Erreur de chargement de tous les clients depuis la base de donée");
+      }
+    }
+
+
     public ArrayList<Beer> getAllBeers()throws ProgramErrorException{
       ArrayList<Beer> beers;
       try{
@@ -56,6 +66,14 @@ public class Business implements BusinessInterface{
       return beers;
     }
 
+    public ArrayList<BusinessUnit> getArrayBusinessOf(int id)throws ProgramErrorException{
+      try{
+        return dataLayer.getBusinessOf(id);
+      }catch(Exception e){
+        throw new ProgramErrorException("il y a eu une erreur lors du chargement des données depuis la base de donnée");
+      }
+
+    }
 
     public BusinessUnit[] getBusinessOf(int id)throws ProgramErrorException{
 
@@ -148,5 +166,19 @@ public class Business implements BusinessInterface{
       return new ArrayList<>();
     }
     return orders;
+  }
+
+  public Order getOrder(int orderId){
+    try{
+      return dataLayer.getOrder(orderId);//Can be null if no order is found
+    }catch(Exception ignore){
+      //TODO
+    }
+    return null;
+  }
+
+  public ArrayList<Locality> localitiesWithPostCode(String postCode)throws ProgramErrorException{
+    //TODO Injections SQL
+    return new ArrayList<>();
   }
 }
