@@ -7,7 +7,7 @@ import java.util.*;
 import java.sql.*;
 
 public class OrderDBAccess {
-    public static ArrayList<Order> getAllOrders() throws DataAccessException, CorruptedDataException {
+    public static ArrayList<Order> getAllOrders(String state) throws DataAccessException, CorruptedDataException {
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Order> orders = new ArrayList<>();
 
@@ -16,10 +16,14 @@ public class OrderDBAccess {
                 + " LEFT JOIN Beer b on oL.BeerName = b.idName"
                 + " LEFT JOIN BusinessUnit bU on cO.businessUnit = bU.idBusinessUnit"
                 +" LEFT JOIN Client c on cO.clientNumber = c.idClient"
-                +" LEFT JOIN Locality l on bU.locality = l.idLocality"
-                + " ORDER BY cO.idOrder";
+                +" LEFT JOIN Locality l on bU.locality = l.idLocality";
+        if(state != null)
+            sql += " WHERE cO.state = ?";
+        sql += " ORDER BY cO.idOrder";
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
+            if(state !=  null)
+                statement.setString(1, state);
             ResultSet data = statement.executeQuery();
 
             Order order = null;
@@ -28,7 +32,7 @@ public class OrderDBAccess {
             int clientNumber;
             boolean hasPriority;
             String orderDate;
-            String state;
+            String orderState;
             Integer timeLimit;
 
             Client client;
@@ -61,7 +65,7 @@ public class OrderDBAccess {
                     idOrder = data.getInt("idOrder");
                     hasPriority = data.getInt("hasPriority") == 1;
                     orderDate = data.getString("orderDate");
-                    state = data.getString("state");
+                    orderState = data.getString("state");
                     clientNumber = data.getInt("clientNumber");
                     timeLimit = data.getInt("timeLimit");
 
@@ -73,7 +77,7 @@ public class OrderDBAccess {
                     if(!data.wasNull())
                         client.setVATNumber(vatNumber);
 
-                    order = new Order(idOrder, client, hasPriority, orderDate, state, timeLimit);
+                    order = new Order(idOrder, client, hasPriority, orderDate, orderState, timeLimit);
 
                     businessId = data.getInt("businessUnit");
                     if(!data.wasNull()) {

@@ -16,9 +16,9 @@ import java.util.ArrayList;
 */
 public class Business implements BusinessInterface{
 
-    private static InterfaceData dataLayer = new DataMock();
+    private static InterfaceData dataLayer = new DBAccess();
 
-    public Client[] getAllClients()throws ProgramErrorException{
+    public Client[] getAllClients()throws ProgramErrorException {
       ArrayList<Client> clients = null;
 
       try{
@@ -123,7 +123,7 @@ public class Business implements BusinessInterface{
   public Order[] getAllOrders()throws ProgramErrorException{
     ArrayList<Order> orders;
     try {
-      orders = dataLayer.getAllOrders();
+      orders = dataLayer.getAllOrders(null);
     }catch(Exception e){
       throw new ProgramErrorException("Il y a eu une erreur lors du chargement de toutes les commandes depuis la base de donneé");
     }
@@ -142,7 +142,7 @@ public class Business implements BusinessInterface{
     try {
       orders = dataLayer.getOrdersWithState("prepared");
     }catch(Exception e){
-      throw new ProgramErrorException("Il y a eu une erreur lors du chargement des commandes à livrer depuis la base de donneé");
+      throw new ProgramErrorException("Il y a eu une erreur lors du chargement des commandes à livrer depuis la base de donnée");
     }
     if (orders == null){
       return new ArrayList<>();

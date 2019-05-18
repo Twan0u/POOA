@@ -6,7 +6,7 @@ import exceptions.*;
 import java.io.*;
 import java.util.*;
 
-public class DataMock implements InterfaceData {
+public class DataMock  {
 
   private static ArrayList<Client> clients = new ArrayList<>();
   private static ArrayList<Beer> beers = new ArrayList<>();

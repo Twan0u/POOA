@@ -10,8 +10,8 @@ public class DBAccess implements InterfaceData {
     public ArrayList<Beer> getAllBeers() throws DataAccessException, CorruptedDataException {
         return BeerDBAccess.getAllBeers();
     }
-    public ArrayList<Order> getAllOrders() throws DataAccessException, CorruptedDataException {
-        return OrderDBAccess.getAllOrders();
+    public ArrayList<Order> getAllOrders(String state) throws DataAccessException, CorruptedDataException {
+        return OrderDBAccess.getAllOrders(state);
     }
     public ArrayList<Client> getAllClients() throws DataAccessException, CorruptedDataException {
         return ClientDBAccess.getAllClients();
@@ -19,8 +19,8 @@ public class DBAccess implements InterfaceData {
     public Client getClient(int id) throws DataAccessException, CorruptedDataException {
         return null;
     }
-    public ArrayList<BusinessUnit> getBusinessOf(int iD) throws DataAccessException, CorruptedDataException {
-        return null;
+    public ArrayList<BusinessUnit> getBusinessOf(int id) throws DataAccessException, CorruptedDataException {
+        return BusinessDBAccess.getBusinessWithClientID(id);
     }
     public ArrayList<Order> getOrdersWithState(String state) throws DataAccessException, CorruptedDataException {
         return null;
