@@ -16,7 +16,7 @@ public interface InterfaceData {
   ArrayList<Order> getOrdersWithClient(int clientID) throws DataAccessException, CorruptedDataException;
   ArrayList<Order> getOrdersWithStateAndDates(String state, String dataMin, String dateMax)throws DataAccessException, CorruptedDataException;
   ArrayList<Order> getOrdersToDeliver(int localityID) throws DataAccessException, CorruptedDataException;
-  ArrayList<Order> getAllOrders() throws DataAccessException, CorruptedDataException;
+  ArrayList<Order> getAllOrders(String state) throws DataAccessException, CorruptedDataException;
   Order getOrder(int orderID) throws DataAccessException, CorruptedDataException;
   int saveOrder(Order order) throws DataAccessException, CorruptedDataException, DataBackupException;
   void deleteOrder(int orderID) throws DataAccessException, CorruptedDataException, DataDeletionException;
