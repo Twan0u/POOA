@@ -22,7 +22,7 @@ public class Business implements BusinessInterface{
       ArrayList<Client> clients = null;
 
       try{
-        clients=  dataLayer.getAllClients();
+        clients = dataLayer.getAllClients();
       }catch(Exception e){
         throw new ProgramErrorException("Erreur de chargement de tous les clients depuis la base de donée");
       }
@@ -141,7 +141,7 @@ public class Business implements BusinessInterface{
   public Order[] getAllOrders()throws ProgramErrorException{
     ArrayList<Order> orders;
     try {
-      orders = dataLayer.getAllOrders(null);
+      orders = dataLayer.getAllOrders();
     }catch(Exception e){
       throw new ProgramErrorException("Il y a eu une erreur lors du chargement de toutes les commandes depuis la base de donneé");
     }

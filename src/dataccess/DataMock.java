@@ -34,7 +34,7 @@ public class DataMock  {
   }catch(Exception ignore){}
   }
 
-  public  ArrayList<Client> getAllClients()throws DataAccessException, CorruptedDataException{
+  public ArrayList<Client> getAllClients()throws DataAccessException, CorruptedDataException{
     return clients;
   }
 
