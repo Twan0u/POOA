@@ -31,4 +31,10 @@ public class BusinessTest {
     public void getStatsOnOrders() {
         Assert.assertTrue(business.getStatsOnOrders().getBeersOderCount().get("bush") == 0);
     }
+
+
+    @Test(timeout = 60_000)
+    public void getAllClientsArray() throws ProgramErrorException {
+        business.getAllClientsArray();
+    }
 }
