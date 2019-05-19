@@ -70,13 +70,13 @@ private BeerTable beerTable;
         public void actionPerformed( ActionEvent event) {
           int indexBeer = comboBoxBeer.getSelectedIndex();
           int quantity = (int) spinnerQuantity.getValue();
-          try{
+          /*try{
             controller.addBeer(indexBeer,quantity);
           }catch(UserInputErrorException error){
               JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
           }catch(ProgramErrorException error){
               JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
-          }
+          }*/
           beerTable.refreshTable();
         }
       }
@@ -84,7 +84,7 @@ private BeerTable beerTable;
       private class ButtonRemoveListener implements ActionListener{
         public void actionPerformed( ActionEvent event) {
           if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir supprimmer cette bière de la commande? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-            controller.removeLastBeer();
+          //  controller.removeLastBeer();
             beerTable.refreshTable();
           }
         }

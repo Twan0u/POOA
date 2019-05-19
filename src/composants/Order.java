@@ -118,9 +118,11 @@ public class Order{
   * @since 1.4
   */
   public Order(){
-    this.setState("new");
-    this.setHasPriority(false);
-    this.setBusinessUnitId(null);
+    try{
+      this.setState("new");
+    }catch (OrderException ignore){}
+     this.setHasPriority(false);
+     this.setBusinessUnitId(null);
   }
 
   /*____METHODES____*/
@@ -226,10 +228,13 @@ public class Order{
 
   /** modifie le numéro d'identification d'une commande
   * @param id
-  *           numéro d'identification
+  *           numéro d'identification (numero >=0)
   * @since 1.0
   */
-  public void setId(int id){
+  public void setId(int id)throws OrderException{
+    if (id<0){
+      throw new OrderException("Le numéro d'identification n'est pas correct");
+    }
     this.id = id;
   }
 
@@ -278,8 +283,12 @@ public class Order{
   *           etat de la commande
   * @since 1.0
   */
-  public void setState(String state){ // PAID
-    this.state = state;
+  public void setState(String state)throws OrderException{
+    if(state.compareTo("new") == 0 || state.compareTo("prepared") == 0 || state.compareTo("delivered") == 0 || state.compareTo("paid") == 0){
+            this.state = state;
+    }else{
+      throw new OrderException("L'état de la commande n'est pas valide");
+   }
   }
 
   /** modifie le nombre de jours pour traiter la commande
@@ -287,7 +296,7 @@ public class Order{
   *          nombre de jours pour traiter la commande si il est négatif, il n'y en a pas.
   * @since 1.0
   */
-  public void setTimeLimit(int timeLimit){// facultatif
+  public void setTimeLimit(int timeLimit){
     this.timeLimit = timeLimit;
   }
 
