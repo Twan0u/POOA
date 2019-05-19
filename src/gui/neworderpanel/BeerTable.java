@@ -20,21 +20,22 @@ Controller controller;
     this.setLayout(new FlowLayout());
 
     //Tableau Commande
+    /*
     table=new JTable(controller.getOrderLines(),column);
     table.setEnabled(false);;
     sp=new JScrollPane(table);
-    this.add(sp);
+    this.add(sp);*/
 
   }
 
       public void refreshTable(){
-        this.remove(sp);
+        /*this.remove(sp);
         String column[]={"Bière","Quantité","Prix Unit","Total"};
         table=new JTable(controller.getOrderLines(),column);
         table.setEnabled(false);;
         sp=new JScrollPane(table);
         this.add(sp);
-        this.updateUI();
+        this.updateUI();*/
       }
 
 }

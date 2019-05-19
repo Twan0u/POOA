@@ -64,11 +64,11 @@ public interface BusinessInterface {
 
   Order getOrder(int orderId);
 
-  ArrayList<Order> getOrdersToDeliver()throws ProgramErrorException;
-
-  ArrayList<Locality> localitiesWithPostCode(String postCode)throws ProgramErrorException;
+  ArrayList<Order> getOrdersToDeliver()throws DataAccessException, CorruptedDataException;
 
   ArrayList<BusinessUnit> getArrayBusinessOf(int id)throws ProgramErrorException;
 
   void modifyOrder(Order order)throws DataAccessException, DataModificationException;
+
+  ArrayList<Order> getOrdersToDeliverWithLocalityId(int idLocality) throws DataAccessException, CorruptedDataException;
 }
