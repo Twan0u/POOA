@@ -4,6 +4,8 @@ import composants.*;
 import exceptions.*;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 /**
 * <b>classe de la couche Business</b>
@@ -118,7 +120,6 @@ public class Business implements BusinessInterface{
         }
       }
       return lowBeers;
-
     }
 
   public int saveOrder(Order order) throws ProgramErrorException{
@@ -180,5 +181,43 @@ public class Business implements BusinessInterface{
   public ArrayList<Locality> localitiesWithPostCode(String postCode)throws ProgramErrorException{
     //TODO Injections SQL
     return new ArrayList<>();
+  }
+
+  public StatsOnOrders getStatsOnOrders() {
+      try {
+        ArrayList<Order> orders = dataLayer.getAllOrders();
+
+        HashMap<String, Integer> beersOrderCount = new HashMap<>();
+        ArrayList<Beer> beers = dataLayer.getAllBeers();
+        for(Beer b : beers){
+          beersOrderCount.put(b.getName(), 0);
+        }
+
+        double orderAvgValue;
+        int nbOrders = 0;
+        double totalValue = 0;
+        int nbOrderLines;
+        OrderLine oL = null;
+        String beerName;
+        int quantity;
+
+        for(Order o : orders) {
+          nbOrders++;
+          nbOrderLines = o.getOrderLinesSize();
+          for(int i = 0; i < nbOrderLines; i++) {
+            oL = o.getOrderLine(i);
+            quantity = oL.getQuantity();
+            totalValue += quantity * oL.getPrice();
+            beerName = oL.getBeer().getName();
+            beersOrderCount.put(beerName, beersOrderCount.get(beerName)+quantity);
+          }
+        }
+        orderAvgValue = totalValue / nbOrders;
+        return new StatsOnOrders(orderAvgValue, beersOrderCount);
+      }
+      catch(Exception e){
+
+    }
+      return null;
   }
 }
