@@ -1,4 +1,5 @@
 package business;
+
 import dataccess.*;
 import composants.*;
 import exceptions.*;
@@ -186,7 +187,6 @@ public class Business implements BusinessInterface{
   public void deleteOrder(int orderID) throws DataAccessException, CorruptedDataException, DataDeletionException{
     dataLayer.deleteOrder(orderID);
   }
-}
 
   public StatsOnOrders getStatsOnOrders() {
       try {

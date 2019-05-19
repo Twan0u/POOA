@@ -75,7 +75,6 @@ public class DeliveryPanel extends Container{
       table = new JTable(out,column);
     }
 
-
     table.setEnabled(false);
     sp=new JScrollPane(table);
 

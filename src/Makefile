@@ -79,7 +79,7 @@ dataccess/InterfaceData.class: dataccess/InterfaceData.java
 dataccess/DataMock.class: dataccess/InterfaceData.class dataccess/DataMock.java
 	$(JC) dataccess/DataMock.java
 
-composants: exceptions composants/Client.class composants/Locality.class composants/BusinessUnit.class composants/Order.class composants/OrderLine.class
+composants: exceptions composants/StatsOnOrders.class composants/Client.class composants/Locality.class composants/BusinessUnit.class composants/Order.class composants/OrderLine.class
 
 composants/Client.class: composants/Client.java
 	$(JC) composants/Client.java
@@ -89,6 +89,9 @@ composants/Locality.class: composants/Locality.java
 
 composants/BusinessUnit.class: composants/BusinessUnit.java
 	$(JC) composants/BusinessUnit.java
+
+composants/StatsOnOrders.class: composants/StatsOnOrders.java
+	$(JC) composants/StatsOnOrders.java
 
 composants/Order.class: composants/Order.java
 	$(JC) composants/Order.java
