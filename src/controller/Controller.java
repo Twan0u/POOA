@@ -10,19 +10,13 @@ import java.util.*;
 /** <b>classe du controller de l'interface</b>
 *
 * @author Antoine Lambert et Nathan Surquin
-* @version 3.1
+* @version 4.0
 *
 */
 
 public class Controller {
 
   protected static Business businesslayer = new Business(); // cette variable est utilisée dans le cadre d'interactions avec la couchebusiness
-
-  protected Client [] clients;
-  private ArrayList<Locality> bufferlocalitiesToDeliver = new ArrayList<>();
-  private Order newOrder = new Order();
-
-  private BusinessUnit [] businessBuffer = null;
 
   public String[][]  getstock(boolean onlyLow){
     ArrayList<Beer> beers = null;
@@ -45,47 +39,14 @@ public class Controller {
     }
     return out;
   }
-  public String[] getAllPostCodeToDeliverTo() throws ProgramErrorException{
-    if (bufferlocalitiesToDeliver != null){
-      ArrayList<String> allPostCodes = new ArrayList<>();
-      for(int i=0;i<bufferlocalitiesToDeliver.size();i++){
-        String currentPostCode =  bufferlocalitiesToDeliver.get(i).getPostCode();
-        boolean isInArray = false;
-        for (int j=0;j<allPostCodes.size();j++){
-          if (currentPostCode.equals(allPostCodes.get(j))){
-            isInArray = true;
-          }
-        }
-        if (isInArray == false){
-          allPostCodes.add(currentPostCode);
-        }
-      }
-      String [] out = new String[allPostCodes.size()];
-      for(int i=0; i<allPostCodes.size();i++){
-        out[i] = allPostCodes.get(i);
-      }
-      return out;
-    }else{
-      throw new ProgramErrorException("OOPS something went wrong");
-    }
-  }
-  public String[] getLocalitesToDeliverWithPostCode(String postCode)throws ProgramErrorException{
-    ArrayList<Locality> localities = businesslayer.localitiesWithPostCode(postCode);
-    if (localities!=null){
-      String [] out = new String[localities.size()];
-      for(int i=0; i<localities.size();i++){
-        out[i] = localities.get(i).getName();
-      }
-      return out;
-    }
-    throw new ProgramErrorException("locality Loading Error");
-  }
 
   public ArrayList<Order> getOrdersToDeliver()throws ProgramErrorException{
       try{
         return businesslayer.getOrdersToDeliver();
-      }catch(Exception e){
-        throw new ProgramErrorException("impossible de charger les Commandes à livrer");
+      }catch(DataAccessException error){
+        throw new ProgramErrorException("impossible de charger les Commandes à livrer : " + error.getMessage());
+      }catch(CorruptedDataException error){
+        throw new ProgramErrorException("Les données sont corrompues : " + error.getMessage());
       }
   }
 
@@ -157,7 +118,7 @@ public class Controller {
   /**
   * TODO
   */
-  public String[][] getOrderLines(){
+/*  public String[][] getOrderLines(){
     int numItems = newOrder.getOrderLinesSize();
     String data[][] = new String[numItems+1][4];
     double total = 0;
@@ -177,7 +138,7 @@ public class Controller {
     data[numItems][3] = Double.toString(total) + "€";
 
     return data;
-  }
+  }*/
 
     public int saveOrder(Order orderToSave)throws UserInputErrorException,ProgramErrorException{
       validateOrder(orderToSave);
@@ -225,5 +186,9 @@ public class Controller {
       }catch(DataModificationException erreur){
         throw new ProgramErrorException("Erreur de modification des données : " + erreur.getMessage());
       }
+    }
+
+    public ArrayList<Order> getOrdersToDeliverWithLocalityId(int idLocality) throws DataAccessException, CorruptedDataException{
+      return businesslayer.getOrdersToDeliverWithLocalityId(idLocality);
     }
   }

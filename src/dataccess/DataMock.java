@@ -86,13 +86,13 @@ public class DataMock {
         BusinessUnit business2 = new BusinessUnit (1, clients.get(1), local2, "Rue de la faim", "12");
         BusinessUnit business3 = new BusinessUnit (1, clients.get(2), local2, "Rue de la faim", "12");
         Client client = new Client (0, "Nathan", "0032007007005", 10, "TVA_025522095251");
-        orders.add(new Order(0, bubu, client, false, "2019-06-30", "ToDeliver"));
-        orders.add(new Order(1, business2, client, true, "2019-06-30", "ToDeliver"));
-        orders.add(new Order(2, bubu, client, false, "2019-06-30", "ToDeliver"));
-        orders.add(new Order(3, business3, client, true, "2019-06-30", "ToDeliver"));
-        orders.add(new Order(4, bubu, client, false, "2019-06-30", "ToDeliver"));
+        orders.add(new Order(0, bubu, client, false, "2019-06-30", "prepared"));
+        orders.add(new Order(1, business2, client, true, "2019-06-30", "prepared"));
+        orders.add(new Order(2, bubu, client, false, "2019-06-30", "prepared"));
+        orders.add(new Order(3, business3, client, true, "2019-06-30", "prepared"));
+        orders.add(new Order(4, bubu, client, false, "2019-06-30", "prepared"));
         return orders;
-      }catch(Exception e){}
+      }catch(Exception ignore){}
     }
     return null;
   }
@@ -151,6 +151,20 @@ public class DataMock {
   public void setOrderState(String newState, int orderId) throws DataAccessException, DataModificationException{}
   public void modifyOrder(Order order){
     System.out.println(order.toString());
+  }
+
+  public ArrayList<Order> getOrdersToDeliverWithLocalityId(int idLocality){
+    try{
+      ArrayList<Order> orders = new ArrayList<>();;
+      Locality local = new Locality (1, "Localité du petit bois", "7911");
+      BusinessUnit bubu = new BusinessUnit (1, clients.get(0), local, "Rue de la faim", "12");
+      Client client = new Client (0, "Nathan", "0032007007005", 10, "TVA_025522095251");
+      orders.add(new Order(0, bubu, client, false, "2019-06-30", "prepared"));
+      orders.add(new Order(2, bubu, client, false, "2019-06-30", "prepared"));
+      orders.add(new Order(4, bubu, client, false, "2019-06-30", "prepared"));
+      return orders;
+    }catch(Exception e){}
+      return null;
   }
 
 }

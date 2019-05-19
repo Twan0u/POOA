@@ -156,17 +156,8 @@ public class Business implements BusinessInterface{
     return out;
   }
 
-  public ArrayList<Order> getOrdersToDeliver()throws ProgramErrorException{ //Retirer les orders Qu'il ne faut pas livrer
-    ArrayList<Order> orders;
-    try {
-      orders = dataLayer.getOrdersWithState("prepared");
-    }catch(Exception e){
-      throw new ProgramErrorException("Il y a eu une erreur lors du chargement des commandes à livrer depuis la base de donnée");
-    }
-    if (orders == null){
-      return new ArrayList<>();
-    }
-    return orders;
+  public ArrayList<Order> getOrdersToDeliver()throws DataAccessException, CorruptedDataException{ //Retirer les orders Qu'il ne faut pas livrer
+    return dataLayer.getOrdersWithState("prepared");
   }
 
   public Order getOrder(int orderId){
@@ -176,11 +167,6 @@ public class Business implements BusinessInterface{
       //TODO
     }
     return null;
-  }
-
-  public ArrayList<Locality> localitiesWithPostCode(String postCode)throws ProgramErrorException{
-    //TODO Injections SQL
-    return new ArrayList<>();
   }
 
   public void deleteOrder(int orderID) throws DataAccessException, CorruptedDataException, DataDeletionException{
@@ -226,6 +212,10 @@ public class Business implements BusinessInterface{
   }
 
   public void modifyOrder(Order order)throws DataAccessException, DataModificationException{
-    dataLayer.modifyOrder(order);
+      dataLayer.modifyOrder(order);
+  }
+
+  public ArrayList<Order> getOrdersToDeliverWithLocalityId(int idLocality) throws DataAccessException, CorruptedDataException{
+    return dataLayer.getOrdersToDeliverWithLocalityId(idLocality);
   }
 }
