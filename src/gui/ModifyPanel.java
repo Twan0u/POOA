@@ -230,8 +230,10 @@ public class ModifyPanel extends Container{
       try{
         controller.modifyOrder(order);
         JOptionPane.showMessageDialog (null,"Votre Commande a été enregistrée avec succes","Info", JOptionPane.INFORMATION_MESSAGE);
-      }catch(Exception e){//TODO
-        JOptionPane.showMessageDialog (null,"Il y a eu une erreur dans l'enregistrement de la commande","Error", JOptionPane.ERROR_MESSAGE);
+      }catch(ProgramErrorException e){
+        JOptionPane.showMessageDialog (null,"Il y a eu une erreur dans l'enregistrement de la commande : " + e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+      }catch(UserInputErrorException e){
+        JOptionPane.showMessageDialog (null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
       }
     }
   }
