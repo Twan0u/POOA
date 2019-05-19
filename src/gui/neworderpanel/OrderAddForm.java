@@ -141,7 +141,7 @@ private JTextField timeLimit;
     }
   }
   public String getSelectedDate(){
-    return "16-09-1997";//TODO
+    return "2019-01-25";//TODO
   }
   public int getSelectedTimeLimit()throws UserInputErrorException{
     try{
