@@ -69,4 +69,6 @@ public interface BusinessInterface {
   ArrayList<Locality> localitiesWithPostCode(String postCode)throws ProgramErrorException;
 
   ArrayList<BusinessUnit> getArrayBusinessOf(int id)throws ProgramErrorException;
+
+  void modifyOrder(Order order)throws DataAccessException, DataModificationException;
 }

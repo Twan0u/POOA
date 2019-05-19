@@ -18,8 +18,8 @@ import java.util.HashMap;
 *
 */
 public class Business implements BusinessInterface{
-
     private static InterfaceData dataLayer = new DBAccess();
+    //private static DataMock dataLayer = new DataMock();
 
     public Client[] getAllClients()throws ProgramErrorException {
       ArrayList<Client> clients = null;
@@ -224,5 +224,9 @@ public class Business implements BusinessInterface{
 
     }
       return null;
+  }
+
+  public void modifyOrder(Order order)throws DataAccessException, DataModificationException{
+    dataLayer.modifyOrder(order);
   }
 }

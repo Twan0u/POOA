@@ -215,7 +215,11 @@ public class ModifyPanel extends Container{
 
   private class ButtonSaveListener implements ActionListener{
     public void actionPerformed( ActionEvent event) {
-
+      order.setTimeLimit(69); //TODO
+      try{
+        controller.modifyOrder(order);
+      }catch(Exception e){//TODO
+      }
     }
   }
   private class ButtonDeleteListener implements ActionListener{

@@ -144,9 +144,11 @@ public class DataMock {
   }
   public void saveOrderLine(int orderID, String beerName) throws DataAccessException, CorruptedDataException, DataBackupException{}
   public void deleteOrderLine(int orderID, String beerName) throws DataAccessException, CorruptedDataException, DataDeletionException{}
-    public ArrayList<Order> getOrdersWithStateAndDates(String state, String dataMin, String dateMax)throws DataAccessException, CorruptedDataException{
-      return null;
-    }
-      public void closeConnection() throws DataAccessException{}
-        public void setOrderState(String newState, int orderId) throws DataAccessException, DataModificationException{}
+  public ArrayList<Order> getOrdersWithStateAndDates(String state, String dataMin, String dateMax)throws DataAccessException, CorruptedDataException{
+  return null;
+  }
+  public void closeConnection() throws DataAccessException{}
+  public void setOrderState(String newState, int orderId) throws DataAccessException, DataModificationException{}
+  public void modifyOrder(Order order){}
+
 }
