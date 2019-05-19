@@ -213,9 +213,12 @@ public class Controller {
       }
     }
 
-    public void modifyOrder(Order order)throws DataAccessException, DataModificationException{
-      businesslayer.modifyOrder(order);
+    public void modifyOrder(Order order)throws ProgramErrorException, UserInputErrorException{
+      validateOrder(orderToSave);
+      try{
+        businesslayer.modifyOrder(order);
+      }catch(Exception e){
+        throw new ProgramErrorException("Erreur lors de la sauvegarde des données modifiées");
+      }
     }
-
-
-}
+  }
