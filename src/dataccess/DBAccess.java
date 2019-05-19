@@ -32,10 +32,10 @@ public class DBAccess implements InterfaceData {
         return OrderDBAccess.saveOrder(order);
     }
     public void deleteOrder(int orderID) throws DataAccessException, CorruptedDataException, DataDeletionException {
-
+        OrderDBAccess.deleteOrder(orderID);
     }
     public void modifyOrder(Order order) throws DataAccessException, DataModificationException {
-
+        OrderDBAccess.modifyOrder(order);
     }
 
 
@@ -58,6 +58,6 @@ public class DBAccess implements InterfaceData {
 
 
     public void closeConnection() throws DataAccessException {
-
+        SingletonConnection.closeConnection();
     }
 }

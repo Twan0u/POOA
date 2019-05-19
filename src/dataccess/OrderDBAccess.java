@@ -13,7 +13,7 @@ public class OrderDBAccess {
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Order> orders = new ArrayList<>();
 
-        String sql = "SELECT * FROM ClientOrder as cO"
+        String sql = " SELECT * FROM ClientOrder as cO"
                 + " LEFT JOIN OrderLine oL on oL.OrderNumber = cO.idOrder"
                 + " LEFT JOIN Beer b on oL.BeerName = b.idName";
         if(!toDeliver)               // si condition toDeliver : on ne prend pas les commandes qui n'ont pas de business unit attaché à elles
@@ -184,16 +184,15 @@ public class OrderDBAccess {
         Connection connection = SingletonConnection.getInstance();
         Integer id = null;
 
-        String sql = "INSERT INTO ClientOrder (businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)"
+        String sql = " INSERT INTO ClientOrder (businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)"
                 + " VALUES (?,?,?,?,?,?);";
 
         try {
-            int hasPriority = order.getHasPriority() ? 1 : 0;
             BusinessUnit business = order.getBusinessUnitId();
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setInt(2, order.getClient().getId());
-            statement.setInt(3, hasPriority);
             statement.setString(4, order.getOrderDate());
+            statement.setInt(3, order.getHasPriority() ? 1 : 0);
             statement.setString(5, order.getState());
             if(business != null) {
                 statement.setInt(1, business.getIdBusinessUnit());
@@ -213,7 +212,7 @@ public class OrderDBAccess {
             if(rs.next())
                 id = rs.getInt(1);
 
-            sql = "INSERT INTO OrderLine (orderNumber, quantity, price, beerName)"
+            sql = " INSERT INTO OrderLine (orderNumber, quantity, price, beerName)"
                     + " VALUES (?,?,?,?);";
             statement = connection.prepareStatement(sql);
             int nbOrderLines = order.getOrderLinesSize();
@@ -232,5 +231,54 @@ public class OrderDBAccess {
             throw new DataBackupException("Erreur lors de la sauvegarde d'une commande dans la BD");
         }
         return id;
+    }
+
+    public static void deleteOrder(int idOrder) throws DataAccessException {
+        Connection connection = SingletonConnection.getInstance();
+
+         try {
+             String sql = " DELETE FROM OrderLine WHERE OrderLine.orderNumber = ?";
+             PreparedStatement statement = connection.prepareStatement(sql);
+             statement.setInt(1, idOrder);
+             statement.executeUpdate();
+
+             sql = " DELETE FROM ClientOrder WHERE ClientOrder.idOrder = ?";
+             statement = connection.prepareStatement(sql);
+             statement.setInt(1, idOrder);
+             statement.executeUpdate();
+         }
+         catch(SQLException e){
+             throw new DataAccessException("Erreur lors de la suppression de données concernant les lignes de commandes");
+         }
+    }
+
+    public static void modifyOrder(Order order) throws DataAccessException {
+        Connection connection = SingletonConnection.getInstance();
+        String sql = " UPDATE ClientOrder SET businessUnit = ?, clientNumber = ?,"
+                + " hasPriority = ?, orderDate = ?, state = ?, timeLimit = ?";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            if(order.getBusinessUnitId() != null) {
+                statement.setInt(1, order.getBusinessUnitId().getIdBusinessUnit());
+            }
+            else {
+                statement.setNull(1, Types.INTEGER);
+            }
+            statement.setInt(2, order.getClient().getId());
+            statement.setInt(3, order.getHasPriority() ? 1 : 0);
+            statement.setString(4, order.getOrderDate());
+            statement.setString(5, order.getState());
+            if(order.getTimeLimit() > 0){
+                statement.setInt(6, order.getTimeLimit());
+            }
+            else {
+                statement.setNull(6, Types.INTEGER);
+            }
+            statement.executeUpdate();
+        }
+        catch (SQLException e) {
+            throw new DataAccessException("Erreur lors de la modification de données concernant les commandes");
+        }
     }
 }
