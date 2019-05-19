@@ -150,6 +150,10 @@ public class Controller {
     }
   }*/
 
+  /*public void removeLastBeer(){
+    newOrder.removeLastOrderLine();
+  }*/
+
   /**
   * TODO
   */
@@ -174,10 +178,6 @@ public class Controller {
 
     return data;
   }
-
-    /*public void removeLastBeer(){
-      newOrder.removeLastOrderLine();
-    }*/
 
     public int saveOrder(Order orderToSave)throws UserInputErrorException,ProgramErrorException{
       validateOrder(orderToSave);
@@ -211,6 +211,10 @@ public class Controller {
       }catch(Exception error){
         throw new ProgramErrorException("Il y a eu un problème lors de la suppression de la commande");
       }
+    }
+
+    public void modifyOrder(Order order)throws DataAccessException, DataModificationException{
+      businesslayer.modifyOrder(order);
     }
 
 
