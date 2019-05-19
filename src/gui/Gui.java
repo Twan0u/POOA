@@ -121,18 +121,20 @@ public class Gui extends JFrame{
         //Interface de recherche des commandes
         recherche.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-              if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+              /*if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
                 changeMainPanel(new SearchPanel());
-             }
+             }*/
+             JOptionPane.showMessageDialog(null,"La Recherche et de tri des Commandes pas encore implémentée");
             }
         });
 
         //rechercher les commandes effectuées par un client
         rechercheClient.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-              if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+              /*if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
                 changeMainPanel(new SearchOrderByClientPanel());
-              }
+              }*/
+              JOptionPane.showMessageDialog(null,"La Recherche des Commandes d'un Client n'est pas encore implémentée");
             }
         });
 

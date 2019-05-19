@@ -35,8 +35,8 @@ public class OrderPanel extends Container{
     }
     orderAddForm = new OrderAddForm(controller,colText);
     this.add(orderAddForm);
-    addBeerForm = new BeerAdd(controller);
-    this.add(addBeerForm);
+    //zaddBeerForm = new BeerAdd(controller);
+    //this.add(addBeerForm);
     this.add(validateButton);
 
     ButtonSaveListener listenerSave = new ButtonSaveListener();
