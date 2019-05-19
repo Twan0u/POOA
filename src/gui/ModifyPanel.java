@@ -68,7 +68,7 @@ public class ModifyPanel extends Container{
 
     SpinnerDateModel model = new SpinnerDateModel();
     spinnerDate = new JSpinner(model);
-    JSpinner.DateEditor editor = new JSpinner.DateEditor(spinnerDate, "dd-MM-yyyy");
+    JSpinner.DateEditor editor = new JSpinner.DateEditor(spinnerDate, "yyyy-MM-dd");
     spinnerDate.setEditor(editor);
 
     panel.add(labelDate);
@@ -124,7 +124,7 @@ public class ModifyPanel extends Container{
     panel.add(supprimer);
 
     this.add(panel);
-    
+
     ClientComboBoxListener listenerClient = new ClientComboBoxListener();
     comboBoxClient.addItemListener(listenerClient);
 
