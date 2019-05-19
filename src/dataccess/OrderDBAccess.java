@@ -3,27 +3,75 @@ package dataccess;
 import composants.*;
 import exceptions.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.sql.*;
 
 public class OrderDBAccess {
-    public static ArrayList<Order> getAllOrders(String state) throws DataAccessException, CorruptedDataException {
+    public static ArrayList<Order> getOrders(String state, Integer idLocality, Integer orderId, String dateMin, String dateMax, Integer idClient, boolean toDeliver, int methodCase) throws DataAccessException, CorruptedDataException {
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Order> orders = new ArrayList<>();
 
-        String sql = "SELECT * FROM ClientOrder as cO"
+        String sql = " SELECT * FROM ClientOrder as cO"
                 + " LEFT JOIN OrderLine oL on oL.OrderNumber = cO.idOrder"
-                + " LEFT JOIN Beer b on oL.BeerName = b.idName"
-                + " LEFT JOIN BusinessUnit bU on cO.businessUnit = bU.idBusinessUnit"
+                + " LEFT JOIN Beer b on oL.BeerName = b.idName";
+        if(!toDeliver)               // si condition toDeliver : on ne prend pas les commandes qui n'ont pas de business unit attaché à elles
+            sql += " LEFT";
+
+        sql += " JOIN BusinessUnit bU on cO.businessUnit = bU.idBusinessUnit"
                 +" LEFT JOIN Client c on cO.clientNumber = c.idClient"
                 +" LEFT JOIN Locality l on bU.locality = l.idLocality";
-        if(state != null)
-            sql += " WHERE cO.state = ?";
-        sql += " ORDER BY cO.idOrder";
+
         try {
-            PreparedStatement statement = connection.prepareStatement(sql);
-            if(state !=  null)
-                statement.setString(1, state);
+            PreparedStatement statement = null;
+            java.util.Date startDate = null;
+            java.util.Date endDate = null;
+
+            if(methodCase == 3 || methodCase == 4) {
+                SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
+                startDate = formatter.parse(dateMin);
+                endDate = formatter.parse(dateMax);
+            }
+            switch (methodCase){
+                case 1 :
+                    sql += " ORDER BY cO.idOrder";
+                    statement = connection.prepareStatement(sql);
+                    break;
+                case 2 :
+                    sql += " WHERE cO.state = ? ORDER BY cO.idOrder";
+                    statement = connection.prepareStatement(sql);
+                    statement.setString(1, state);
+                    break;
+                case 3 :
+                    sql += " WHERE (cO.orderDate BETWEEN ? AND ? ) ORDER BY cO.idOrder";
+                    statement = connection.prepareStatement(sql);
+                    statement.setDate(1, new java.sql.Date(startDate.getTime()));
+                    statement.setDate(2, new java.sql.Date(endDate.getTime()));
+                    break;
+                case 4 :
+                    sql += " WHERE (cO.state = ? AND cO.orderDate BETWEEN ? AND ? ) ORDER BY cO.idOrder";
+                    statement = connection.prepareStatement(sql);
+                    statement.setString(1, state);
+                    statement.setDate(2, new java.sql.Date(startDate.getTime()));
+                    statement.setDate(3, new java.sql.Date(endDate.getTime()));
+                    break;
+                case 5 :
+                    sql += " WHERE cO.clientNumber = ? ORDER BY cO.idOrder";
+                    statement = connection.prepareStatement(sql);
+                    statement.setInt(1, idClient);
+                    break;
+                case 6 :
+                    sql += " WHERE l.idLocality = ? ORDER BY cO.idOrder";
+                    statement = connection.prepareStatement(sql);
+                    statement.setInt(1, idLocality);
+                    break;
+                case 7 :
+                    sql += " WHERE co.idOrder = ?";
+                    statement = connection.prepareStatement(sql);
+                    statement.setInt(1, orderId);
+                    break;
+            }
             ResultSet data = statement.executeQuery();
 
             Order order = null;
@@ -59,7 +107,6 @@ public class OrderDBAccess {
             Locality locality;
             String localityName;
             String postalCode;
-
             while(data.next()) {
                 if(idOrder != data.getInt("idOrder")){
                     idOrder = data.getInt("idOrder");
@@ -78,6 +125,7 @@ public class OrderDBAccess {
                         client.setVATNumber(vatNumber);
 
                     order = new Order(idOrder, client, hasPriority, orderDate, orderState, timeLimit);
+                    orders.add(order);
 
                     businessId = data.getInt("businessUnit");
                     if(!data.wasNull()) {
@@ -90,9 +138,9 @@ public class OrderDBAccess {
                         business = new BusinessUnit(businessId, client, locality, streetName, streetNumber);
                         order.setBusinessUnitId(business);
                     }
-                    orders.add(order);
                 }
-                    beerName = data.getString("idName");
+                beerName = data.getString("idName");
+                if(!data.wasNull()) {
                     qtInStock = data.getInt("qtInStock");
                     lowThreshold = data.getInt("lowTreshold");
                     stockPrice = data.getDouble("stockPrice");
@@ -102,6 +150,7 @@ public class OrderDBAccess {
                     quantity = data.getInt("quantity");
                     orderLine = new OrderLine(beer, order, quantity, price);
                     order.additem(orderLine);
+                }
             }
         }
         catch(SQLException e) {
@@ -125,6 +174,9 @@ public class OrderDBAccess {
         catch (OrderLineException e) {
             throw new CorruptedDataException("Des données incohérentes concernant les lignes commandes sont présentes dans la BD");
         }
+        catch (ParseException e) {
+            throw new DataAccessException("Erreur lors de la transformation de dates au format string en dates de type java.util.Date lors de la récupération d'une commande");
+        }
         return orders;
     }
 
@@ -132,16 +184,15 @@ public class OrderDBAccess {
         Connection connection = SingletonConnection.getInstance();
         Integer id = null;
 
-        String sql = "INSERT INTO ClientOrder (businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)"
+        String sql = " INSERT INTO ClientOrder (businessUnit, clientNumber, hasPriority, orderDate, state, timeLimit)"
                 + " VALUES (?,?,?,?,?,?);";
 
         try {
-            int hasPriority = order.getHasPriority() ? 1 : 0;
             BusinessUnit business = order.getBusinessUnitId();
             PreparedStatement statement = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
             statement.setInt(2, order.getClient().getId());
-            statement.setInt(3, hasPriority);
             statement.setString(4, order.getOrderDate());
+            statement.setInt(3, order.getHasPriority() ? 1 : 0);
             statement.setString(5, order.getState());
             if(business != null) {
                 statement.setInt(1, business.getIdBusinessUnit());
@@ -161,7 +212,7 @@ public class OrderDBAccess {
             if(rs.next())
                 id = rs.getInt(1);
 
-            sql = "INSERT INTO OrderLine (orderNumber, quantity, price, beerName)"
+            sql = " INSERT INTO OrderLine (orderNumber, quantity, price, beerName)"
                     + " VALUES (?,?,?,?);";
             statement = connection.prepareStatement(sql);
             int nbOrderLines = order.getOrderLinesSize();
@@ -180,5 +231,54 @@ public class OrderDBAccess {
             throw new DataBackupException("Erreur lors de la sauvegarde d'une commande dans la BD");
         }
         return id;
+    }
+
+    public static void deleteOrder(int idOrder) throws DataAccessException {
+        Connection connection = SingletonConnection.getInstance();
+
+         try {
+             String sql = " DELETE FROM OrderLine WHERE OrderLine.orderNumber = ?";
+             PreparedStatement statement = connection.prepareStatement(sql);
+             statement.setInt(1, idOrder);
+             statement.executeUpdate();
+
+             sql = " DELETE FROM ClientOrder WHERE ClientOrder.idOrder = ?";
+             statement = connection.prepareStatement(sql);
+             statement.setInt(1, idOrder);
+             statement.executeUpdate();
+         }
+         catch(SQLException e){
+             throw new DataAccessException("Erreur lors de la suppression de données concernant les lignes de commandes");
+         }
+    }
+
+    public static void modifyOrder(Order order) throws DataAccessException {
+        Connection connection = SingletonConnection.getInstance();
+        String sql = " UPDATE ClientOrder SET businessUnit = ?, clientNumber = ?,"
+                + " hasPriority = ?, orderDate = ?, state = ?, timeLimit = ?";
+
+        try {
+            PreparedStatement statement = connection.prepareStatement(sql);
+            if(order.getBusinessUnitId() != null) {
+                statement.setInt(1, order.getBusinessUnitId().getIdBusinessUnit());
+            }
+            else {
+                statement.setNull(1, Types.INTEGER);
+            }
+            statement.setInt(2, order.getClient().getId());
+            statement.setInt(3, order.getHasPriority() ? 1 : 0);
+            statement.setString(4, order.getOrderDate());
+            statement.setString(5, order.getState());
+            if(order.getTimeLimit() > 0){
+                statement.setInt(6, order.getTimeLimit());
+            }
+            else {
+                statement.setNull(6, Types.INTEGER);
+            }
+            statement.executeUpdate();
+        }
+        catch (SQLException e) {
+            throw new DataAccessException("Erreur lors de la modification de données concernant les commandes");
+        }
     }
 }
