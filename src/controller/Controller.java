@@ -214,7 +214,7 @@ public class Controller {
     }
 
     public void modifyOrder(Order order)throws ProgramErrorException, UserInputErrorException{
-      validateOrder(orderToSave);
+      validateOrder(order);
       try{
         businesslayer.modifyOrder(order);
       }catch(Exception e){
