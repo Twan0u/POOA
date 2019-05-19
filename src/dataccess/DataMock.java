@@ -149,6 +149,8 @@ public class DataMock {
   }
   public void closeConnection() throws DataAccessException{}
   public void setOrderState(String newState, int orderId) throws DataAccessException, DataModificationException{}
-  public void modifyOrder(Order order){}
+  public void modifyOrder(Order order){
+    System.out.println(order.toString());
+  }
 
 }
