@@ -215,10 +215,23 @@ public class ModifyPanel extends Container{
 
   private class ButtonSaveListener implements ActionListener{
     public void actionPerformed( ActionEvent event) {
-      order.setTimeLimit(69); //TODO
+      try{
+        order.setClient(getSelectedClient());
+        order.setBusinessUnitId(getSelectedBusiness());
+        order.setOrderDate(getSelectedDate());
+        order.setState(getSelectedState());
+        order.setTimeLimit(getSelectedTimeLimit());
+        order.setHasPriority(getSelectedPriority());
+      }catch(OrderException e){
+        JOptionPane.showMessageDialog (null,"Il y a eu une erreur dans la récupération des valeurs de la commande","Error", JOptionPane.ERROR_MESSAGE);
+      }catch(UserInputErrorException e){
+        JOptionPane.showMessageDialog (null,"il y a une valeur que tu viens de rentrer qui n'est pas correcte... :(","Error", JOptionPane.ERROR_MESSAGE);
+      }
       try{
         controller.modifyOrder(order);
+        JOptionPane.showMessageDialog (null,"Votre Commande a été enregistrée avec succes","Info", JOptionPane.INFORMATION_MESSAGE);
       }catch(Exception e){//TODO
+        JOptionPane.showMessageDialog (null,"Il y a eu une erreur dans l'enregistrement de la commande","Error", JOptionPane.ERROR_MESSAGE);
       }
     }
   }
@@ -233,5 +246,45 @@ public class ModifyPanel extends Container{
         JOptionPane.showMessageDialog (null,"Il y a eu une erreur dans la supression de cette commande","ERREUR", JOptionPane.ERROR_MESSAGE);
       }
     }
+  }
+
+  private Client getSelectedClient(){
+    int index = comboBoxClient.getSelectedIndex();
+    if (index >= 0){
+      return allClients.get(index);
+    }else{
+      return null;
+    }
+  }
+
+  private BusinessUnit getSelectedBusiness(){
+    int index = comboBoxBusiness.getSelectedIndex();
+    if (index <= 0){
+      return null;
+    }else{
+      return allBusinessOfClient.get(index-1);
+    }
+  }
+  public String getSelectedDate(){
+    return "16-09-1997";//TODO
+  }
+  public String getSelectedState(){
+
+    return "new";
+
+//_TOSODOODODODODO TODO
+
+  }
+
+
+  public int getSelectedTimeLimit()throws UserInputErrorException{
+    try{
+      return Integer.parseInt(timeLimit.getText());
+    }catch(NumberFormatException error){
+      throw new UserInputErrorException("La valeur que vous venez de rentrer pour le nombre de jours pour effectuer la livraison est incorrect");
+    }
+  }
+  public boolean getSelectedPriority(){
+    return checkPriority.isSelected();
   }
 }
