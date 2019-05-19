@@ -9,19 +9,19 @@ import java.awt.event.*;
 
 public class BeerTable extends JPanel{
 
-ControllerNewOrder controller;
+Controller controller;
 
   private JTable table;
   private JScrollPane sp;
   private String column[]={"Bière","Quantité","Prix Unit","Total"};
 
-  public BeerTable(ControllerNewOrder controller){
+  public BeerTable(Controller controller){
     this.controller = controller;
     this.setLayout(new FlowLayout());
 
     //Tableau Commande
     table=new JTable(controller.getOrderLines(),column);
-    tableStyle();
+    table.setEnabled(false);;
     sp=new JScrollPane(table);
     this.add(sp);
 
@@ -31,18 +31,10 @@ ControllerNewOrder controller;
         this.remove(sp);
         String column[]={"Bière","Quantité","Prix Unit","Total"};
         table=new JTable(controller.getOrderLines(),column);
-        tableStyle();
+        table.setEnabled(false);;
         sp=new JScrollPane(table);
         this.add(sp);
         this.updateUI();
       }
 
-
-
-    public void tableStyle(){
-          table.setEnabled(false);
-          //table.setBackground(colBackground);
-          //table.setGridColor(colText);
-          //table.setForeground(colText);
-        }
 }

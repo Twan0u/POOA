@@ -181,4 +181,8 @@ public class Business implements BusinessInterface{
     //TODO Injections SQL
     return new ArrayList<>();
   }
+
+  public void deleteOrder(int orderID) throws DataAccessException, CorruptedDataException, DataDeletionException{
+    dataLayer.deleteOrder(orderID);
+  }
 }

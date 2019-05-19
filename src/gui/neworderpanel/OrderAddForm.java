@@ -12,7 +12,7 @@ import java.text.*; //pour le date format
 
 public class OrderAddForm extends Container{
 
-ControllerNewOrder controller;
+Controller controller;
 ArrayList<Client> allClients;
 ArrayList<BusinessUnit> business;
 
@@ -22,7 +22,7 @@ private JCheckBox checkPriority;
 private JSpinner spinnerDate;
 private JTextField timeLimit;
 
-  public OrderAddForm(ControllerNewOrder controller,Color colorText){
+  public OrderAddForm(Controller controller,Color colorText){
     this.controller = controller;
     this.setLayout(new GridLayout(5,2,5,5));
 
@@ -85,7 +85,6 @@ private JTextField timeLimit;
 
   public void loadClientCombo(){
     try{
-      Controller controller = new Controller();
       allClients = controller.getAllClients();
       if (allClients !=null){
         for(int i=0;i<allClients.size();i++){
@@ -106,14 +105,14 @@ private JTextField timeLimit;
   public class ClientComboBoxListener implements ItemListener {
       public void itemStateChanged(ItemEvent event){
         try{
-        Controller controller = new Controller();
         int idClient = allClients.get(comboBoxClient.getSelectedIndex()).getId();
          business = controller.getBusinessOf(idClient);
           comboBoxBusiness.removeAllItems();
-          comboBoxBusiness.addItem("Pas de Livraison");
           if (business.size() == 0){
+            comboBoxBusiness.addItem("Aucune Adresse De Livraison");
             comboBoxBusiness.setEnabled(false);
           }else{
+            comboBoxBusiness.addItem("Pas de Livraison");
             for(int i=0;i<business.size();i++){
               comboBoxBusiness.addItem(business.get(i).getStreetName());
             }
@@ -126,7 +125,11 @@ private JTextField timeLimit;
   }
   public Client getSelectedClient(){
     int index = comboBoxClient.getSelectedIndex();
-    return allClients.get(index);
+    if (index >= 0){
+      return allClients.get(index);
+    }else{
+      return null;
+    }
   }
 
   public BusinessUnit getSelectedBusiness(){
@@ -140,8 +143,12 @@ private JTextField timeLimit;
   public String getSelectedDate(){
     return "16-09-1997";//TODO
   }
-  public String getSelectedTimeLimit(){
-    return timeLimit.getText();
+  public int getSelectedTimeLimit()throws UserInputErrorException{
+    try{
+      return Integer.parseInt(timeLimit.getText());
+    }catch(NumberFormatException error){
+      throw new UserInputErrorException("La valeur que vous venez de rentrer pour le nombre de jours pour effectuer la livraison est incorrect");
+    }
   }
   public boolean getSelectedPriority(){
     return checkPriority.isSelected();

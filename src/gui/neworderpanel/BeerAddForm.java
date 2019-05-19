@@ -9,7 +9,7 @@ import java.awt.event.*;
 
 public class BeerAddForm extends Container{
 
-ControllerNewOrder controller;
+Controller controller;
 
 private JLabel labelBeer, labelQuantity;
 private JComboBox comboBoxBeer;
@@ -17,7 +17,7 @@ private JSpinner spinnerQuantity;
 private JButton addBeerButton, removeBeerButton;
 private BeerTable beerTable;
 
-  public BeerAddForm(ControllerNewOrder controller, BeerTable beerTable){
+  public BeerAddForm(Controller controller, BeerTable beerTable){
     this.controller = controller;
     this.beerTable = beerTable;
 

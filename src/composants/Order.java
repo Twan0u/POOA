@@ -15,7 +15,7 @@ import java.util.*;
 *   <li>un client qui effectue la commande</li>
 *   <li>une identification de commande prioritaire</li>
 *   <li>une date de commande </li>
-*   <li>un état de cette commande</li>
+*   <li>un état de cette commande(new,prepared,delivered,paid)</li>
 *   <li>une limite (facultative) pour la livraison</li>
 * </ul>
 *
@@ -118,10 +118,9 @@ public class Order{
   * @since 1.4
   */
   public Order(){
-    this.setState("New");
+    this.setState("new");
     this.setHasPriority(false);
     this.setBusinessUnitId(null);
-    this.setOrderDate("2019-05-15");
   }
 
   /*____METHODES____*/

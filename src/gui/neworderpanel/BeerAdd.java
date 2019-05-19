@@ -9,12 +9,11 @@ import java.awt.event.*;
 
 public class BeerAdd extends Container{
 
-ControllerNewOrder controller;
+Controller controller;
 
 private Container left,right;
 
-
-  public BeerAdd(ControllerNewOrder controller){
+  public BeerAdd(Controller controller){
     this.controller = controller;
 
     this.setLayout(new BorderLayout());

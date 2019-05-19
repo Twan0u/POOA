@@ -2,10 +2,14 @@ package gui;
 
 import controller.*;
 import exceptions.*;
+import composants.*;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+
+import java.io.*;
+import java.util.*;
 
 public class DeliveryPanel extends Container{
 
@@ -18,18 +22,14 @@ public class DeliveryPanel extends Container{
 
   private JScrollPane sp;
   private JTable table;
+  private ArrayList<Order> allOrdersToDeliver;
 
   public DeliveryPanel() {
     this.setLayout(new BorderLayout());
     JPanel topPanel = new JPanel();
     topPanel.setLayout(new FlowLayout());
-    String [][] allOrdersToDeliver = null;
-    try{
-      allOrdersToDeliver = controller.getOrdersToDeliver();
-    }catch(ProgramErrorException error){
-      JOptionPane.showMessageDialog (null, "Erreur du chargement des Commandes à livrer","FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
-      System.exit(1);
-    }
+
+
 
     try{
       codePostalDataCB = controller.getAllPostCodeToDeliverTo();
@@ -54,8 +54,28 @@ public class DeliveryPanel extends Container{
 
     this.add(topPanel,BorderLayout.NORTH);
 
+    try{
+      allOrdersToDeliver = controller.getOrdersToDeliver();
+    }catch(ProgramErrorException e){
+      JOptionPane.showMessageDialog (null, e.getMessage(),"ERROR", JOptionPane.ERROR_MESSAGE);
+    }
+    if (allOrdersToDeliver.size()==0){
+      JOptionPane.showMessageDialog (null, "Il n'y a aucune Commande à livrer","Information", JOptionPane.INFORMATION_MESSAGE);
+    }else{
+      String [][] out = new String[allOrdersToDeliver.size()][6];
+      for(int i = 0; i<out.length;i++){
+        out[i][0] = Integer.toString(allOrdersToDeliver.get(i).getId());
+        out[i][1] = allOrdersToDeliver.get(i).getClient().getName();
+        out[i][2] = Boolean.toString(allOrdersToDeliver.get(i).getHasPriority());
+        out[i][3] = allOrdersToDeliver.get(i).getBusinessUnitId().getStreetName();
+        out[i][4] = allOrdersToDeliver.get(i).getBusinessUnitId().getLocality().getPostCode();
+        //bufferlocalitiesToDeliver.add(allOrdersToDeliver.get(i).getBusinessUnitId().getLocality());
+        out[i][5] = allOrdersToDeliver.get(i).getBusinessUnitId().getLocality().getName();
+      }
+      table = new JTable(out,column);
+    }
 
-    JTable table = new JTable(allOrdersToDeliver,column);
+
     table.setEnabled(false);
     sp=new JScrollPane(table);
 

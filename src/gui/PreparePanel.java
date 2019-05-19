@@ -9,19 +9,18 @@ import java.awt.event.*;
 
 public class PreparePanel extends Container{
 
-  ControllerPrepare controller = new ControllerPrepare();
+  Controller controller;
 
   private static String column[]={"ID-COMMANDE","Client"};
 
   private JPanel base;
-
   private JComboBox comboBoxClient;
   private JLabel labelClient;
-
   private JScrollPane sp;
   private JTable table;
 
-  public PreparePanel(Color colBackground,Color colText) {
+  public PreparePanel(Controller controller, Color colBackground, Color colText) {
+    this.controller = controller;
     this.setBackground(colBackground);
     this.setLayout(new FlowLayout());
 

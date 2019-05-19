@@ -2,6 +2,7 @@ package gui;
 
 import controller.*;
 import exceptions.*;
+import composants.*;
 import gui.neworderpanel.*;
 
 import javax.swing.*;
@@ -10,7 +11,7 @@ import java.awt.event.*;
 
 public class OrderPanel extends Container{
 
-  private ControllerNewOrder controller;
+  private Controller controller;
 
   private OrderAddForm orderAddForm;
   private Container addBeerForm;
@@ -20,20 +21,22 @@ public class OrderPanel extends Container{
   private Color colText;
   private Color colBis;
 
-  public OrderPanel(Color colBackground, Color colText, Color colBis) {
+  public OrderPanel(Controller controller, Color colBackground, Color colText, Color colBis) {
     this.setLayout(new FlowLayout());
     this.colText = colText;
 
     validateButton = new JButton("Sauvegarder La commande");
+
     try{
-      this.controller = new ControllerNewOrder();
+      this.controller = new Controller();
     }catch(Exception e){
       JOptionPane.showMessageDialog(null, e.getMessage(),"FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
       System.exit(1);
     }
     orderAddForm = new OrderAddForm(controller,colText);
     this.add(orderAddForm);
-    this.add(new BeerAdd(controller));
+    addBeerForm = new BeerAdd(controller);
+    this.add(addBeerForm);
     this.add(validateButton);
 
     ButtonSaveListener listenerSave = new ButtonSaveListener();
@@ -55,33 +58,26 @@ public class OrderPanel extends Container{
   }
 
 public int save()throws ProgramErrorException, UserInputErrorException{
-  int idNewOrder  = controller.saveOrder(orderAddForm.getSelectedClient(),orderAddForm.getSelectedBusiness(),orderAddForm.getSelectedDate(),orderAddForm.getSelectedTimeLimit(),orderAddForm.getSelectedPriority());
-  return idNewOrder;
+  try{
+    Order order = new Order();
+    order.setClient(orderAddForm.getSelectedClient());
+    order.setBusinessUnitId(orderAddForm.getSelectedBusiness());
+    order.setOrderDate(orderAddForm.getSelectedDate());
+    order.setTimeLimit(orderAddForm.getSelectedTimeLimit());
+    order.setHasPriority(orderAddForm.getSelectedPriority());
+    return controller.saveOrder(order);
+  }catch(OrderException error){
+    throw new ProgramErrorException(error.getMessage());
+  }
 }
 
 private void reload(){
   this.removeAll();
-    this.repaint();
-  try{
-    this.controller = new ControllerNewOrder();
-  }catch(Exception e){
-    JOptionPane.showMessageDialog(null, e.getMessage(),"FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
-    System.exit(1);
-  }
   this.add(new OrderAddForm(controller,colText));
   this.add(new BeerAdd(controller));
   this.add(validateButton);
   this.repaint();
 }
-
-  private void load(){
-    try{
-      this.controller = new ControllerNewOrder();
-    }catch(Exception e){
-      JOptionPane.showMessageDialog(null, e.getMessage(),"FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
-      System.exit(1);
-    }
-  }
 
 
 

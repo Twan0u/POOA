@@ -16,8 +16,8 @@ public class ModifyPanel extends Container{
   private Controller controller;
 
   private int currentClientid;
-  ArrayList<Client> allClients;
-  ArrayList<BusinessUnit> allBusinessOfClient;
+  private ArrayList<Client> allClients;
+  private ArrayList<BusinessUnit> allBusinessOfClient;
 
   private JTextField IdOrder;
   private JButton recherche, sauvegarder, supprimer;
@@ -30,8 +30,11 @@ public class ModifyPanel extends Container{
   private JSpinner spinnerDate;
   private JTextField timeLimit;
 
-  public ModifyPanel(Order order)throws ProgramErrorException{
-    this.controller = new Controller();
+  private JRadioButtonMenuItem neww, prepared,delivered,paid;
+  private ButtonGroup radioButtonGroup;
+
+  public ModifyPanel(Controller controller, Order order)throws ProgramErrorException{
+    this.controller = controller;
     this.order = order;
 
     this.setLayout(new FlowLayout());
@@ -64,18 +67,21 @@ public class ModifyPanel extends Container{
 
     labelDate = new JLabel("Date de Livraison Prévue : ");
     labelDate.setHorizontalAlignment(SwingConstants.RIGHT);
-    spinnerDate = new JSpinner();
+
+    SpinnerDateModel model = new SpinnerDateModel();
+    spinnerDate = new JSpinner(model);
+    JSpinner.DateEditor editor = new JSpinner.DateEditor(spinnerDate, "dd-MM-yyyy");
+    spinnerDate.setEditor(editor);
+
     panel.add(labelDate);
     panel.add(spinnerDate);
 
     labelDays = new JLabel("Livraison endéans les X jours après la date Prévue: ");
     labelDays.setHorizontalAlignment(SwingConstants.RIGHT);
-    timeLimit = new JTextField("");
+    timeLimit = new JTextField(Integer.toString(order.getTimeLimit()));
     panel.add(labelDays);
     panel.add(timeLimit);
 
-     JRadioButtonMenuItem neww, prepared,delivered,paid;
-     ButtonGroup radioButtonGroup;
      neww = new JRadioButtonMenuItem("Nouvelle Commande");
      panel.add(neww);
      prepared = new JRadioButtonMenuItem("Commande préparée");
@@ -85,16 +91,32 @@ public class ModifyPanel extends Container{
      paid = new JRadioButtonMenuItem("Commande Payée");
      panel.add(paid);
 
+     String state = order.getState();
+     if (state.compareTo("new")==0){
+       neww.setSelected(true);
+     }else if(state.compareTo("prepared")==0){
+       prepared.setSelected(true);
+     }else if(state.compareTo("delivered")==0){
+       delivered.setSelected(true);
+     }else if(state.compareTo("paid")==0){
+       paid.setSelected(true);
+     }
+
+
+
      radioButtonGroup = new ButtonGroup();
      radioButtonGroup.add(neww);
      radioButtonGroup.add(prepared);
      radioButtonGroup.add(delivered);
      radioButtonGroup.add(paid);
 
+
+
     panel.add(new JLabel("")); // grid spacer
 
     checkPriority = new JCheckBox("Livraison Prioritaire ?");
     checkPriority.setHorizontalAlignment(SwingConstants.RIGHT);
+    checkPriority.setSelected(order.getHasPriority());
     panel.add(checkPriority);
     sauvegarder = new JButton("sauvegarder les modification de la commande");
     panel.add(sauvegarder);
@@ -108,6 +130,12 @@ public class ModifyPanel extends Container{
 
     ClientComboBoxListener listenerClient = new ClientComboBoxListener();
     comboBoxClient.addItemListener(listenerClient);
+
+    ButtonSaveListener listenerSave = new ButtonSaveListener();
+    sauvegarder.addActionListener(listenerSave);
+
+    ButtonDeleteListener listenerDelete = new ButtonDeleteListener();
+    supprimer.addActionListener(listenerDelete);
   }
 
   public int loadClientCombo(){ // return int est l'index ou se situe le client dans la combobox
@@ -185,4 +213,21 @@ public class ModifyPanel extends Container{
       }
   }
 
+  private class ButtonSaveListener implements ActionListener{
+    public void actionPerformed( ActionEvent event) {
+
+    }
+  }
+  private class ButtonDeleteListener implements ActionListener{
+    public void actionPerformed( ActionEvent event) {
+      try{
+        if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir supprimmer cette commande? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+          controller.deleteOrder(order.getId());
+          JOptionPane.showMessageDialog (null,"Votre Commande a été supprimée avec succes","Info", JOptionPane.INFORMATION_MESSAGE);
+        }
+      }catch(Exception e){
+        JOptionPane.showMessageDialog (null,"Il y a eu une erreur dans la supression de cette commande","ERREUR", JOptionPane.ERROR_MESSAGE);
+      }
+    }
+  }
 }

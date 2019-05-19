@@ -8,7 +8,7 @@ JC = javac
 JVM= java
 DOC = javadoc
 
-run: compile## Lance le projet
+run: compile ## Lance le projet
 	$(JVM) MainLinux
 
 all: gui/OrderGui.class MainLinux.class javadoc## Compile tout le projet et la javadoc
@@ -16,15 +16,12 @@ all: gui/OrderGui.class MainLinux.class javadoc## Compile tout le projet et la j
 MainLinux.class: MainLinux.java
 	$(JC) MainLinux.java
 
-compile: gui MainLinux.class## Compile tout le projet
+compile: gui MainLinux.class ## Compile tout le projet
 
-gui: controller newOrderPanel gui/ThreadLoad.class gui/SearchPanel.class gui/SearchOrderByClientPanel.class gui/ModifyPanel.class gui/PreparePanel.class gui/StockPanel.class gui/OrderPanel.class gui/Gui.class gui/DeliveryPanel.class
+gui: controller newOrderPanel gui/ThreadLoad.class gui/SearchPanel.class gui/SearchOrderByClientPanel.class gui/ModifyPanel.class gui/StockPanel.class gui/OrderPanel.class gui/Gui.class gui/DeliveryPanel.class
 
 gui/StockPanel.class: gui/StockPanel.java
 	$(JC) gui/StockPanel.java
-
-gui/PreparePanel.class: gui/PreparePanel.java
-	$(JC) gui/PreparePanel.java
 
 gui/ModifyPanel.class: gui/ModifyPanel.java
 	$(JC) gui/ModifyPanel.java
@@ -61,16 +58,10 @@ gui/neworderpanel/BeerAddForm.class: gui/neworderpanel/BeerAddForm.java
 gui/neworderpanel/BeerTable.class: gui/neworderpanel/BeerTable.java
 			$(JC) gui/neworderpanel/BeerTable.java
 
-controller: business controller/Controller.class controller/ControllerNewOrder.class controller/ControllerPrepare.class
+controller: business controller/Controller.class
 
 controller/Controller.class:  controller/Controller.java
 		$(JC) controller/Controller.java
-
-controller/ControllerNewOrder.class: controller/ControllerNewOrder.java
-		$(JC) controller/ControllerNewOrder.java
-
-controller/ControllerPrepare.class: controller/ControllerPrepare.java
-		$(JC) controller/ControllerPrepare.java
 
 business: dataccess business/BusinessInterface.class business/Business.class
 

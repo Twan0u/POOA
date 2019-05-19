@@ -131,7 +131,17 @@ public class DataMock  {
     return 42;
   }
 
-  public void deleteOrder(int orderID) throws DataAccessException, CorruptedDataException, DataDeletionException{}
+  public void deleteOrder(int orderID) throws DataAccessException, CorruptedDataException, DataDeletionException{
+    boolean exist = false;
+    for(int i=0;i<orders.size();i++){
+      if(orders.get(i).getId()==orderID){
+        orders.remove(i);
+        exist = true;
+        return;
+      }
+    }
+    throw new DataDeletionException("Order Pas trouvée / déjà suprimée ");
+  }
   public void saveOrderLine(int orderID, String beerName) throws DataAccessException, CorruptedDataException, DataBackupException{}
   public void deleteOrderLine(int orderID, String beerName) throws DataAccessException, CorruptedDataException, DataDeletionException{}
     public ArrayList<Order> getOrdersWithStateAndDates(String state, String dataMin, String dateMax)throws DataAccessException, CorruptedDataException{

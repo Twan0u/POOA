@@ -8,14 +8,13 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-
 public class Gui extends JFrame{
 
-
+  private Controller controller;
   private Container frameContainer,  mainPanel;
   private JPanel menuPanel;
 
-  private JLabel logo, commande, modifier, recherche,rechercheClient, stock, livraison, prepare;
+  private JLabel logo, commande, modifier, recherche,rechercheClient, stock, livraison;
 
   private Color colText = new Color(29, 34, 40);
   private Color colBis = new Color(250,229,150);
@@ -27,7 +26,6 @@ public class Gui extends JFrame{
   public Gui(String path) {
     super("BrassiGestion");
     this.path = path;
-
     setSize(1080,720);
     setResizable(true);
 
@@ -37,13 +35,15 @@ public class Gui extends JFrame{
     Thread thread = new Thread(threadX);
     thread.start();
 
+    this.controller = new Controller();
+
     menuPanel = new JPanel();
     menuPanel.setPreferredSize(new Dimension(125, 100));
     menuPanel.setBackground(colSidePanel);
 
     loadMenuPanel();
 
-    mainPanel = new OrderPanel(colBackground, colText, colBis);
+    mainPanel = new OrderPanel(controller, colBackground, colText, colBis);
 
     frameContainer = this.getContentPane();
     frameContainer.setLayout(new BorderLayout());
@@ -73,7 +73,6 @@ public class Gui extends JFrame{
         ImageIcon rechercheClientIcon = new ImageIcon(path + "user.png");
         rechercheClient = new JLabel(rechercheClientIcon);
 
-
         ImageIcon stockIcon = new ImageIcon(path + "stock.png");
         stock = new JLabel(stockIcon);
 
@@ -92,7 +91,7 @@ public class Gui extends JFrame{
         // Création d'une Commande
         commande.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-              changeMainPanel(new OrderPanel(colBackground, colText, colBis));
+              changeMainPanel(new OrderPanel(controller, colBackground, colText, colBis));
             }
         });
 
@@ -102,19 +101,12 @@ public class Gui extends JFrame{
               String s = (String)JOptionPane.showInputDialog(null,"Identifiant de la commande à modifier","Selectionner l'Identifiant", JOptionPane.QUESTION_MESSAGE);
               if ((s != null) && (s.length() > 0)){
                 try{
-                  Controller controller = new Controller();
-                  Order order=null;
-                  try{
-                    order = controller.getOrder(Integer.parseInt(s));
-                  }catch(Exception err){
-                    System.out.println("order Not found or not exist");
-                  }
+                    Order order = controller.getOrder(Integer.parseInt(s));
                   if (order!=null){
-                    changeMainPanel(new ModifyPanel(order));
+                    changeMainPanel(new ModifyPanel(controller, order));
                   }else{
-                    throw new ProgramErrorException("");//order not found
+                    throw new ProgramErrorException("Aucune commande n'a pu être chargée");//order not found
                   }
-
                 }catch(NumberFormatException error){
                   JOptionPane.showMessageDialog(null,"Le numéro d'identification est incorrect");
                 }catch(ProgramErrorException erreur){
@@ -131,7 +123,6 @@ public class Gui extends JFrame{
             public void mouseClicked(MouseEvent e) {
               if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
                 changeMainPanel(new SearchPanel());
-               //JOptionPane.showMessageDialog(null,"L'onglet recherche n'est pas encore disponible");
              }
             }
         });
@@ -163,8 +154,6 @@ public class Gui extends JFrame{
              }
             }
         });
-
-
   }
   public void changeMainPanel(Container newPanel){
        frameContainer.removeAll();
