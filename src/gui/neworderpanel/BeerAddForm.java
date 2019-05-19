@@ -84,7 +84,7 @@ private BeerTable beerTable;
       private class ButtonRemoveListener implements ActionListener{
         public void actionPerformed( ActionEvent event) {
           if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir supprimmer cette bière de la commande? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-          //  controller.removeLastBeer();
+            // controller.removeLastBeer();
             beerTable.refreshTable();
           }
         }

@@ -36,7 +36,6 @@ public class ModifyPanel extends Container{
   public ModifyPanel(Controller controller, Order order)throws ProgramErrorException{
     this.controller = controller;
     this.order = order;
-
     this.setLayout(new FlowLayout());
 
     panel = new JPanel();
@@ -61,7 +60,6 @@ public class ModifyPanel extends Container{
     int indexComboBusiness = loadBusinessCombo();
     comboBoxBusiness.setMaximumRowCount(5);
     comboBoxBusiness.setSelectedIndex(indexComboBusiness);
-
     panel.add(labelBusiness);
     panel.add(comboBoxBusiness);
 
@@ -75,7 +73,6 @@ public class ModifyPanel extends Container{
 
     panel.add(labelDate);
     panel.add(spinnerDate);
-
     labelDays = new JLabel("Livraison endéans les X jours après la date Prévue: ");
     labelDays.setHorizontalAlignment(SwingConstants.RIGHT);
     timeLimit = new JTextField(Integer.toString(order.getTimeLimit()));
@@ -91,7 +88,9 @@ public class ModifyPanel extends Container{
      paid = new JRadioButtonMenuItem("Commande Payée");
      panel.add(paid);
 
+
      String state = order.getState();
+
      if (state.compareTo("new")==0){
        neww.setSelected(true);
      }else if(state.compareTo("prepared")==0){
@@ -101,8 +100,6 @@ public class ModifyPanel extends Container{
      }else if(state.compareTo("paid")==0){
        paid.setSelected(true);
      }
-
-
 
      radioButtonGroup = new ButtonGroup();
      radioButtonGroup.add(neww);
@@ -127,7 +124,7 @@ public class ModifyPanel extends Container{
     panel.add(supprimer);
 
     this.add(panel);
-
+    
     ClientComboBoxListener listenerClient = new ClientComboBoxListener();
     comboBoxClient.addItemListener(listenerClient);
 

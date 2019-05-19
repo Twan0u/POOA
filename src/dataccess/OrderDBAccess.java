@@ -255,7 +255,8 @@ public class OrderDBAccess {
     public static void modifyOrder(Order order) throws DataAccessException {
         Connection connection = SingletonConnection.getInstance();
         String sql = " UPDATE ClientOrder SET businessUnit = ?, clientNumber = ?,"
-                + " hasPriority = ?, orderDate = ?, state = ?, timeLimit = ?";
+                + " hasPriority = ?, orderDate = ?, state = ?, timeLimit = ?"
+                + " WHERE ClientOrder.idOrder = ?";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -269,6 +270,7 @@ public class OrderDBAccess {
             statement.setInt(3, order.getHasPriority() ? 1 : 0);
             statement.setString(4, order.getOrderDate());
             statement.setString(5, order.getState());
+            statement.setInt(7, order.getId());
             if(order.getTimeLimit() > 0){
                 statement.setInt(6, order.getTimeLimit());
             }
