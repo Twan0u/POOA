@@ -45,10 +45,10 @@ public class DBAccess implements InterfaceData {
 
 
     public ArrayList<Client> getAllClients() throws DataAccessException, CorruptedDataException {
-        return ClientDBAccess.getAllClients();
+        return ClientDBAccess.getClients(null);
     }
     public Client getClient(int id) throws DataAccessException, CorruptedDataException {
-        return null;
+        return ClientDBAccess.getClients(id).get(0);
     }
 
 

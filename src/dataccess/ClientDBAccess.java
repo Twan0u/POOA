@@ -7,17 +7,22 @@ import java.sql.*;
 
 public class ClientDBAccess {
 
-    public static ArrayList<Client> getAllClients() throws DataAccessException, CorruptedDataException {
+    public static ArrayList<Client> getClients(Integer clientID) throws DataAccessException, CorruptedDataException {
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Client> clients = new ArrayList<>();
 
         String sql = "SELECT * FROM Client as c" +
                 " LEFT JOIN BusinessUnit bU on bU.clientNumber = c.idClient" +
-                " LEFT JOIN Locality l on l.idLocality = bU.locality"
-                + " ORDER BY c.idClient";
+                " LEFT JOIN Locality l on l.idLocality = bU.locality";
+        if(clientID != null)
+            sql += " WHERE c.idClient = ?";
+
+        sql += " ORDER BY c.idClient";
 
         try {
             PreparedStatement statement = connection.prepareStatement(sql);
+            if(clientID != null)
+                statement.setInt(1, clientID);
             ResultSet data = statement.executeQuery();
 
             Client client = null;
