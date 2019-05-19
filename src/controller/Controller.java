@@ -217,7 +217,7 @@ public class Controller {
       validateOrder(order);
       try{
         businesslayer.modifyOrder(order);
-      }catch(Exception e){
+      }catch(Exception erreur){
         throw new ProgramErrorException("Erreur lors de la sauvegarde des données modifiées");
       }
     }
