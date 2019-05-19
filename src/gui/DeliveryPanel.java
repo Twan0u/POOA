@@ -23,13 +23,18 @@ public class DeliveryPanel extends Container{
   private JScrollPane sp;
   private JTable table;
   private ArrayList<Order> allOrdersToDeliver;
+  private ArrayList<Locality> bufferlocalitiesToDeliver;
 
   public DeliveryPanel() {
     this.setLayout(new BorderLayout());
     JPanel topPanel = new JPanel();
     topPanel.setLayout(new FlowLayout());
 
-
+    try{
+      allOrdersToDeliver = controller.getOrdersToDeliver();
+    }catch(ProgramErrorException e){
+      JOptionPane.showMessageDialog (null, e.getMessage(),"ERROR", JOptionPane.ERROR_MESSAGE);
+    }
 
     try{
       codePostalDataCB = controller.getAllPostCodeToDeliverTo();
@@ -54,11 +59,7 @@ public class DeliveryPanel extends Container{
 
     this.add(topPanel,BorderLayout.NORTH);
 
-    try{
-      allOrdersToDeliver = controller.getOrdersToDeliver();
-    }catch(ProgramErrorException e){
-      JOptionPane.showMessageDialog (null, e.getMessage(),"ERROR", JOptionPane.ERROR_MESSAGE);
-    }
+
     if (allOrdersToDeliver.size()==0){
       JOptionPane.showMessageDialog (null, "Il n'y a aucune Commande à livrer","Information", JOptionPane.INFORMATION_MESSAGE);
     }else{
@@ -69,7 +70,7 @@ public class DeliveryPanel extends Container{
         out[i][2] = Boolean.toString(allOrdersToDeliver.get(i).getHasPriority());
         out[i][3] = allOrdersToDeliver.get(i).getBusinessUnitId().getStreetName();
         out[i][4] = allOrdersToDeliver.get(i).getBusinessUnitId().getLocality().getPostCode();
-        //bufferlocalitiesToDeliver.add(allOrdersToDeliver.get(i).getBusinessUnitId().getLocality());
+        bufferlocalitiesToDeliver.add(allOrdersToDeliver.get(i).getBusinessUnitId().getLocality());
         out[i][5] = allOrdersToDeliver.get(i).getBusinessUnitId().getLocality().getName();
       }
       table = new JTable(out,column);

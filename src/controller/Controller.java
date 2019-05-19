@@ -193,7 +193,10 @@ public class Controller {
       if (orderToSave.getClient() == null){
         throw new UserInputErrorException("Veuillez selectionner un client");
       }
-      if(orderToSave.getOrderDate() == null){//TODO
+      if(orderToSave.getOrderDate() == null){
+        throw new UserInputErrorException("La date de la commande est invalide");
+      }
+      if(orderToSave.getOrderDate() == ""){
         throw new UserInputErrorException("La date de la commande est invalide");
       }
       //TODO date de commande est inférieure à la date actuelle
@@ -217,8 +220,10 @@ public class Controller {
       validateOrder(order);
       try{
         businesslayer.modifyOrder(order);
-      }catch(Exception erreur){
-        throw new ProgramErrorException("Erreur lors de la sauvegarde des données modifiées");
+      }catch(DataAccessException erreur){
+        throw new ProgramErrorException("Erreur d'acces aux données : " + erreur.getMessage());
+      }catch(DataModificationException erreur){
+        throw new ProgramErrorException("Erreur de modification des données : " + erreur.getMessage());
       }
     }
   }

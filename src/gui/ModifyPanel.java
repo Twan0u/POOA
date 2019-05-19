@@ -215,7 +215,7 @@ public class ModifyPanel extends Container{
       try{
         order.setClient(getSelectedClient());
         order.setBusinessUnitId(getSelectedBusiness());
-        order.setOrderDate(getSelectedDate());
+        //order.setOrderDate(getSelectedDate());
         order.setState(getSelectedState());
         order.setTimeLimit(getSelectedTimeLimit());
         order.setHasPriority(getSelectedPriority());
@@ -265,14 +265,19 @@ public class ModifyPanel extends Container{
     }
   }
   public String getSelectedDate(){
-    return "16-09-1997";//TODO
+    return "1997-01-12";//TODO
   }
   public String getSelectedState(){
-
-    return "new";
-
-//_TOSODOODODODODO TODO
-
+    if(neww.isSelected() == true){
+      return "new";
+    }else if(prepared.isSelected() == true){
+      return "prepared";
+    }else if(delivered.isSelected() == true){
+      return "delivered";
+    }else if(paid.isSelected() == true){
+      return "paid";
+    }
+    return null;
   }
 
 
