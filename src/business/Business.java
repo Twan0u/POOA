@@ -22,7 +22,6 @@ public class Business implements BusinessInterface{
 
     public Client[] getAllClients()throws ProgramErrorException {
       ArrayList<Client> clients = null;
-
       try{
         clients = dataLayer.getAllClients();
       }catch(Exception e){
