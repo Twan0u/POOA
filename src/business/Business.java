@@ -17,12 +17,11 @@ import java.util.HashMap;
 *
 */
 public class Business implements BusinessInterface{
-    private static InterfaceData dataLayer = new DBAccess();
-    //private static DataMock dataLayer = new DataMock();
+    //private static InterfaceData dataLayer = new DBAccess();
+    private static DataMock dataLayer = new DataMock();
 
     public Client[] getAllClients()throws ProgramErrorException {
       ArrayList<Client> clients = null;
-
       try{
         clients = dataLayer.getAllClients();
       }catch(Exception e){
