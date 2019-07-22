@@ -8,8 +8,8 @@ import java.sql.*;
 
 import java.sql.Connection;
 
-public class BusinessDBAccess {
-    public static ArrayList<BusinessUnit> getBusinessWithClientID(int idClient) throws DataAccessException, CorruptedDataException {
+public class BusinessDBAccess implements BusinessAccess {
+    public ArrayList<BusinessUnit> getBusinessWithClientID(int idClient) throws DataAccessException, CorruptedDataException {
         Connection connection = SingletonConnection.getInstance();
         ArrayList<BusinessUnit> businesses = new ArrayList<>();
         String sql = "SELECT * FROM BusinessUnit as bU"

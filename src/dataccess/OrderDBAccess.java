@@ -8,8 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.sql.*;
 
-public class OrderDBAccess {
-    public static ArrayList<Order> getOrders(String state, Integer idLocality, Integer orderId, String dateMin, String dateMax, Integer idClient, boolean toDeliver, int methodCase) throws DataAccessException, CorruptedDataException {
+public class OrderDBAccess implements OrderAccess{
+    public ArrayList<Order> getOrders(String state, Integer idLocality, Integer orderId, String dateMin, String dateMax, Integer idClient, boolean toDeliver, int methodCase) throws DataAccessException, CorruptedDataException {
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Order> orders = new ArrayList<>();
 
@@ -180,7 +180,7 @@ public class OrderDBAccess {
         return orders;
     }
 
-    public static int saveOrder(Order order) throws DataAccessException, DataBackupException {
+    public int saveOrder(Order order) throws DataAccessException, DataBackupException {
         Connection connection = SingletonConnection.getInstance();
         Integer id = null;
 
@@ -233,7 +233,7 @@ public class OrderDBAccess {
         return id;
     }
 
-    public static void deleteOrder(int idOrder) throws DataAccessException {
+    public  void deleteOrder(int idOrder) throws DataAccessException {
         Connection connection = SingletonConnection.getInstance();
 
          try {
@@ -252,7 +252,7 @@ public class OrderDBAccess {
          }
     }
 
-    public static void modifyOrder(Order order) throws DataAccessException {
+    public void modifyOrder(Order order) throws DataAccessException {
         Connection connection = SingletonConnection.getInstance();
         String sql = " UPDATE ClientOrder SET businessUnit = ?, clientNumber = ?,"
                 + " hasPriority = ?, orderDate = ?, state = ?, timeLimit = ?"

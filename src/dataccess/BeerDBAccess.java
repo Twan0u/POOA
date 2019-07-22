@@ -6,9 +6,9 @@ import exceptions.*;
 import java.util.*;
 import java.sql.*;
 
-public class BeerDBAccess {
+public class BeerDBAccess implements BeerAccess{
 
-    public static ArrayList<Beer> getAllBeers() throws DataAccessException, CorruptedDataException {
+    public ArrayList<Beer> getAllBeers() throws DataAccessException, CorruptedDataException {
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Beer> beers = new ArrayList<>();
         Beer beer;

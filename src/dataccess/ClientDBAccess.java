@@ -5,9 +5,9 @@ import exceptions.*;
 import java.util.*;
 import java.sql.*;
 
-public class ClientDBAccess {
+public class ClientDBAccess implements  ClientAccess{
 
-    public static ArrayList<Client> getClients(Integer clientID) throws DataAccessException, CorruptedDataException {
+    public ArrayList<Client> getClients(Integer clientID) throws DataAccessException, CorruptedDataException {
         Connection connection = SingletonConnection.getInstance();
         ArrayList<Client> clients = new ArrayList<>();
 
