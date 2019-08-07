@@ -15,11 +15,9 @@ private JLabel labelBeer, labelQuantity;
 private JComboBox comboBoxBeer;
 private JSpinner spinnerQuantity;
 private JButton addBeerButton, removeBeerButton;
-private BeerTable beerTable;
 
-  public BeerAddForm(Controller controller, BeerTable beerTable){
+  public BeerAddForm(Controller controller){
     this.controller = controller;
-    this.beerTable = beerTable;
 
     this.setLayout(new GridLayout(3,3,5,5));
 
@@ -75,9 +73,9 @@ private BeerTable beerTable;
           }catch(UserInputErrorException error){
               JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
           }catch(ProgramErrorException error){
-              JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
+              JOptionPane.showMessageDialprivate BeerTable beerTable;og (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
           }*/
-          beerTable.refreshTable();
+
         }
       }
 
@@ -85,7 +83,6 @@ private BeerTable beerTable;
         public void actionPerformed( ActionEvent event) {
           if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir supprimmer cette bière de la commande? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
             // controller.removeLastBeer();
-            beerTable.refreshTable();
           }
         }
       }

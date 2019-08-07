@@ -10,7 +10,7 @@ import java.util.*;
 /** <b>classe du controller de l'interface</b>
 *
 * @author Antoine Lambert et Nathan Surquin
-* @version 4.0
+* @version 4.2
 *
 */
 
@@ -90,55 +90,6 @@ public class Controller {
       }
       return out;
   }
-
-/*  public void addBeer(int index, int quantity)throws UserInputErrorException, ProgramErrorException{
-    ArrayList<Beer> beers = null; //TODO getBeer(Beername)
-    try{
-      beers = businesslayer.getAllBeers();
-    }catch(Exception e){
-      throw new ProgramErrorException("Erreur du chargement des bières disponibles " + e.getMessage());
-    }
-    if (beers == null){
-      throw new ProgramErrorException("Il y a eu un problème dans chargement de la bière");
-    }else if(beers.size() < index || index < 0){
-      throw new UserInputErrorException("L'index de la bière sélectionnée est invalide");
-    }else{
-      try{
-        new OrderLine(beers.get(index),newOrder,quantity);
-      }catch(OrderLineException e){
-        throw new UserInputErrorException(e.getMessage());
-      }
-    }
-  }*/
-
-  /*public void removeLastBeer(){
-    newOrder.removeLastOrderLine();
-  }*/
-
-  /**
-  * TODO
-  */
-/*  public String[][] getOrderLines(){
-    int numItems = newOrder.getOrderLinesSize();
-    String data[][] = new String[numItems+1][4];
-    double total = 0;
-    for(int i=0;i<numItems;i++){
-      OrderLine current = newOrder.getOrderLine(i);
-      Double price = current.getPrice();
-      int quantity = current.getQuantity();
-      data[i][0]= current.getBeer().getName();
-      data[i][1]= Integer.toString(quantity);
-      data[i][2]= Double.toString(price) + "€";
-      data[i][3]= Double.toString(price*quantity) + "€";
-      total += price * quantity;
-    }
-    data[numItems][0] = "---";
-    data[numItems][1] = "---";
-    data[numItems][2] = "---";
-    data[numItems][3] = Double.toString(total) + "€";
-
-    return data;
-  }*/
 
     public int saveOrder(Order orderToSave)throws UserInputErrorException,ProgramErrorException{
       validateOrder(orderToSave);

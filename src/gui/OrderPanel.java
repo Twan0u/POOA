@@ -9,12 +9,14 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class OrderPanel extends Container{
+public class OrderPanel extends JPanel{
 
   private Controller controller;
 
   private OrderAddForm orderAddForm;
   private Container addBeerForm;
+  private BeerTable table;
+
   private JButton validateButton;
 
   private Color colBackground;
@@ -22,27 +24,23 @@ public class OrderPanel extends Container{
   private Color colBis;
 
   public OrderPanel(Controller controller, Color colBackground, Color colText, Color colBis) {
-    this.setLayout(new FlowLayout());
+    this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
     this.colText = colText;
+    this.controller = controller;
 
+    orderAddForm = new OrderAddForm(controller,colText);
+    addBeerForm = new BeerAddForm(controller);
+    table = new BeerTable(controller);
     validateButton = new JButton("Sauvegarder La commande");
 
-    try{
-      this.controller = new Controller();
-    }catch(Exception e){
-      JOptionPane.showMessageDialog(null, e.getMessage(),"FATAL_ERROR", JOptionPane.ERROR_MESSAGE);
-      System.exit(1);
-    }
-    orderAddForm = new OrderAddForm(controller,colText);
     this.add(orderAddForm);
-    //zaddBeerForm = new BeerAdd(controller);
-    //this.add(addBeerForm);
+    this.add(addBeerForm);
+    this.add(table);
     this.add(validateButton);
 
     ButtonSaveListener listenerSave = new ButtonSaveListener();
     validateButton.addActionListener(listenerSave);
   }
-
 
   private class ButtonSaveListener implements ActionListener{
     public void actionPerformed( ActionEvent event) {
@@ -50,35 +48,47 @@ public class OrderPanel extends Container{
         JOptionPane.showMessageDialog (null, "Votre Commande a été ajoutée avec succes. Votre Numéro de Commande est le :" + save(),"Succes de L'ajout", JOptionPane.INFORMATION_MESSAGE);
         reload();
       }catch(UserInputErrorException error){
-        JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR UTILISATEUR", JOptionPane.ERROR_MESSAGE);
       }catch(ProgramErrorException error){
-        JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR INTERNE", JOptionPane.ERROR_MESSAGE);
       }
     }
   }
 
-public int save()throws ProgramErrorException, UserInputErrorException{
-  try{
-    Order order = new Order();
-    order.setClient(orderAddForm.getSelectedClient());
-    order.setBusinessUnitId(orderAddForm.getSelectedBusiness());
-    order.setOrderDate(orderAddForm.getSelectedDate());
-    order.setTimeLimit(orderAddForm.getSelectedTimeLimit());
-    order.setHasPriority(orderAddForm.getSelectedPriority());
-    return controller.saveOrder(order);
-  }catch(OrderException error){
-    throw new ProgramErrorException(error.getMessage());
+  /** Sauvegarde La commande en cours dans la base de donnée
+  * @return numero de la commande sauvegardée
+  * @throws ProgramErrorException erreur envoyée en cas de problème interne
+  * @throws UserInputErrorException erreur causée par l'utilisateur
+  */
+  public int save()throws ProgramErrorException, UserInputErrorException{
+    try{
+      Order order = new Order();
+      order.setClient(orderAddForm.getSelectedClient());
+      order.setBusinessUnitId(orderAddForm.getSelectedBusiness());
+      order.setOrderDate(orderAddForm.getSelectedDate());
+      order.setTimeLimit(orderAddForm.getSelectedTimeLimit());
+      order.setHasPriority(orderAddForm.getSelectedPriority());
+      return controller.saveOrder(order);
+    }catch(OrderException error){
+      throw new ProgramErrorException(error.getMessage());
+    }
   }
-}
 
-private void reload(){
-  this.removeAll();
-  this.add(new OrderAddForm(controller,colText));
-  this.add(new BeerAdd(controller));
-  this.add(validateButton);
-  this.repaint();
-}
+  /** Recharge le contenu de la page
+  */
+  private void reload(){
+    this.removeAll();
 
+    orderAddForm = new OrderAddForm(controller,colText);
+    addBeerForm = new BeerAddForm(controller);
+    table = new BeerTable(controller);
+    validateButton = new JButton("Sauvegarder La commande");
 
-
+    this.add(orderAddForm);
+    this.add(addBeerForm);
+    this.add(table);
+    this.add(validateButton);
+    //setVisible(true);
+    //this.repaint();
+  }
 }

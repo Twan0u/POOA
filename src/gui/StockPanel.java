@@ -7,7 +7,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class StockPanel extends Container{
+public class StockPanel extends JPanel{
 
   private JScrollPane sp;
   private JTable table;

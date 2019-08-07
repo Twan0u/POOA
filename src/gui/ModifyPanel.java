@@ -11,7 +11,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class ModifyPanel extends Container{
+public class ModifyPanel extends JPanel{
 
   private Controller controller;
 

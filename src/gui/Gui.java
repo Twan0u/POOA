@@ -11,10 +11,12 @@ import java.awt.event.*;
 public class Gui extends JFrame{
 
   private Controller controller;
-  private Container frameContainer,  mainPanel;
-  private JPanel menuPanel;
+  private int SIZE_FRAME_WIDTH = 1080;
+  private int SIZE_FRAME_HEIGHT = 720;
 
-  private JLabel logo, commande, modifier, recherche,rechercheClient, stock, livraison;
+  private JFrame me;
+
+  private JPanel mainPanel;
 
   private Color colText = new Color(29, 34, 40);
   private Color colBis = new Color(250,229,150);
@@ -24,10 +26,15 @@ public class Gui extends JFrame{
   private String path;
 
   public Gui(String path) {
+
     super("BrassiGestion");
     this.path = path;
-    setSize(1080,720);
+    setSize(SIZE_FRAME_WIDTH,SIZE_FRAME_HEIGHT);
     setResizable(true);
+
+    me = this;
+
+    this.setLayout(new FlowLayout());
 
     int [] loadValue = new int[1];
     loadValue[0]=1;//Begin to load The Program
@@ -37,131 +44,123 @@ public class Gui extends JFrame{
 
     this.controller = new Controller();
 
-    menuPanel = new JPanel();
-    menuPanel.setPreferredSize(new Dimension(125, 100));
-    menuPanel.setBackground(colSidePanel);
+    JMenuBar MyMenu = new JMenuBar();
+    MyMenu.setBounds(0,0,SIZE_FRAME_WIDTH,30);
 
-    loadMenuPanel();
+    JMenu MenuCommande = new JMenu("Commande");
+
+    JMenuItem MenuNouvelleCommande = new JMenuItem("Nouvelle");
+    JMenuItem MenuModifierCommande = new JMenuItem("Modifier");
+    JMenuItem MenuRechercheCommande = new JMenuItem("Recherche");
+
+    JMenu MenuClient = new JMenu("Client");
+
+    JMenuItem MenuRechercheClient = new JMenuItem("Recherche");
+
+    JMenu MenuStock = new JMenu("Stock");
+    JMenu MenuLivraison = new JMenu("Livraison");
+
+    MyMenu.add(MenuCommande);
+      MenuCommande.add(MenuNouvelleCommande);
+      MenuCommande.add(MenuModifierCommande);
+      MenuCommande.add(MenuRechercheCommande);
+    MyMenu.add(MenuClient);
+      MenuClient.add(MenuRechercheClient);
+    MyMenu.add(MenuStock);
+    MyMenu.add(MenuLivraison);
 
     mainPanel = new OrderPanel(controller, colBackground, colText, colBis);
 
-    frameContainer = this.getContentPane();
-    frameContainer.setLayout(new BorderLayout());
-    frameContainer.add(menuPanel, BorderLayout.WEST );
-    frameContainer.add(mainPanel, BorderLayout.CENTER );
+    this.setJMenuBar(MyMenu);
+    this.add(mainPanel);
 
     setVisible(true);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    loadValue[0]=0;// finished to load
+    loadValue[0]=0;// finished to load*/
+
+    MenuNouvelleCommande.addActionListener(new ActionListener () {
+      public void actionPerformed(ActionEvent e){
+        JPanel newPanel =  new OrderPanel(controller, colBackground, colText, colBis);
+        changeMainPanel(newPanel);
+      }
+    });
+    MenuModifierCommande.addActionListener(new ActionListener () {
+      public void actionPerformed(ActionEvent e){
+        //JPanel newPanel =  new OrderPanel(controller, colBackground, colText, colBis);
+        //changeMainPanel(newPanel);
+
+        String s = (String)JOptionPane.showInputDialog(null,"Identifiant de la commande à modifier","Selectionner l'Identifiant", JOptionPane.QUESTION_MESSAGE);
+        if ((s != null) && (s.length() > 0)){
+          try{
+              Order order = controller.getOrder(Integer.parseInt(s));
+            if (order!=null){
+              changeMainPanel(new ModifyPanel(controller, order));
+            }else{
+              throw new ProgramErrorException("Aucune commande n'a pu être chargée");//order not found
+            }
+          }catch(NumberFormatException error){
+            JOptionPane.showMessageDialog(null,"Le numéro d'identification est incorrect");
+          }catch(ProgramErrorException erreur){
+            JOptionPane.showMessageDialog(null,"Aucune Commande n'est liée avec ce numéro d'identification");
+          }
+        }else{
+          JOptionPane.showMessageDialog(null,"Il n'y a aucune commande sélectionnée");
+        }
+      }
+    });
+    MenuRechercheCommande.addActionListener(new ActionListener () {
+      public void actionPerformed(ActionEvent e){
+        JOptionPane.showMessageDialog(null,"La Recherche et de tri des Commandes pas encore implémentée");
+      }
+    });
+    MenuRechercheClient.addActionListener(new ActionListener () {
+      public void actionPerformed(ActionEvent e){
+        JOptionPane.showMessageDialog(null,"La Recherche de Clients n'est pas encore implémentée");
+      }
+    });
+    MenuStock.addMouseListener(new MouseListener() {
+                      @Override
+                      public void mouseReleased(MouseEvent e) {}
+                      @Override
+                      public void mousePressed(MouseEvent e) {
+                        if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                                        changeMainPanel(new StockPanel(colBackground, colText));
+                        }
+                      }
+                      @Override
+                      public void mouseExited(MouseEvent e) {}
+                      @Override
+                      public void mouseEntered(MouseEvent e) {}
+                        @Override
+                        public void mouseClicked(MouseEvent e) {}
+            });
+
+    MenuLivraison.addMouseListener(new MouseListener() {
+                      @Override
+                      public void mouseReleased(MouseEvent e) {}
+                      @Override
+                      public void mousePressed(MouseEvent e) {
+                        if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                          JOptionPane.showMessageDialog(null,"la gestion des livraisons n'est pas encore implémentée");
+                        }
+                      }
+                      @Override
+                      public void mouseExited(MouseEvent e) {}
+                      @Override
+                      public void mouseEntered(MouseEvent e) {}
+                        @Override
+                        public void mouseClicked(MouseEvent e) {}
+            });
+  }//end of Constructor Gui()
+
+/** Modification de la fenêtre actuelle de l'application
+*/
+  public void changeMainPanel(JPanel newPanel){
+       getContentPane().removeAll();
+       getContentPane().add(newPanel, BorderLayout.CENTER);
+       getContentPane().doLayout();
+       update(getGraphics());
+       setVisible(true);
   }
-
-  public void loadMenuPanel(){
-
-        ImageIcon icon = new ImageIcon(path + "logo.png");
-        logo = new JLabel(icon);
-
-        ImageIcon commandeIcon = new ImageIcon(path + "commande.png");
-        commande = new JLabel(commandeIcon);
-
-        ImageIcon modifierIcon = new ImageIcon(path + "edit.png");
-        modifier = new JLabel(modifierIcon);
-
-        ImageIcon rechercheIcon = new ImageIcon(path + "search.png");
-        recherche = new JLabel(rechercheIcon);
-
-        ImageIcon rechercheClientIcon = new ImageIcon(path + "user.png");
-        rechercheClient = new JLabel(rechercheClientIcon);
-
-        ImageIcon stockIcon = new ImageIcon(path + "stock.png");
-        stock = new JLabel(stockIcon);
-
-        ImageIcon livraisonIcon = new ImageIcon(path + "livraison.png");
-        livraison = new JLabel(livraisonIcon);
-
-        menuPanel.setLayout(new GridLayout(7,1));
-        menuPanel.add(logo);
-        menuPanel.add(commande);
-        menuPanel.add(modifier);
-        menuPanel.add(recherche);
-        menuPanel.add(rechercheClient);
-        menuPanel.add(stock);
-        menuPanel.add(livraison);
-
-        // Création d'une Commande
-        commande.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-              changeMainPanel(new OrderPanel(controller, colBackground, colText, colBis));
-            }
-        });
-
-        // Interface de Modification de commande
-        modifier.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-              String s = (String)JOptionPane.showInputDialog(null,"Identifiant de la commande à modifier","Selectionner l'Identifiant", JOptionPane.QUESTION_MESSAGE);
-              if ((s != null) && (s.length() > 0)){
-                try{
-                    Order order = controller.getOrder(Integer.parseInt(s));
-                  if (order!=null){
-                    changeMainPanel(new ModifyPanel(controller, order));
-                  }else{
-                    throw new ProgramErrorException("Aucune commande n'a pu être chargée");//order not found
-                  }
-                }catch(NumberFormatException error){
-                  JOptionPane.showMessageDialog(null,"Le numéro d'identification est incorrect");
-                }catch(ProgramErrorException erreur){
-                  JOptionPane.showMessageDialog(null,"Aucune Commande n'est liée avec ce numéro d'identification");
-                }
-              }else{
-                JOptionPane.showMessageDialog(null,"Il n'y a aucune commande sélectionnée");
-              }
-            }
-        });
-
-        //Interface de recherche des commandes
-        recherche.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-              /*if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-                changeMainPanel(new SearchPanel());
-             }*/
-             JOptionPane.showMessageDialog(null,"La Recherche et de tri des Commandes pas encore implémentée");
-            }
-        });
-
-        //rechercher les commandes effectuées par un client
-        rechercheClient.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-              /*if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-                changeMainPanel(new SearchOrderByClientPanel());
-              }*/
-              JOptionPane.showMessageDialog(null,"La Recherche des Commandes d'un Client n'est pas encore implémentée");
-            }
-        });
-
-
-        //interface d'affichage du stock
-        stock.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-              if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-                changeMainPanel(new StockPanel(colBackground, colText));
-              }
-            }
-        });
-
-        //interface permettant aux livreurs de sélectionner toutes les commandes à livrer par localité
-        livraison.addMouseListener(new MouseAdapter() {
-            public void mouseClicked(MouseEvent e) {
-              if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-                changeMainPanel(new DeliveryPanel());
-             }
-            }
-        });
-  }
-  public void changeMainPanel(Container newPanel){
-       frameContainer.removeAll();
-       frameContainer.add(menuPanel, BorderLayout.WEST );
-       frameContainer.add(newPanel, BorderLayout.CENTER );
-       frameContainer.revalidate();
-  }
-
-}
+}//end of Class Gui
