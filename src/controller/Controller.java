@@ -142,4 +142,20 @@ public class Controller {
     public ArrayList<Order> getOrdersToDeliverWithLocalityId(int idLocality) throws DataAccessException, CorruptedDataException{
       return businesslayer.getOrdersToDeliverWithLocalityId(idLocality);
     }
+
+    public ArrayList<Order> getOrdersWithDates(String dateMin, String dateMax)throws ProgramErrorException {
+      try {
+        return businesslayer.getOrdersWithDates(dateMin, dateMax);
+      } catch (Exception e){
+        throw new ProgramErrorException("Problème lors de la récupération de données");
+      }
+    }
+
+    public ArrayList<Order> getOrdersWithStateAndDates(String state, String dateMin, String dateMax) throws ProgramErrorException {
+      try {
+        return businesslayer.getOrdersWithStateAndDates(state, dateMin, dateMax);
+      } catch (Exception e) {
+        throw new ProgramErrorException("Problème lors de la récupération de données");
+      }
+    }
   }

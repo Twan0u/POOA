@@ -11,6 +11,10 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class ModifyPanel extends JPanel{
 
   private Controller controller;
@@ -215,7 +219,7 @@ public class ModifyPanel extends JPanel{
       try{
         order.setClient(getSelectedClient());
         order.setBusinessUnitId(getSelectedBusiness());
-        //order.setOrderDate(getSelectedDate());
+        order.setOrderDate(getSelectedDate());
         order.setState(getSelectedState());
         order.setTimeLimit(getSelectedTimeLimit());
         order.setHasPriority(getSelectedPriority());
@@ -264,9 +268,21 @@ public class ModifyPanel extends JPanel{
       return allBusinessOfClient.get(index-1);
     }
   }
+
   public String getSelectedDate(){
+    //SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
+    String dateInString = "test";
+    System.out.println(spinnerDate.getValue());
+    try{
+      Date date = (Date)spinnerDate.getValue();
+    }
+    catch(Exception e){
+      System.out.println("erreur");
+      return "1997-01-12";
+    }
     return "1997-01-12";//TODO
   }
+
   public String getSelectedState(){
     if(neww.isSelected() == true){
       return "new";

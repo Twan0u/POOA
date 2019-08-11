@@ -217,4 +217,12 @@ public class Business implements BusinessInterface{
   public ArrayList<Order> getOrdersToDeliverWithLocalityId(int idLocality) throws DataAccessException, CorruptedDataException{
     return dataLayer.getOrdersToDeliverWithLocalityId(idLocality);
   }
+
+  public ArrayList<Order> getOrdersWithDates(String dateMin, String dateMax)throws DataAccessException, CorruptedDataException {
+      return dataLayer.getOrdersWithDates(dateMin, dateMax);
+  }
+
+  public ArrayList<Order> getOrdersWithStateAndDates(String state, String dateMin, String dateMax) throws DataAccessException, CorruptedDataException{
+      return dataLayer.getOrdersWithStateAndDates(state, dateMin, dateMax);
+  }
 }

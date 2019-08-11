@@ -15,7 +15,7 @@ public class StatsOnOrders {
         return orderAvgValue;
     }
 
-    public HashMap<String, Integer> getBeersOderCount() {
+    public HashMap<String, Integer> getBeersOrderCount() {
         return beersOrderCount;
     }
 }

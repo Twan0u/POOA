@@ -111,7 +111,9 @@ public class Gui extends JFrame{
     });
     MenuRechercheCommande.addActionListener(new ActionListener () {
       public void actionPerformed(ActionEvent e){
-        JOptionPane.showMessageDialog(null,"La Recherche et de tri des Commandes pas encore implémentée");
+          if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+              changeMainPanel(new SearchPanel());
+          }
       }
     });
     MenuRechercheClient.addActionListener(new ActionListener () {

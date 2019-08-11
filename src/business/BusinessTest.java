@@ -29,7 +29,7 @@ public class BusinessTest {
 
     @Test
     public void getStatsOnOrders() {
-        Assert.assertTrue(business.getStatsOnOrders().getBeersOderCount().get("bush") == 0);
+        Assert.assertTrue(business.getStatsOnOrders().getBeersOrderCount().get("bush") == 0);
     }
 
 
