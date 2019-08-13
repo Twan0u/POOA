@@ -16,6 +16,9 @@ import java.util.Date;
 
 
 public class SearchPanel extends JPanel {
+
+    public ArrayList<Order> orders;
+
     private Controller controller = new Controller();
 
     private JLabel dateMinLabel;
@@ -34,8 +37,11 @@ public class SearchPanel extends JPanel {
 
     private JButton search;
 
+    private String column[]={"ID","Client","Adresse","Date","Etat"};
+
     public SearchPanel(){
         this.setLayout(new FlowLayout());
+        this.setPreferredSize(new Dimension(600, 600));
 
         SpinnerDateModel model1 = new SpinnerDateModel();
         dateMinLabel = new JLabel("Date de livraison minimum");
@@ -77,6 +83,21 @@ public class SearchPanel extends JPanel {
         search = new JButton("Rechercher les commandes correspondant aux critères");
         search.addActionListener(new SearchButtonListener());
         this.add(search);
+
+        String [][] data = new String[1][5];
+        //String [][] data = new String[orders.length][5];
+        /*for each (order in orders){
+        data[0][0] = Integer.toString(order.getId());// id
+        data[0][1] = order.getClient.getName();//client
+        data[0][2] = order.getBusinessUnitId.getStreetName();// adresse
+        data[0][3] = order.getOrderDate;//DateEditor
+        data[0][4] = order.getState();// etat
+      }*/
+
+        JTable table=new JTable(data,column);
+        table.setEnabled(false);
+        JScrollPane sp=new JScrollPane(table);
+        this.add(sp);
     }
 
     private String getSelectedState(){
@@ -95,7 +116,6 @@ public class SearchPanel extends JPanel {
     private LocalDate getDateMin(){
         Date date = (Date)dateMin.getValue();
         LocalDate formattedDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
-        //System.out.println(formattedDate.getYear() + " " + formattedDate.getMonthValue() + " " + formattedDate.getDayOfMonth());
         return formattedDate;
     }
 
@@ -107,12 +127,12 @@ public class SearchPanel extends JPanel {
 
     private class SearchButtonListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
-            ArrayList<Order> orders;
+
             LocalDate dateMin = getDateMin();
             LocalDate dateMax = getDateMax();
 
             if(dateMin.isAfter(dateMax)){
-                JOptionPane.showMessageDialog(null, "La date minimum ne peut pas être après la date max", "Erroe", JOptionPane.ERROR_MESSAGE);
+                JOptionPane.showMessageDialog(null, "La date minimum ne peut pas être après la date max", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
             }
 
@@ -122,6 +142,7 @@ public class SearchPanel extends JPanel {
             if(getSelectedState() == "anyState"){
                 try {
                     orders = controller.getOrdersWithDates(dateMinToString, dateMaxToString);
+                    //TODO : Refresh Le tableau
                 } catch (ProgramErrorException error) {
                     JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
                 }
@@ -129,6 +150,7 @@ public class SearchPanel extends JPanel {
             else{
                 try {
                     orders = controller.getOrdersWithStateAndDates(getSelectedState(), dateMinToString, dateMaxToString);
+                    //TODO Refresh le tableau
                 } catch (ProgramErrorException error) {
                     JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
                 }
