@@ -84,20 +84,6 @@ public class SearchPanel extends JPanel {
         search.addActionListener(new SearchButtonListener());
         this.add(search);
 
-        String [][] data = new String[1][5];
-        //String [][] data = new String[orders.length][5];
-        /*for each (order in orders){
-        data[0][0] = Integer.toString(order.getId());// id
-        data[0][1] = order.getClient.getName();//client
-        data[0][2] = order.getBusinessUnitId.getStreetName();// adresse
-        data[0][3] = order.getOrderDate;//DateEditor
-        data[0][4] = order.getState();// etat
-      }*/
-
-        JTable table=new JTable(data,column);
-        table.setEnabled(false);
-        JScrollPane sp=new JScrollPane(table);
-        this.add(sp);
     }
 
     private String getSelectedState(){
@@ -125,6 +111,22 @@ public class SearchPanel extends JPanel {
         return formattedDate;
     }
 
+    private void createTable(ArrayList<Order> orders){
+        String [][] data = new String[orders.size()][5];
+        for (Order o : orders){
+            data[0][0] = Integer.toString(o.getId());// id
+            data[0][1] = o.getClient().getName();//client
+            data[0][2] = o.getBusinessUnitId().getStreetName();// adresse
+            data[0][3] = o.getOrderDate();//DateEditor
+            data[0][4] = o.getState();// etat
+        }
+
+        JTable table=new JTable(data,column);
+        table.setEnabled(false);
+        JScrollPane sp=new JScrollPane(table);
+        this.add(sp);
+    }
+
     private class SearchButtonListener implements ActionListener{
         public void actionPerformed(ActionEvent e) {
 
@@ -142,6 +144,7 @@ public class SearchPanel extends JPanel {
             if(getSelectedState() == "anyState"){
                 try {
                     orders = controller.getOrdersWithDates(dateMinToString, dateMaxToString);
+                    createTable(orders);
                     //TODO : Refresh Le tableau
                 } catch (ProgramErrorException error) {
                     JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
@@ -150,6 +153,7 @@ public class SearchPanel extends JPanel {
             else{
                 try {
                     orders = controller.getOrdersWithStateAndDates(getSelectedState(), dateMinToString, dateMaxToString);
+                    createTable(orders);
                     //TODO Refresh le tableau
                 } catch (ProgramErrorException error) {
                     JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
