@@ -156,6 +156,24 @@ public class Gui extends JFrame{
                         @Override
                         public void mouseClicked(MouseEvent e) {}
             });
+    MenuStatistiques.addMouseListener(new MouseListener() {
+                      @Override
+                      public void mouseReleased(MouseEvent e) {}
+                      @Override
+                      public void mousePressed(MouseEvent e) {
+                        if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                          changeMainPanel(new StatsPanel());
+                        }
+                      }
+                      @Override
+                      public void mouseExited(MouseEvent e) {}
+                      @Override
+                      public void mouseEntered(MouseEvent e) {}
+                        @Override
+                        public void mouseClicked(MouseEvent e) {}
+            });
+
+
   }//end of Constructor Gui()
 
 /** Modification de la fenêtre actuelle de l'application
