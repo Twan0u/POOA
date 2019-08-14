@@ -74,7 +74,7 @@ public class Controller {
   * @return un tableau des différentes bières que vends l'entreprise
   * @since 1.0
   */
-  public String[] getBeers()throws ProgramErrorException{
+  public ArrayList<Beer> getBeers()throws ProgramErrorException{
     ArrayList<Beer> beers = null;
     try{
       beers = businesslayer.getAllBeers();
@@ -84,11 +84,7 @@ public class Controller {
     if (beers == null){
       throw new ProgramErrorException("Erreur du chargement : Pas de bières disponibles ");
     }
-      String [] out = new String[beers.size()];
-      for(int i=0;i<out.length;i++){
-        out[i] = beers.get(i).getName();
-      }
-      return out;
+    return beers;
   }
 
     public int saveOrder(Order orderToSave)throws UserInputErrorException,ProgramErrorException{

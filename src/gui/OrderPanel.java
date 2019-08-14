@@ -29,8 +29,8 @@ public class OrderPanel extends JPanel{
     this.controller = controller;
 
     orderAddForm = new OrderAddForm(controller,colText);
-    addBeerForm = new BeerAddForm(controller);
-    table = new BeerTable(controller);
+    table = new BeerTable(controller);// doit être déclaré avant addBeer form
+    addBeerForm = new BeerAddForm(controller,table);
     validateButton = new JButton("Sauvegarder La commande");
 
     this.add(orderAddForm);
@@ -68,7 +68,9 @@ public class OrderPanel extends JPanel{
       order.setOrderDate(orderAddForm.getSelectedDate());
       order.setTimeLimit(orderAddForm.getSelectedTimeLimit());
       order.setHasPriority(orderAddForm.getSelectedPriority());
+      //TODO SAVE ORDER IN ORDERLINES
       return controller.saveOrder(order);
+
     }catch(OrderException error){
       throw new ProgramErrorException(error.getMessage());
     }
