@@ -114,8 +114,6 @@ public class ModifyPanel extends JPanel{
      radioButtonGroup.add(delivered);
      radioButtonGroup.add(paid);
 
-
-
     panel.add(new JLabel("")); // grid spacer
 
     checkPriority = new JCheckBox("Livraison Prioritaire ?");

@@ -59,6 +59,7 @@ public class Gui extends JFrame{
 
     JMenu MenuStock = new JMenu("Stock");
     JMenu MenuLivraison = new JMenu("Livraison");
+    JMenu MenuStatistiques = new JMenu("Statistiques");
 
     MyMenu.add(MenuCommande);
       MenuCommande.add(MenuNouvelleCommande);
@@ -68,6 +69,7 @@ public class Gui extends JFrame{
       MenuClient.add(MenuRechercheClient);
     MyMenu.add(MenuStock);
     MyMenu.add(MenuLivraison);
+    MyMenu.add(MenuStatistiques);
 
     mainPanel = new OrderPanel(controller, colBackground, colText, colBis);
 
