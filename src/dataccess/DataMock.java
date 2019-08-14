@@ -96,7 +96,9 @@ public class DataMock {
     }
     return null;
   }
-  public ArrayList<Order> getOrdersWithDates(String dateMin, String dateMax) throws DataAccessException, CorruptedDataException{return null;}
+  public ArrayList<Order> getOrdersWithDates(String dateMin, String dateMax) throws DataAccessException, CorruptedDataException{
+    return getAllOrders();
+  }
   public ArrayList<Order> getOrdersWithClient(int clientID) throws DataAccessException, CorruptedDataException{return null;}
   public ArrayList<Order> getOrdersToDeliver(int localityID) throws DataAccessException, CorruptedDataException{return null;}
 
@@ -104,11 +106,11 @@ public class DataMock {
     Order newOrder = null;
     try{
       Locality local = new Locality (1, "Localité du petit bois", "7911");
-      BusinessUnit bubu = new BusinessUnit (1, clients.get(0), local, "Rue de la faim", "12");
       Client client = new Client (0, "Nathan", "0032007007005", 10, "TVA_025522095251");
-      newOrder = new Order(0, bubu, client, false, "2019-06-30", "New");
+      BusinessUnit bubu = new BusinessUnit (1, client, local, "Rue de la faim", "12");
+      newOrder = new Order(0, bubu, client, false, "2019-06-30", "new");
       orders.add(newOrder);
-    }catch (Exception e){}
+    }catch (Exception e){System.out.println(e.getMessage());}
     return this.orders;
   }
 
@@ -145,7 +147,7 @@ public class DataMock {
   public void saveOrderLine(int orderID, String beerName) throws DataAccessException, CorruptedDataException, DataBackupException{}
   public void deleteOrderLine(int orderID, String beerName) throws DataAccessException, CorruptedDataException, DataDeletionException{}
   public ArrayList<Order> getOrdersWithStateAndDates(String state, String dataMin, String dateMax)throws DataAccessException, CorruptedDataException{
-  return null;
+    return getAllOrders();
   }
   public void closeConnection() throws DataAccessException{}
   public void setOrderState(String newState, int orderId) throws DataAccessException, DataModificationException{}
