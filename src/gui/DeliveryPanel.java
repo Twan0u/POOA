@@ -11,7 +11,7 @@ import java.awt.event.*;
 import java.io.*;
 import java.util.*;
 
-public class DeliveryPanel extends Container{
+public class DeliveryPanel extends JPanel{
 
   Controller controller = new Controller();
 

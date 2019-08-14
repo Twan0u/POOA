@@ -158,4 +158,8 @@ public class Controller {
         throw new ProgramErrorException("Problème lors de la récupération de données");
       }
     }
+
+    public StatsOnOrders getStatsOnOrders() throws ProgramErrorException{
+        return businesslayer.getStatsOnOrders();
+    }
   }

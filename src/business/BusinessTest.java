@@ -28,7 +28,7 @@ public class BusinessTest {
     }
 
     @Test
-    public void getStatsOnOrders() {
+    public void getStatsOnOrders() throws ProgramErrorException{
         Assert.assertTrue(business.getStatsOnOrders().getBeersOrderCount().get("bush") == 0);
     }
 

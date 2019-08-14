@@ -172,7 +172,7 @@ public class Business implements BusinessInterface{
     dataLayer.deleteOrder(orderID);
   }
 
-  public StatsOnOrders getStatsOnOrders() {
+  public StatsOnOrders getStatsOnOrders()throws ProgramErrorException {
       try {
         ArrayList<Order> orders = dataLayer.getAllOrders();
 
@@ -205,9 +205,8 @@ public class Business implements BusinessInterface{
         return new StatsOnOrders(orderAvgValue, beersOrderCount);
       }
       catch(Exception e){
-
+        throw new ProgramErrorException("Problème de récupération de données");
     }
-      return null;
   }
 
   public void modifyOrder(Order order)throws DataAccessException, DataModificationException{

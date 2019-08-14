@@ -8,7 +8,6 @@ import gui.neworderpanel.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.text.ParseException;
 import java.time.LocalDate;
 import java.time.ZoneId;
 import java.util.ArrayList;
@@ -66,7 +65,7 @@ public class SearchPanel extends JPanel {
         tf2.setEditable(false);
         this.add(dateMax);
 
-        orderStateLabel = new JLabel("Etat de la commande");
+        orderStateLabel = new JLabel("       Etat de la commande");
         buttonGroup = new ButtonGroup();
         newO = new JRadioButton("Nouvelle", true);
         preparedO = new JRadioButton("Préparée", false);
