@@ -23,6 +23,6 @@ public class StatsPanel extends JPanel {
             return;
         }
         orderAvgValue = new JLabel("Valeur moyenne des commandes : " + stats.getOrderAvgValue());
-        
+
     }
 }
