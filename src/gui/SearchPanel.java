@@ -36,10 +36,13 @@ public class SearchPanel extends JPanel {
     private JRadioButton anyState;
 
     private JButton search;
+    private JPanel me;
 
     private String column[]={"ID","Client","Adresse","Date","Etat"};
 
     public SearchPanel(){
+        this.me = this;
+
         this.setLayout(new FlowLayout());
         this.setPreferredSize(new Dimension(600, 600));
 
@@ -84,19 +87,7 @@ public class SearchPanel extends JPanel {
         search.addActionListener(new SearchButtonListener());
         this.add(search);
 
-        String [][] data = new String[1][5];
-        //String [][] data = new String[orders.length][5];
-        /*for each (order in orders){
-        data[0][0] = Integer.toString(order.getId());// id
-        data[0][1] = order.getClient.getName();//client
-        data[0][2] = order.getBusinessUnitId.getStreetName();// adresse
-        data[0][3] = order.getOrderDate;//DateEditor
-        data[0][4] = order.getState();// etat
-      }*/
-
-        JTable table=new JTable(data,column);
-        table.setEnabled(false);
-        JScrollPane sp=new JScrollPane(table);
+        JScrollPane sp=new JScrollPane(tableGenerator());
         this.add(sp);
     }
 
@@ -111,6 +102,27 @@ public class SearchPanel extends JPanel {
             return "payed";
         else
             return "anyState";
+    }
+
+    private JTable tableGenerator(){
+      String [][] data = new String[orders.size()][5];
+      for (Order order : orders){
+        data[0][0] = Integer.toString(order.getId());// id
+        data[0][1] = order.getClient.getName();//client
+        data[0][2] = order.getBusinessUnitId.getStreetName();// adresse
+        data[0][3] = order.getOrderDate;//DateEditor
+        data[0][4] = order.getState();// etat
+      }
+
+      JTable table=new JTable(data,column);
+      table.setEnabled(false);
+      return table;
+    }
+
+    private void tableUpdate(){
+      sp=new JScrollPane(tableGenerator());
+      me.updateUI();
+      setVisible(true);
     }
 
     private LocalDate getDateMin(){
