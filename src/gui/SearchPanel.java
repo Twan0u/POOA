@@ -106,12 +106,14 @@ public class SearchPanel extends JPanel {
 
     private JTable tableGenerator(){
       String [][] data = new String[orders.size()][5];
+      i = 0;
       for (Order order : orders){
-        data[0][0] = Integer.toString(order.getId());// id
-        data[0][1] = order.getClient.getName();//client
-        data[0][2] = order.getBusinessUnitId.getStreetName();// adresse
-        data[0][3] = order.getOrderDate;//DateEditor
-        data[0][4] = order.getState();// etat
+        data[i][0] = Integer.toString(order.getId());// id
+        data[i][1] = order.getClient.getName();//client
+        data[i][2] = order.getBusinessUnitId.getStreetName();// adresse
+        data[i][3] = order.getOrderDate;//DateEditor
+        data[i][4] = order.getState();// etat
+        i++;
       }
 
       JTable table=new JTable(data,column);
@@ -135,6 +137,22 @@ public class SearchPanel extends JPanel {
         Date date = (Date)dateMax.getValue();
         LocalDate formattedDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
         return formattedDate;
+    }
+
+    /*private void createTable(ArrayList<Order> orders){
+        String [][] data = new String[orders.size()][5];
+        for (Order o : orders){
+            data[0][0] = Integer.toString(o.getId());// id
+            data[0][1] = o.getClient().getName();//client
+            data[0][2] = o.getBusinessUnitId().getStreetName();// adresse
+            data[0][3] = o.getOrderDate();//DateEditor
+            data[0][4] = o.getState();// etat
+        }*/
+
+        JTable table=new JTable(data,column);
+        table.setEnabled(false);
+        JScrollPane sp=new JScrollPane(table);
+        this.add(sp);
     }
 
     private class SearchButtonListener implements ActionListener{

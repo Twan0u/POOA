@@ -11,7 +11,7 @@ public class BeerAdd extends Container{
 
 Controller controller;
 
-private Container left,right;
+  private Container left,right;
 
   public BeerAdd(Controller controller){
     this.controller = controller;
