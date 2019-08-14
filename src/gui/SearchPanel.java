@@ -120,7 +120,11 @@ public class SearchPanel extends JPanel {
         for (Order o : orders){
           data[i][0] = Integer.toString(o.getId());// id
           data[i][1] = o.getClient().getName();//client
-          data[i][2] = o.getBusinessUnitId().getStreetName();// adresse
+          if (o.getBusinessUnitId()==null){
+            data[i][2] = "/";
+          }else{
+            data[i][2] = o.getBusinessUnitId().getStreetName();// adresse
+          }
           data[i][3] = o.getOrderDate();//DateEditor
           data[i][4] = o.getState();// etat
           i++;
