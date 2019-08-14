@@ -135,10 +135,10 @@ public class SearchPanel extends JPanel {
     }
 
     private void tableUpdate(){
-      System.out.println(orders);
+      me.remove(sp);
       sp=new JScrollPane(tableGenerator());
+      me.add(sp);
       me.updateUI();
-      setVisible(true);
     }
 
     private LocalDate getDateMin(){
