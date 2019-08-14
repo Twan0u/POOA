@@ -4,11 +4,12 @@ import controller.*;
 import exceptions.*;
 import composants.*;
 
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.text.*; //pour le date format
 
 public class OrderAddForm extends Container{
 
@@ -58,10 +59,9 @@ private JTextField timeLimit;
 
     SpinnerDateModel model = new SpinnerDateModel();
     JSpinner spinnerDate = new JSpinner(model);
-
-    JSpinner.DateEditor editor = new JSpinner.DateEditor(spinnerDate, "dd-MM-yyyy");
-    spinnerDate.setEditor(editor);
-
+    spinnerDate.setEditor(new JSpinner.DateEditor(spinnerDate, "yyyy-MM-dd"));
+    JFormattedTextField tf1 = ((JSpinner.DefaultEditor) spinnerDate.getEditor()).getTextField();
+    tf1.setEditable(false);
     this.add(labelDate);
     this.add(spinnerDate);
 
@@ -141,7 +141,9 @@ private JTextField timeLimit;
     }
   }
   public String getSelectedDate(){
-    return "2019-01-25";//TODO
+    Date date = (Date)spinnerDate.getValue();
+    LocalDate formattedDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    return formattedDate.getYear() + "-" + formattedDate.getMonthValue() + "-" + formattedDate.getDayOfMonth();
   }
   public int getSelectedTimeLimit()throws UserInputErrorException{
     try{

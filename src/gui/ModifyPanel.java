@@ -5,6 +5,8 @@ import exceptions.*;
 import composants.*;
 
 import java.io.*;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.*;
 
 import javax.swing.*;
@@ -72,11 +74,12 @@ public class ModifyPanel extends JPanel{
 
     SpinnerDateModel model = new SpinnerDateModel();
     spinnerDate = new JSpinner(model);
-    JSpinner.DateEditor editor = new JSpinner.DateEditor(spinnerDate, "yyyy-MM-dd");
-    spinnerDate.setEditor(editor);
-
+    spinnerDate.setEditor(new JSpinner.DateEditor(spinnerDate, "yyyy-MM-dd"));
+    JFormattedTextField tf2 = ((JSpinner.DefaultEditor) spinnerDate.getEditor()).getTextField();
+    tf2.setEditable(false);
     panel.add(labelDate);
     panel.add(spinnerDate);
+
     labelDays = new JLabel("Livraison endéans les X jours après la date Prévue: ");
     labelDays.setHorizontalAlignment(SwingConstants.RIGHT);
     timeLimit = new JTextField(Integer.toString(order.getTimeLimit()));
@@ -270,17 +273,9 @@ public class ModifyPanel extends JPanel{
   }
 
   public String getSelectedDate(){
-    //SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
-    String dateInString = "test";
-    System.out.println(spinnerDate.getValue());
-    try{
-      Date date = (Date)spinnerDate.getValue();
-    }
-    catch(Exception e){
-      System.out.println("erreur");
-      return "1997-01-12";
-    }
-    return "1997-01-12";//TODO
+    Date date = (Date)spinnerDate.getValue();
+    LocalDate formattedDate = date.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+    return formattedDate.getYear() + "-" + formattedDate.getMonthValue() + "-" + formattedDate.getDayOfMonth();
   }
 
   public String getSelectedState(){
