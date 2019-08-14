@@ -45,7 +45,7 @@ private JTextField timeLimit;
     labelBusiness.setHorizontalAlignment(SwingConstants.RIGHT);
     labelBusiness.setForeground(colorText);
 
-    String [] initBoxBusiness = {"aucun Client Sélectionné"};
+    String [] initBoxBusiness = {"Aucun client sélectionné"};
     comboBoxBusiness = new JComboBox(initBoxBusiness);
     comboBoxBusiness.setEnabled(false);
     comboBoxBusiness.setMaximumRowCount(5);
@@ -58,14 +58,14 @@ private JTextField timeLimit;
     labelDate.setForeground(colorText);
 
     SpinnerDateModel model = new SpinnerDateModel();
-    JSpinner spinnerDate = new JSpinner(model);
+    spinnerDate = new JSpinner(model);
     spinnerDate.setEditor(new JSpinner.DateEditor(spinnerDate, "yyyy-MM-dd"));
     JFormattedTextField tf1 = ((JSpinner.DefaultEditor) spinnerDate.getEditor()).getTextField();
     tf1.setEditable(false);
     this.add(labelDate);
     this.add(spinnerDate);
 
-    labelDays = new JLabel("Livraison maximum ... jours après la date Souhaitée (facultatif) : ");
+    labelDays = new JLabel("Délai acceptable de  ... jours après la date douhaitée (facultatif) : ");
     labelDays.setHorizontalAlignment(SwingConstants.RIGHT);
     labelDays.setForeground(colorText);
     timeLimit = new JTextField("0");

@@ -1,10 +1,11 @@
 package composants;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class StatsOnOrders {
     private Double orderAvgValue;
-    private HashMap<String, Integer> beersOrderCount;
+    private Map<String, Integer> beersOrderCount;
 
     public StatsOnOrders(Double orderAvgValue, HashMap<String, Integer> beersOrderCount){
         this.orderAvgValue = orderAvgValue;
@@ -15,7 +16,7 @@ public class StatsOnOrders {
         return orderAvgValue;
     }
 
-    public HashMap<String, Integer> getBeersOrderCount() {
+    public Map<String, Integer> getBeersOrderCount() {
         return beersOrderCount;
     }
 }

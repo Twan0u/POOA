@@ -6,6 +6,7 @@ import exceptions.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
 * <b>classe de la couche Business</b>

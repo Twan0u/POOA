@@ -3,7 +3,6 @@ package gui;
 import controller.*;
 import exceptions.*;
 import composants.*;
-import gui.neworderpanel.*;
 
 import javax.swing.*;
 import java.awt.*;
