@@ -82,8 +82,8 @@ public class OrderPanel extends JPanel{
     this.removeAll();
 
     orderAddForm = new OrderAddForm(controller,colText);
-    addBeerForm = new BeerAddForm(controller);
     table = new BeerTable(controller);
+    addBeerForm = new BeerAddForm(controller,table);
     validateButton = new JButton("Sauvegarder La commande");
 
     this.add(orderAddForm);

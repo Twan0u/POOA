@@ -53,7 +53,7 @@ Controller controller;
     return data;
   }*/
 
-      public void refreshTable(String[] data){
+      public void refreshTable(String[][] data){
         this.remove(sp);
         String column[]={"Bière","Quantité","Prix Unit","Total"};
         table=new JTable(data,column);

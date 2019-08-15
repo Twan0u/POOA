@@ -23,9 +23,9 @@ private JButton addBeerButton, removeBeerButton;
 private ArrayList<Beer> beers = null;
 private ArrayList<OrderLine> orderLines = new ArrayList<>();
 
-private JPanel table;
+private BeerTable table;
 
-  public BeerAddForm(Controller controller, JPanel table){
+  public BeerAddForm(Controller controller, BeerTable table){
     this.table = table;
     this.controller = controller;
 
