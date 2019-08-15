@@ -36,6 +36,4 @@ JFrame frame;
   public JLabel getLabel(){
     return this.label;
   }
-
-
 }

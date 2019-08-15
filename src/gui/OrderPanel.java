@@ -60,7 +60,7 @@ public class OrderPanel extends JPanel{
   * @throws ProgramErrorException erreur envoyée en cas de problème interne
   * @throws UserInputErrorException erreur causée par l'utilisateur
   */
-  public int save()throws ProgramErrorException, UserInputErrorException{
+  public int save()throws ProgramErrorException, UserInputErrorException {
     try{
       Order order = new Order();
       order.setClient(orderAddForm.getSelectedClient());
@@ -71,6 +71,9 @@ public class OrderPanel extends JPanel{
       return controller.saveOrder(order);
     }catch(OrderException error){
       throw new ProgramErrorException(error.getMessage());
+    }
+    catch(UserInputErrorException e){
+      throw new UserInputErrorException("Une valeur invalide a été entrée, la commande ne peut pas être sauvée");
     }
   }
 

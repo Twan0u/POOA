@@ -68,6 +68,7 @@ public class ModifyPanel extends JPanel{
     comboBoxBusiness.setSelectedIndex(indexComboBusiness);
     panel.add(labelBusiness);
     panel.add(comboBoxBusiness);
+    comboBoxBusiness.addItemListener(new BusinessComboListener());
 
     labelDate = new JLabel("Date de Livraison Prévue : ");
     labelDate.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -79,6 +80,7 @@ public class ModifyPanel extends JPanel{
     tf2.setEditable(false);
     panel.add(labelDate);
     panel.add(spinnerDate);
+    spinnerDate.setEnabled(false);
 
     labelDays = new JLabel("Livraison endéans les X jours après la date Prévue: ");
     labelDays.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -213,6 +215,20 @@ public class ModifyPanel extends JPanel{
             JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
         }
       }
+  }
+
+  private class BusinessComboListener implements ItemListener {
+    public void itemStateChanged(ItemEvent event){
+      if(event.getStateChange() == ItemEvent.SELECTED){
+        if(comboBoxBusiness.getSelectedIndex() == 0){
+          spinnerDate.setEnabled(false);
+        }
+        else{
+          if(!spinnerDate.isEnabled())
+            spinnerDate.setEnabled(true);
+        }
+      }
+    }
   }
 
   private class ButtonSaveListener implements ActionListener{

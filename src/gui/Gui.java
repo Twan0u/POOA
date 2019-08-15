@@ -146,7 +146,8 @@ public class Gui extends JFrame{
                       @Override
                       public void mousePressed(MouseEvent e) {
                         if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-                          JOptionPane.showMessageDialog(null,"la gestion des livraisons n'est pas encore implémentée");
+                          //JOptionPane.showMessageDialog(null,"la gestion des livraisons n'est pas encore implémentée");
+                            changeMainPanel(new DeliveryPanel());
                         }
                       }
                       @Override

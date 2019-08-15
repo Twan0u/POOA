@@ -49,6 +49,7 @@ private JTextField timeLimit;
     comboBoxBusiness = new JComboBox(initBoxBusiness);
     comboBoxBusiness.setEnabled(false);
     comboBoxBusiness.setMaximumRowCount(5);
+    comboBoxBusiness.addItemListener(new BusinessComboListener());
 
     this.add(labelBusiness);
     this.add(comboBoxBusiness);
@@ -64,6 +65,7 @@ private JTextField timeLimit;
     tf1.setEditable(false);
     this.add(labelDate);
     this.add(spinnerDate);
+    spinnerDate.setEnabled(false);
 
     labelDays = new JLabel("Délai acceptable de  ... jours après la date douhaitée (facultatif) : ");
     labelDays.setHorizontalAlignment(SwingConstants.RIGHT);
@@ -75,7 +77,6 @@ private JTextField timeLimit;
     this.add(new JLabel("")); // grid spacer
 
     checkPriority = new JCheckBox("Livraison Prioritaire ?");
-    //checkPriority.setBackground(colBackground);
     checkPriority.setHorizontalAlignment(SwingConstants.RIGHT);
     this.add(checkPriority);
 
@@ -99,6 +100,20 @@ private JTextField timeLimit;
         System.exit(1);
     }catch(Exception ignore){
       //TODO
+    }
+  }
+
+  private class BusinessComboListener implements ItemListener {
+    public void itemStateChanged(ItemEvent event){
+      if(event.getStateChange() == ItemEvent.SELECTED){
+        if(comboBoxBusiness.getSelectedIndex() == 0){
+          spinnerDate.setEnabled(false);
+        }
+        else{
+          if(!spinnerDate.isEnabled())
+            spinnerDate.setEnabled(true);
+        }
+      }
     }
   }
 
@@ -147,7 +162,10 @@ private JTextField timeLimit;
   }
   public int getSelectedTimeLimit()throws UserInputErrorException{
     try{
-      return Integer.parseInt(timeLimit.getText());
+      Integer result = Integer.parseInt(timeLimit.getText());
+      if(result < 0)
+        throw new UserInputErrorException("La valeur que vous venez de rentrer pour le nombre de jours pour effectuer la livraison est incorrect");
+      else return result;
     }catch(NumberFormatException error){
       throw new UserInputErrorException("La valeur que vous venez de rentrer pour le nombre de jours pour effectuer la livraison est incorrect");
     }
