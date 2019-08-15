@@ -18,8 +18,8 @@ import java.util.Map;
 *
 */
 public class Business implements BusinessInterface{
-    //private InterfaceData dataLayer = new DBAccess();
-    private DataMock dataLayer = new DataMock();
+    private InterfaceData dataLayer = new DBAccess();
+    //private DataMock dataLayer = new DataMock();
 
     public Client[] getAllClients()throws ProgramErrorException {
       ArrayList<Client> clients = null;
