@@ -8,7 +8,6 @@ dans le cadre du cours de Programation avancée Orientée Objets
 */
 
 // Beer != null
-// Order != null
 // Quantitées non nulles et >0
 // prix >=0
 
@@ -26,10 +25,14 @@ public class OrderLine{
     setQuantity(quantity); // doit impérativement être set avant de setOrder
     setBeer(beer);
     setOrder(order);
-
   }
+
   public OrderLine(Beer beer,Order order, int quantity)throws OrderLineException{
     this(beer,order,quantity,beer.getStockPrice());
+  }
+
+  public OrderLine(Beer beer,int quantity)throws OrderLineException{
+    this(beer,null,quantity,beer.getStockPrice());
   }
 
   /* GETTEURS */
@@ -54,14 +57,13 @@ public class OrderLine{
     this.beer = beer;
   }
   public void setOrder(Order order)throws OrderLineException{
-    if (order == null){
-      throw new OrderLineException("Pas d'Order rentrée en paramètre");
-    }
     this.order = order;
-    try{
-      order.additem(this);
-    }catch(OrderException ex){
-      throw new OrderLineException("Impossible d'ajouter la ligne dans la commande");
+    if (order != null){
+      try{
+        order.additem(this);
+      }catch(OrderException ex){
+        throw new OrderLineException("Impossible d'ajouter la ligne dans la commande");
+      }
     }
   }
   public void setQuantity(int quantity)throws OrderLineException{
@@ -69,6 +71,12 @@ public class OrderLine{
       throw new OrderLineException("Quantité invalide ou nulle");
     }
     this.quantity = quantity;
+  }
+  public void addQuantity(int quantity)throws OrderLineException{
+    if (quantity <= 0){
+      throw new OrderLineException("Quantité invalide ou nulle");
+    }
+    this.quantity += quantity;
   }
   public void setPrice(double price)throws OrderLineException{
     this.price = price;

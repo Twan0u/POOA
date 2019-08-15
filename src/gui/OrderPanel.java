@@ -9,12 +9,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import java.io.*;
+import java.util.*;
+
 public class OrderPanel extends JPanel{
 
   private Controller controller;
 
   private OrderAddForm orderAddForm;
-  private Container addBeerForm;
+  private BeerAddForm addBeerForm;
   private BeerTable table;
 
   private JButton validateButton;
@@ -29,8 +32,8 @@ public class OrderPanel extends JPanel{
     this.controller = controller;
 
     orderAddForm = new OrderAddForm(controller,colText);
-    addBeerForm = new BeerAddForm(controller);
-    table = new BeerTable(controller);
+    table = new BeerTable(controller);// doit être déclaré avant addBeer form
+    addBeerForm = new BeerAddForm(controller,table);
     validateButton = new JButton("Sauvegarder La commande");
 
     this.add(orderAddForm);
@@ -68,8 +71,16 @@ public class OrderPanel extends JPanel{
       order.setOrderDate(orderAddForm.getSelectedDate());
       order.setTimeLimit(orderAddForm.getSelectedTimeLimit());
       order.setHasPriority(orderAddForm.getSelectedPriority());
+      ArrayList<OrderLine> orderLines = addBeerForm.getOrderLines();
+      for(int i=0;i<orderLines.size();i++){
+
+        orderLines.get(i).setOrder(order);
+      }
       return controller.saveOrder(order);
+
     }catch(OrderException error){
+      throw new ProgramErrorException(error.getMessage());
+    }catch(OrderLineException error){
       throw new ProgramErrorException(error.getMessage());
     }
     catch(UserInputErrorException e){
@@ -83,8 +94,8 @@ public class OrderPanel extends JPanel{
     this.removeAll();
 
     orderAddForm = new OrderAddForm(controller,colText);
-    addBeerForm = new BeerAddForm(controller);
     table = new BeerTable(controller);
+    addBeerForm = new BeerAddForm(controller,table);
     validateButton = new JButton("Sauvegarder La commande");
 
     this.add(orderAddForm);

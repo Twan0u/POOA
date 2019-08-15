@@ -21,13 +21,7 @@ Controller controller;
 
     //Tableau Commande
     String [][] data = new String[1][4];
-    data[0][0] = "1";
-    data[0][1] = "2";
-    data[0][2] = "3";
-    data[0][3] = "4";//  beerTable.refreshTable();
-
     table=new JTable(data,column);
-    //table=new JTable(controller.getOrderLines(),column);
     table.setEnabled(false);;
     sp=new JScrollPane(table);
     this.add(sp);
@@ -59,14 +53,14 @@ Controller controller;
     return data;
   }*/
 
-      public void refreshTable(){
-        /*this.remove(sp);
+      public void refreshTable(String[][] data){
+        this.remove(sp);
         String column[]={"Bière","Quantité","Prix Unit","Total"};
-        table=new JTable(controller.getOrderLines(),column);
+        table=new JTable(data,column);
         table.setEnabled(false);;
         sp=new JScrollPane(table);
         this.add(sp);
-        this.updateUI();*/
+        this.updateUI();
       }
 
 }
