@@ -211,6 +211,7 @@ public class OrderDBAccess implements OrderAccess{
 
             if(rs.next())
                 id = rs.getInt(1);
+            order.setId(id);
 
             sql = " INSERT INTO OrderLine (orderNumber, quantity, price, beerName)"
                     + " VALUES (?,?,?,?);";
@@ -229,6 +230,9 @@ public class OrderDBAccess implements OrderAccess{
         }
         catch(SQLException e){
             throw new DataBackupException("Erreur lors de la sauvegarde d'une commande dans la BD");
+        }
+        catch(Exception e){
+            System.out.println("blabalabla");
         }
         return id;
     }
