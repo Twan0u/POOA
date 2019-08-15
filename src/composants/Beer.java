@@ -190,4 +190,8 @@ public class Beer{
   public String toString(){
     return this.getName() + " a " + this.getStockPrice() + " Stock : " + this.getQtInStock();
   }
+
+  public boolean compareTo(Beer other){
+    return this.getName()==other.getName();
+  }
 }

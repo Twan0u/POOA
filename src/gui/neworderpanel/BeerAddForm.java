@@ -31,7 +31,6 @@ private BeerTable table;
 
     this.setLayout(new GridLayout(3,3,5,5));
 
-    //ComboBox Beer
     labelBeer = new JLabel("Ajouter à la commande: ");
     labelBeer.setHorizontalAlignment(SwingConstants.RIGHT);
     comboBoxBeer = new JComboBox(loadBeers());
@@ -39,13 +38,10 @@ private BeerTable table;
     this.add(labelBeer);
     this.add(comboBoxBeer);
 
-    //Jspinner quantity
     labelQuantity = new JLabel("Quantité: ");
     labelQuantity.setHorizontalAlignment(SwingConstants.RIGHT);
-    //labelQuantity.setForeground(colText);
     spinnerQuantity = new JSpinner(new SpinnerNumberModel(1,0,100000,1));
     addBeerButton = new JButton("Ajouter à la commande");
-    //addBeerButton.setBackground(colBis);
     this.add(labelQuantity);
     this.add(spinnerQuantity);
     this.add(addBeerButton);
@@ -59,6 +55,9 @@ private BeerTable table;
 
     ButtonRemoveListener listenerRemoveBeer = new ButtonRemoveListener();
     removeBeerButton.addActionListener(listenerRemoveBeer);
+  }
+  public ArrayList<OrderLine> getOrderLines(){
+    return this.orderLines;
   }
 
     private String[] loadBeers(){
@@ -80,29 +79,46 @@ private BeerTable table;
           int indexBeer = comboBoxBeer.getSelectedIndex();
           Beer addedBeer = beers.get(indexBeer);
           int quantity = (int) spinnerQuantity.getValue();
+
           try{
-            orderLines.add(new OrderLine(addedBeer,quantity));
-            String[][] data = new String[orderLines.size()][4];
-            for(int i=0;i<data.length;i++){
-              OrderLine current = orderLines.get(i);
-              int qt= current.getQuantity();
-              double price = current.getPrice();
-              data[i][0] = current.getBeer().getName();//beer getName
-              data[i][1] = Integer.toString(qt);//quantité
-              data[i][2] = Double.toString(price);//prix unitaire
-              data[i][3] = Double.toString(qt*price); // total
+            for(int i=0; i<orderLines.size();i++){
+              if(orderLines.get(i).getBeer().compareTo(addedBeer)){
+                orderLines.get(i).addQuantity(quantity);
+                refreshTable();
+                return;
+              }
             }
-            table.refreshTable(data);
+            orderLines.add(new OrderLine(addedBeer,quantity));
           }catch(OrderLineException error){
               JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
           }
+          refreshTable();
         }
+      }
+      public void refreshTable(){
+        String[][] data = new String[orderLines.size()+1][4];
+        double total = 0;
+        for(int i=0;i<data.length-1;i++){
+          OrderLine current = orderLines.get(i);
+          int qt= current.getQuantity();
+          double price = current.getPrice();
+          data[i][0] = current.getBeer().getName();//beer getName
+          data[i][1] = Integer.toString(qt);//quantité
+          data[i][2] = Double.toString(price);//prix unitaire
+          data[i][3] = Double.toString(qt*price); // total
+          total += qt*price;
+        }
+        data[orderLines.size()][0] = "---";
+        data[orderLines.size()][1] = "---";
+        data[orderLines.size()][2] = "---";
+        data[orderLines.size()][3] = Double.toString(total) + "€";
+        table.refreshTable(data);
       }
 
       private class ButtonRemoveListener implements ActionListener{
         public void actionPerformed( ActionEvent event) {
           if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir supprimmer cette bière de la commande? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-            // controller.removeLastBeer();
+
           }
         }
       }

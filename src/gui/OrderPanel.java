@@ -9,12 +9,15 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
+import java.io.*;
+import java.util.*;
+
 public class OrderPanel extends JPanel{
 
   private Controller controller;
 
   private OrderAddForm orderAddForm;
-  private Container addBeerForm;
+  private BeerAddForm addBeerForm;
   private BeerTable table;
 
   private JButton validateButton;
@@ -68,10 +71,16 @@ public class OrderPanel extends JPanel{
       order.setOrderDate(orderAddForm.getSelectedDate());
       order.setTimeLimit(orderAddForm.getSelectedTimeLimit());
       order.setHasPriority(orderAddForm.getSelectedPriority());
-      //TODO SAVE ORDER IN ORDERLINES
+      ArrayList<OrderLine> orderLines = addBeerForm.getOrderLines();
+      for(int i=0;i<orderLines.size();i++){
+
+        orderLines.get(i).setOrder(order);
+      }
       return controller.saveOrder(order);
 
     }catch(OrderException error){
+      throw new ProgramErrorException(error.getMessage());
+    }catch(OrderLineException error){
       throw new ProgramErrorException(error.getMessage());
     }
   }

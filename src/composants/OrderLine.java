@@ -72,6 +72,12 @@ public class OrderLine{
     }
     this.quantity = quantity;
   }
+  public void addQuantity(int quantity)throws OrderLineException{
+    if (quantity <= 0){
+      throw new OrderLineException("Quantité invalide ou nulle");
+    }
+    this.quantity += quantity;
+  }
   public void setPrice(double price)throws OrderLineException{
     this.price = price;
   }
