@@ -73,7 +73,6 @@ public class OrderPanel extends JPanel{
       order.setHasPriority(orderAddForm.getSelectedPriority());
       ArrayList<OrderLine> orderLines = addBeerForm.getOrderLines();
       for(int i=0;i<orderLines.size();i++){
-
         orderLines.get(i).setOrder(order);
       }
       return controller.saveOrder(order);

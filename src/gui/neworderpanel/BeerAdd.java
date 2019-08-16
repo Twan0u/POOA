@@ -20,8 +20,7 @@ Controller controller;
 
     BeerTable beerTable = new BeerTable(controller);
 
-    this.add(new BeerAddForm(controller), BorderLayout.WEST);
+    this.add(new BeerAddForm(controller,beerTable), BorderLayout.WEST);//
     this.add(beerTable, BorderLayout.EAST);
-
   }
 }

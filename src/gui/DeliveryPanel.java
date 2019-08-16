@@ -117,7 +117,8 @@ public class DeliveryPanel extends JPanel{
       this.removeAll();
       this.add(topPanel);
       this.add(sp,BorderLayout.CENTER);
-      this.repaint();
+      //this.repaint();
+      this.updateUI();
     }
   }
 

@@ -25,33 +25,7 @@ Controller controller;
     table.setEnabled(false);;
     sp=new JScrollPane(table);
     this.add(sp);
-
   }
-
-  /**
-  * TODO
-  */
-/*  public String[][] getOrderLines(){
-    int numItems = newOrder.getOrderLinesSize();
-    String data[][] = new String[numItems+1][4];
-    double total = 0;
-    for(int i=0;i<numItems;i++){
-      OrderLine current = newOrder.getOrderLine(i);
-      Double price = current.getPrice();
-      int quantity = current.getQuantity();
-      data[i][0]= current.getBeer().getName();
-      data[i][1]= Integer.toString(quantity);
-      data[i][2]= Double.toString(price) + "€";
-      data[i][3]= Double.toString(price*quantity) + "€";
-      total += price * quantity;
-    }
-    data[numItems][0] = "---";
-    data[numItems][1] = "---";
-    data[numItems][2] = "---";
-    data[numItems][3] = Double.toString(total) + "€";
-
-    return data;
-  }*/
 
       public void refreshTable(String[][] data){
         this.remove(sp);
@@ -62,5 +36,7 @@ Controller controller;
         this.add(sp);
         this.updateUI();
       }
+
+
 
 }
