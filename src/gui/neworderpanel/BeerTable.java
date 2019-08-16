@@ -57,7 +57,7 @@ Controller controller;
         this.remove(sp);
         String column[]={"Bière","Quantité","Prix Unit","Total"};
         table=new JTable(data,column);
-        table.setEnabled(false);;
+        table.setEnabled(false);
         sp=new JScrollPane(table);
         this.add(sp);
         this.updateUI();
