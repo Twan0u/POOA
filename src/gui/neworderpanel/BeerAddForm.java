@@ -40,7 +40,9 @@ private BeerTable table;
 
     labelQuantity = new JLabel("Quantité: ");
     labelQuantity.setHorizontalAlignment(SwingConstants.RIGHT);
-    spinnerQuantity = new JSpinner(new SpinnerNumberModel(1,0,100000,1));
+    spinnerQuantity = new JSpinner(new SpinnerNumberModel(1,1,100000,1));
+    JFormattedTextField tf1 = ((JSpinner.DefaultEditor) spinnerQuantity.getEditor()).getTextField();
+    tf1.setEditable(false);
     addBeerButton = new JButton("Ajouter à la commande");
     this.add(labelQuantity);
     this.add(spinnerQuantity);
@@ -78,7 +80,7 @@ private BeerTable table;
         public void actionPerformed( ActionEvent event) {
           int indexBeer = comboBoxBeer.getSelectedIndex();
           Beer addedBeer = beers.get(indexBeer);
-          int quantity = (int) spinnerQuantity.getValue();
+          int quantity = (int)spinnerQuantity.getValue();
 
           try{
             for(int i=0; i<orderLines.size();i++){

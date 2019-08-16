@@ -144,7 +144,7 @@ public class Order{
           current.setQuantity(totalQuantity);
           orderList.set(i,current);
           return;
-        };
+        }
       }
     this.orderList.add(item);
   }
