@@ -53,9 +53,6 @@ public class Gui extends JFrame{
     JMenuItem MenuModifierCommande = new JMenuItem("Modifier");
     JMenuItem MenuRechercheCommande = new JMenuItem("Recherche");
 
-    JMenu MenuClient = new JMenu("Client");
-
-    JMenuItem MenuRechercheClient = new JMenuItem("Recherche");
 
     JMenu MenuStock = new JMenu("Stock");
     JMenu MenuLivraison = new JMenu("Livraison");
@@ -65,8 +62,6 @@ public class Gui extends JFrame{
       MenuCommande.add(MenuNouvelleCommande);
       MenuCommande.add(MenuModifierCommande);
       MenuCommande.add(MenuRechercheCommande);
-    MyMenu.add(MenuClient);
-      MenuClient.add(MenuRechercheClient);
     MyMenu.add(MenuStock);
     MyMenu.add(MenuLivraison);
     MyMenu.add(MenuStatistiques);
@@ -118,11 +113,6 @@ public class Gui extends JFrame{
           }
       }
     });
-    MenuRechercheClient.addActionListener(new ActionListener () {
-      public void actionPerformed(ActionEvent e){
-        JOptionPane.showMessageDialog(null,"La Recherche de Clients n'est pas encore implémentée");
-      }
-    });
     MenuStock.addMouseListener(new MouseListener() {
                       @Override
                       public void mouseReleased(MouseEvent e) {}
@@ -146,7 +136,6 @@ public class Gui extends JFrame{
                       @Override
                       public void mousePressed(MouseEvent e) {
                         if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-                          //JOptionPane.showMessageDialog(null,"la gestion des livraisons n'est pas encore implémentée");
                             changeMainPanel(new DeliveryPanel());
                         }
                       }
