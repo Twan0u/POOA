@@ -3,6 +3,7 @@ package dataccess;
 import composants.*;
 import exceptions.*;
 
+import javax.xml.crypto.Data;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -148,8 +149,7 @@ public class OrderDBAccess implements OrderAccess{
 
                     price = data.getDouble("price");
                     quantity = data.getInt("quantity");
-                    orderLine = new OrderLine(beer, order, quantity, price);
-                    order.additem(orderLine);
+                    new OrderLine(beer, order, quantity, price);
                 }
             }
         }
@@ -209,9 +209,10 @@ public class OrderDBAccess implements OrderAccess{
             statement.executeUpdate();
             ResultSet rs = statement.getGeneratedKeys();
 
-            if(rs.next())
+            if(rs.next()){
                 id = rs.getInt(1);
-            order.setId(id);
+                order.setId(id);
+            }
 
             sql = " INSERT INTO OrderLine (orderNumber, quantity, price, beerName)"
                     + " VALUES (?,?,?,?);";
@@ -232,7 +233,7 @@ public class OrderDBAccess implements OrderAccess{
             throw new DataBackupException("Erreur lors de la sauvegarde d'une commande dans la BD");
         }
         catch(Exception e){
-            System.out.println("blabalabla");
+            throw new DataAccessException("Erreur lors de l'affectation de l'id créé à la commande");
         }
         return id;
     }

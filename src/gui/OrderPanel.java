@@ -83,9 +83,6 @@ public class OrderPanel extends JPanel{
     }catch(OrderLineException error){
       throw new ProgramErrorException(error.getMessage());
     }
-    catch(UserInputErrorException e){
-      throw new UserInputErrorException("Une valeur invalide a été entrée, la commande ne peut pas être sauvée");
-    }
   }
 
   /** Recharge le contenu de la page

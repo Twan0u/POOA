@@ -164,10 +164,10 @@ private JTextField timeLimit;
     try{
       Integer result = Integer.parseInt(timeLimit.getText());
       if(result < 0)
-        throw new UserInputErrorException("La valeur que vous venez de rentrer pour le nombre de jours pour effectuer la livraison est incorrect");
+        throw new UserInputErrorException("La valeur entrée pour le délai acceptable est incorrecte");
       else return result;
     }catch(NumberFormatException error){
-      throw new UserInputErrorException("La valeur que vous venez de rentrer pour le nombre de jours pour effectuer la livraison est incorrect");
+      throw new UserInputErrorException("La valeur entrée pour le délai acceptable est incorrecte");
     }
   }
   public boolean getSelectedPriority(){
