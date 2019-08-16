@@ -119,7 +119,7 @@ private BeerTable table;
 
       private class ButtonRemoveListener implements ActionListener{
         public void actionPerformed( ActionEvent event) {
-          if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir supprimmer cette bière de la commande? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+          if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir supprimmer la dernière bière de la commande? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
             orderLines.remove(orderLines.size()-1);
             refreshTable();
           }
