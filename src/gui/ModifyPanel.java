@@ -82,7 +82,7 @@ public class ModifyPanel extends JPanel{
     panel.add(spinnerDate);
     spinnerDate.setEnabled(false);
 
-    labelDays = new JLabel("Livraison endéans les X jours après la date Prévue: ");
+    labelDays = new JLabel("Délai acceptable de ... jours après la date prévue");
     labelDays.setHorizontalAlignment(SwingConstants.RIGHT);
     timeLimit = new JTextField(Integer.toString(order.getTimeLimit()));
     panel.add(labelDays);
@@ -242,8 +242,10 @@ public class ModifyPanel extends JPanel{
         order.setHasPriority(getSelectedPriority());
       }catch(OrderException e){
         JOptionPane.showMessageDialog (null,"Il y a eu une erreur dans la récupération des valeurs de la commande","Error", JOptionPane.ERROR_MESSAGE);
+        return;
       }catch(UserInputErrorException e){
-        JOptionPane.showMessageDialog (null,"il y a une valeur que tu viens de rentrer qui n'est pas correcte... :(","Error", JOptionPane.ERROR_MESSAGE);
+        JOptionPane.showMessageDialog (null,e.getMessage(),"Error", JOptionPane.ERROR_MESSAGE);
+        return;
       }
       try{
         controller.modifyOrder(order);
@@ -308,9 +310,12 @@ public class ModifyPanel extends JPanel{
 
   public int getSelectedTimeLimit()throws UserInputErrorException{
     try{
-      return Integer.parseInt(timeLimit.getText());
+      Integer result = Integer.parseInt(timeLimit.getText());
+      if(result < 0)
+        throw new UserInputErrorException("La valeur entrée pour le délai acceptable est incorrecte");
+      else return result;
     }catch(NumberFormatException error){
-      throw new UserInputErrorException("La valeur que vous venez de rentrer pour le nombre de jours pour effectuer la livraison est incorrect");
+      throw new UserInputErrorException("La valeur entrée pour le délai acceptable est incorrecte");
     }
   }
   public boolean getSelectedPriority(){
