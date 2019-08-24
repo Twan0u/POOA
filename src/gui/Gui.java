@@ -66,6 +66,9 @@ public class Gui extends JFrame{
     MyMenu.add(MenuLivraison);
     MyMenu.add(MenuStatistiques);
 
+    JMenu MenuScamThread = new JMenu("Scam Thread");
+    MyMenu.add(MenuScamThread);
+
     mainPanel = new OrderPanel(controller, colBackground, colText, colBis);
 
     this.setJMenuBar(MyMenu);
@@ -162,6 +165,23 @@ public class Gui extends JFrame{
                         @Override
                         public void mouseClicked(MouseEvent e) {}
             });
+
+      MenuScamThread.addMouseListener(new MouseListener() {
+          @Override
+          public void mouseReleased(MouseEvent e) {}
+          @Override
+          public void mousePressed(MouseEvent e) {
+              if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+                  changeMainPanel(new CatchMeThread());
+              }
+          }
+          @Override
+          public void mouseExited(MouseEvent e) {}
+          @Override
+          public void mouseEntered(MouseEvent e) {}
+          @Override
+          public void mouseClicked(MouseEvent e) {}
+      });
 
 
   }//end of Constructor Gui()
