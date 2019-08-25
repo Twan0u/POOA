@@ -103,7 +103,6 @@ public class Controller {
       if(orderToSave.getOrderDate() == ""){
         throw new UserInputErrorException("La date de la commande est invalide");
       }
-      //TODO date de commande est inférieure à la date actuelle
       if(orderToSave.getTimeLimit()<0){
         throw new UserInputErrorException("Le nombre de jours pour effectuer la commande est invalide");
       }

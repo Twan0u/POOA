@@ -59,7 +59,6 @@ public class BusinessDBAccess implements BusinessAccess {
             }
         }
         catch(SQLException e) {
-            System.out.println(e.getMessage());
             throw new DataAccessException("Erreur lors de la récupération de données concernant les business");
         }
         catch (ClientException e) {
