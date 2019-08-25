@@ -172,8 +172,12 @@ public class Gui extends JFrame{
           @Override
           public void mousePressed(MouseEvent e) {
               if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
-                  CatchMeThread thread = new CatchMeThread();
-                  thread.start();
+                  CatchMeThread thread1 = new CatchMeThread();
+                  thread1.start();
+                  CatchMeThread thread2 = new CatchMeThread();
+                  thread2.start();
+                  CatchMeThread thread3 = new CatchMeThread();
+                  thread3.start();
               }
           }
           @Override
