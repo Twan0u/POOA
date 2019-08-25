@@ -50,7 +50,6 @@ public class SearchOrderByClientPanel extends Container{
   /*public class LocalityComboBoxListener implements ItemListener {
       public void itemStateChanged(ItemEvent event){
         try{
-          System.out.println("table new");
           if (0==1){throw new ProgramErrorException("");};
         }catch(ProgramErrorException error){
             JOptionPane.showMessageDialog (null, error.getMessage(),"ERREUR", JOptionPane.ERROR_MESSAGE);
