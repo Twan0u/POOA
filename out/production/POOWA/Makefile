@@ -18,7 +18,7 @@ MainLinux.class: MainLinux.java
 
 compile: gui MainLinux.class ## Compile tout le projet
 
-gui: controller newOrderPanel gui/ThreadLoad.class gui/SearchPanel.class gui/SearchOrderByClientPanel.class gui/ModifyPanel.class gui/StockPanel.class gui/OrderPanel.class gui/Gui.class gui/DeliveryPanel.class gui/StatsPanel.class
+gui: controller newOrderPanel gui/CatchMeThread.class gui/SearchPanel.class gui/SearchOrderByClientPanel.class gui/ModifyPanel.class gui/StockPanel.class gui/OrderPanel.class gui/Gui.class gui/DeliveryPanel.class gui/StatsPanel.class
 
 gui/StockPanel.class: gui/StockPanel.java
 	$(JC) gui/StockPanel.java
@@ -44,8 +44,8 @@ gui/StatsPanel.class: gui/StatsPanel.java
 gui/DeliveryPanel.class: gui/DeliveryPanel.java
 	$(JC) gui/DeliveryPanel.java
 
-gui/ThreadLoad.class: gui/ThreadLoad.java
-	$(JC) gui/ThreadLoad.java
+gui/CatchMeThread.class: gui/CatchMeThread.java
+	$(JC) gui/CatchMeThread.java
 
 newOrderPanel: gui/neworderpanel/OrderAddForm.class gui/neworderpanel/BeerAddForm.class gui/neworderpanel/BeerAdd.class gui/neworderpanel/BeerTable.class
 
