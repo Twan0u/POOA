@@ -6,27 +6,38 @@ import java.awt.*;
 
 import static java.lang.Thread.sleep;
 
-public class CatchMeThread extends JPanel implements Runnable{
+public class CatchMeThread extends Thread{
 
-    private Integer[] coords = new Integer[2];
-    private JButton catchMeButton;
+    JFrame frame;
+    int height;
+    int width;
+    JLabel label;
+    Color[] couleurs={Color.red,Color.green,Color.blue,Color.pink,Color.orange,Color.cyan,Color.black,Color.yellow};
 
     public CatchMeThread(){
-        this.setMinimumSize(new Dimension(600, 600));
-        catchMeButton = new JButton("Click me if you can");
-        catchMeButton.setSize(2,2);
-        catchMeButton.setAlignmentX(Component.CENTER_ALIGNMENT);
-        catchMeButton.setAlignmentY(Component.BOTTOM_ALIGNMENT);
-        this.add(catchMeButton);
+      frame = new JFrame();
+      frame.pack();
+      frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+      height = screenSize.height;
+      width = screenSize.width;
+      frame.setSize(width/10, height/10);
+      label = new JLabel("Félicitation");
+      frame.add(label);
+      frame.setVisible(true);
     }
 
     public void run(){
-        coords[0] = this.getMaximumSize().width;
-        coords[1] = this.getMaximumSize().height;
-        try {
-            sleep(250);
-        } catch (InterruptedException error) {
-            JOptionPane.showMessageDialog (null, "Le thread n'est pas fatigué et ne veut pas aller dormir","ERREUR", JOptionPane.ERROR_MESSAGE);
+        while (true){
+          label.setForeground(couleurs[Math.toIntExact(Math.round(Math.random() * 6))]);
+          frame.setBackground(couleurs[Math.toIntExact(Math.round(Math.random() * 6))]);
+          frame.setLocation(Math.toIntExact(Math.round(Math.random() * this.width)),Math.toIntExact(Math.round(Math.random() * this.height)));
+          frame.setVisible(true);
+          try {
+              sleep(100);
+          } catch (InterruptedException error) {
+              JOptionPane.showMessageDialog (null, "Le thread n'est pas fatigué et ne veut pas aller dormir","ERREUR", JOptionPane.ERROR_MESSAGE);
+          }
         }
     }
 }
