@@ -4,8 +4,6 @@ import javax.swing.*;
 
 import java.awt.*;
 
-import static java.lang.Thread.sleep;
-
 public class CatchMeThread extends Thread{
 
     JFrame frame;
@@ -21,8 +19,8 @@ public class CatchMeThread extends Thread{
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
         height = screenSize.height;
         width = screenSize.width;
-        frame.setSize(width/10, height/10);
-        label = new JLabel("Félicitation");
+        frame.setSize(width/7, height/12);
+        label = new JLabel("Félicitation vous êtes le 999 999ème visiteur!");
         frame.add(label);
         frame.setVisible(true);
     }
@@ -34,11 +32,10 @@ public class CatchMeThread extends Thread{
             frame.setLocation(Math.toIntExact(Math.round(Math.random() * this.width)),Math.toIntExact(Math.round(Math.random() * this.height)));
             frame.setVisible(true);
             try {
-                sleep(50);
+                sleep(2000);
             } catch (InterruptedException error) {
                 JOptionPane.showMessageDialog (null, "Le thread n'est pas fatigué et ne veut pas aller dormir","ERREUR", JOptionPane.ERROR_MESSAGE);
             }
         }
     }
-
 }
