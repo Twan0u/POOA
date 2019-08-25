@@ -111,9 +111,9 @@ public class Controller {
       if(orderToSave.getTimeLimit()<0){
         throw new UserInputErrorException("Le nombre de jours pour effectuer la commande est invalide");
       }
-      /*if(orderToSave.getOrderLinesSize() == 0){
+      if(orderToSave.getOrderLinesSize() == 0){
         throw new UserInputErrorException("Commande Vide");
-      }*/
+      }
     }
 
     public void deleteOrder(int id)throws ProgramErrorException{
