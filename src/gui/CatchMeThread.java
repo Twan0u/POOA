@@ -27,15 +27,15 @@ public class CatchMeThread extends Thread{
 
     public void run(){
         while (true){
-          label.setForeground(couleurs[Math.toIntExact(Math.round(Math.random() * 6))]);
-          frame.setBackground(couleurs[Math.toIntExact(Math.round(Math.random() * 6))]);
-          frame.setLocation(Math.toIntExact(Math.round(Math.random() * this.width)),Math.toIntExact(Math.round(Math.random() * this.height)));
-          frame.setVisible(true);
-          try {
-              sleep(500);
-          } catch (InterruptedException error) {
-              JOptionPane.showMessageDialog (null, "Le thread n'est pas fatigué et ne veut pas aller dormir","ERREUR", JOptionPane.ERROR_MESSAGE);
-          }
+            label.setForeground(couleurs[Math.toIntExact(Math.round(Math.random() * 6))]);
+            frame.setBackground(couleurs[Math.toIntExact(Math.round(Math.random() * 6))]);
+            frame.setLocation(Math.toIntExact(Math.round(Math.random() * this.width)),Math.toIntExact(Math.round(Math.random() * this.height)));
+            frame.setVisible(true);
+            try {
+                sleep(800);
+            } catch (InterruptedException error) {
+                JOptionPane.showMessageDialog (null, "Le thread n'est pas fatigué et ne veut pas aller dormir","ERREUR", JOptionPane.ERROR_MESSAGE);
+            }
         }
     }
 }

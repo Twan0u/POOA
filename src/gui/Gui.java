@@ -36,12 +36,6 @@ public class Gui extends JFrame{
 
     this.setLayout(new FlowLayout());
 
-    int [] loadValue = new int[1];
-    loadValue[0]=1;//Begin to load The Program
-    ThreadLoad threadX = new ThreadLoad(loadValue);
-    Thread thread = new Thread(threadX);
-    thread.start();
-
     this.controller = new Controller();
 
     JMenuBar MyMenu = new JMenuBar();
@@ -77,7 +71,6 @@ public class Gui extends JFrame{
     setVisible(true);
     setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-    loadValue[0]=0;// finished to load*/
 
     MenuNouvelleCommande.addActionListener(new ActionListener () {
       public void actionPerformed(ActionEvent e){
