@@ -26,11 +26,7 @@ public class Controller {
       }else{
         beers = businesslayer.getAllBeers();
       }
-    }catch(Exception e){//TODO
-      System.out.println(e.getMessage());
-    }
-    if (beers == null){//TODO
-    }
+    }catch(Exception e){}
     int totalBieres = beers.size();
     String [][] out = new String[totalBieres][2];
     for(int i=0;i<totalBieres;i++){
