@@ -171,7 +171,7 @@ public class Gui extends JFrame{
           public void mouseReleased(MouseEvent e) {}
           @Override
           public void mousePressed(MouseEvent e) {
-              if(JOptionPane.showConfirmDialog (null, "êtes-vous sur de vouloir quitter? ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
+              if(JOptionPane.showConfirmDialog (null, "Spam ZONE (ALT+F4) will be your best friend ","Warning",JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION){
                   CatchMeThread thread1 = new CatchMeThread();
                   thread1.start();
                   CatchMeThread thread2 = new CatchMeThread();
